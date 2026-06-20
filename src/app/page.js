@@ -1,8 +1,8 @@
-import Image from "next/image";
-import TrustBadges from "./components/TrustBadges";
-import HeroBanner from "./components/HeroBanner";
-import TopLocations from "./components/TopLocations";
-import StatsSection from "./components/StatsSection";
+import HeroBanner from "./components/staticComponents/HeroBanner";
+import StatsSection from "./components/staticComponents/StatsSection";
+import TestimonialsSection from "./components/staticComponents/TestimonialsSection";
+import TopLocations from "./components/staticComponents/TopLocations";
+import TrustBadges from "./components/staticComponents/TrustBadges";
 
 export default function Home() {
   return (
@@ -11,7 +11,7 @@ export default function Home() {
       <TrustBadges />
       <StatsSection />
       <TopLocations />
-      {/* rivewCard */}
+      <TestimonialsSection />
     </div>
   );
 }
