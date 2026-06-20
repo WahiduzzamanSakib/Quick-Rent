@@ -88,7 +88,7 @@ export default function TrustBadges() {
             </p>
 
             {/* subtle glow accent */}
-            <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition duration-300 bg-gradient-to-b from-white/30 to-transparent pointer-events-none" />
+            <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition duration-300 bg-linear-to-b from-white/30 to-transparent pointer-events-none" />
           </motion.div>
         ))}
       </motion.div>

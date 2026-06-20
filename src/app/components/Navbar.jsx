@@ -26,7 +26,7 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 py-5 flex items-center justify-between">
 
      
-        <Link href="/" className="flex items-center gap-2 flex-shrink-0">
+        <Link href="/" className="flex items-center gap-2 shrink-0">
           <Image
             src="/quickrent.png"
             alt="QuickRent Logo"
@@ -54,7 +54,7 @@ export default function Navbar() {
         </div>
 
        
-        <div className="hidden md:flex items-center gap-4 flex-shrink-0">
+        <div className="hidden md:flex items-center gap-4 shrink-0">
           <Link
             href="/login"
             className={`${baseLinkClass} ${

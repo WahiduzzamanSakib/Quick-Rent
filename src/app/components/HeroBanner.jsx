@@ -25,7 +25,7 @@ export default function HeroBanner() {
         >
 
             <div className="absolute inset-0 bg-[#3A4350]/70 mix-blend-multiply" />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#2C3540]/80 via-transparent to-transparent" />
+            <div className="absolute inset-0 bg-linear-to-t from-[#2C3540]/80 via-transparent to-transparent" />
 
 
             <motion.div
@@ -112,7 +112,7 @@ export default function HeroBanner() {
 
                     <button
                         type="button"
-                        className="w-full bg-black hover:bg-gray-900 text-white font-sans font-semibold text-sm py-3 px-6 rounded-xl flex items-center justify-center space-x-2 transition-transform active:scale-95 duration-150 h-[46px]"
+                        className="w-full bg-black hover:bg-gray-900 text-white font-sans font-semibold text-sm py-3 px-6 rounded-xl flex items-center justify-center space-x-2 transition-transform active:scale-95 duration-150 h-12"
                     >
                         <HiOutlineMagnifyingGlass className="w-4 h-4 stroke-[2.5]" />
                         <span>Search</span>
