@@ -5,7 +5,6 @@ import { motion } from 'framer-motion';
 import { HiOutlineMapPin, HiOutlineMagnifyingGlass } from 'react-icons/hi2';
 
 export default function HeroBanner() {
-    // Animation variants for smooth text and bar entry
     const fadeInUp = {
         hidden: { opacity: 0, y: 30 },
         visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
