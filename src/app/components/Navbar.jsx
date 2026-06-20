@@ -25,7 +25,7 @@ export default function Navbar() {
     <nav className="bg-white shadow-md w-full">
       <div className="max-w-7xl mx-auto px-4 py-5 flex items-center justify-between">
 
-        {/* LEFT: LOGO */}
+     
         <Link href="/" className="flex items-center gap-2 flex-shrink-0">
           <Image
             src="/quickrent.png"
@@ -38,7 +38,7 @@ export default function Navbar() {
           </span>
         </Link>
 
-        {/* CENTER NAV */}
+        
         <div className="hidden md:flex flex-1 justify-center gap-8">
           {navLinks.map((link) => (
             <Link
@@ -53,7 +53,7 @@ export default function Navbar() {
           ))}
         </div>
 
-        {/* RIGHT AUTH */}
+       
         <div className="hidden md:flex items-center gap-4 flex-shrink-0">
           <Link
             href="/login"
