@@ -10,7 +10,7 @@ export default function Footer() {
   return (
     <footer className="bg-slate-900 text-white mt-16">
 
-      <div className="max-w-7xl mx-auto px-6 py-12 grid grid-cols-1 md:grid-cols-4 gap-10">
+      <div className="max-w-7xl mx-auto px-6 py-12 grid grid-cols-2 md:grid-cols-4 gap-10">
 
         {/* Brand Section */}
         <div>
@@ -19,44 +19,7 @@ export default function Footer() {
             Find your perfect stay anywhere, anytime. Fast, secure, and seamless booking experience.
           </p>
 
-          {/* Social Icons */}
-          <div className="flex gap-4 mt-5 text-lg">
-            <a
-              href="https://facebook.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-sky-400"
-            >
-              <FaFacebookF />
-            </a>
-
-            <a
-              href="https://instagram.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-pink-400"
-            >
-              <FaInstagram />
-            </a>
-
-            <a
-              href="https://twitter.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-sky-300"
-            >
-              <FaTwitter />
-            </a>
-
-            <a
-              href="https://linkedin.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-sky-500"
-            >
-              <FaLinkedin />
-            </a>
-          </div>
+         
         </div>
 
         {/* Company Links */}
@@ -126,21 +89,45 @@ export default function Footer() {
         {/* Newsletter */}
         <div>
           <h3 className="font-semibold mb-4">Stay Updated</h3>
-          <p className="text-slate-400 text-sm mb-3">
-            Subscribe for latest deals & offers.
-          </p>
+          {/* Social Icons */}
+          <div className="flex gap-4 mt-5 text-lg">
+            <a
+              href="https://facebook.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-sky-400"
+            >
+              <FaFacebookF size={24}/>
+            </a>
 
-          <div className="flex flex-col sm:flex-row gap-2">
-            <input
-              type="email"
-              placeholder="Enter email"
-              className="px-3 py-2 rounded bg-slate-800 text-white outline-none w-full"
-            />
+            <a
+              href="https://instagram.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-pink-400"
+            >
+              <FaInstagram size={24}/>
+            </a>
 
-            <button className="bg-sky-500 hover:bg-sky-600 px-4 py-2 rounded">
-              Subscribe
-            </button>
+            <a
+              href="https://twitter.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-sky-300"
+            >
+              <FaTwitter size={24}/>
+            </a>
+
+            <a
+              href="https://linkedin.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-sky-500 rounded-full"
+            >
+              <FaLinkedin size={24}/>
+            </a>
           </div>
+        
         </div>
 
       </div>
