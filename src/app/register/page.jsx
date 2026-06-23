@@ -95,20 +95,20 @@ const SignUpPage = () => {
         }
     };
 
-    // const handleGoogleLogin = async () => {
-    //     const { data, error } = await authClient.signIn.social({
-    //         provider: "google",
-    //     });
+    const handleGoogleLogin = async () => {
+        const { data, error } = await authClient.signIn.social({
+            provider: "google",
+        });
 
-    //     if (error) {
-    //         toast.error("Google login failed");
-    //         return;
-    //     }
+        if (error) {
+            toast.error("Google login failed");
+            return;
+        }
 
-    //     if (data) {
-    //         toast.success("Login successful!");
-    //     }
-    // };
+        if (data) {
+            toast.success("Login successful!");
+        }
+    };
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-950 dark:to-gray-900 px-4 py-6">
@@ -220,6 +220,7 @@ const SignUpPage = () => {
                     <motion.div whileTap={{ scale: 0.97 }}>
                         <Button
                             variant="secondary"
+                              onClick={handleGoogleLogin}
                             className="w-full flex items-center justify-center gap-2 border dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800"
                         >
                             <FcGoogle size={20} />
