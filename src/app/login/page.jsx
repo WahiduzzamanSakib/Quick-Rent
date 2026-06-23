@@ -4,32 +4,31 @@ import React from "react";
 import {
     Card,
     Button,
-    Description,
-    FieldError,
     Form,
     Input,
     Label,
     TextField,
+    Description,
+    FieldError,
 } from "@heroui/react";
-
-import { Check } from "@gravity-ui/icons";
 import { useRouter } from "next/navigation";
 import { FcGoogle } from "react-icons/fc";
-import Image from "next/image";
 import { toast } from "react-toastify";
-import { authClient } from "@/lib/auth-client";
+import Image from "next/image";
 import Link from "next/link";
+import { authClient } from "@/lib/auth-client";
 import { motion } from "framer-motion";
+import { Check } from "@gravity-ui/icons";
 
 const container = {
-    hidden: { opacity: 0, y: 25 },
+    hidden: { opacity: 0, y: 20 },
     show: {
         opacity: 1,
         y: 0,
         transition: {
             duration: 0.6,
             when: "beforeChildren",
-            staggerChildren: 0.08,
+            staggerChildren: 0.1,
         },
     },
 };
@@ -39,16 +38,41 @@ const item = {
     show: { opacity: 1, y: 0 },
 };
 
-const LoginPage = () => {
+const SignInPage = () => {
     const router = useRouter();
 
-    const handleSubmit = (e) =>{
-         e.preventDefault();
+    const handleSubmit = async (e) => {
+        e.preventDefault();
 
         const formData = new FormData(e.currentTarget);
-        const user = Object.fromEntries(formData);
-        console.log(user)
-    }
+        const { email, password } = Object.fromEntries(formData);
+
+        if (!email || !password) {
+            toast.error("Email and Password are required");
+            return;
+        }
+
+        try {
+            const { data, error } = await authClient.signIn.email({
+                email,
+                password,
+            });
+
+            if (error) {
+                toast.error(error.message || "Invalid email or password");
+                return;
+            }
+
+            toast.success("Login successful!");
+
+            setTimeout(() => {
+                router.push("/");
+            }, 1000);
+        } catch (err) {
+            console.error(err);
+            toast.error("Something went wrong");
+        }
+    };
 
     // const handleGoogleLogin = async () => {
     //     const { data, error } = await authClient.signIn.social({
@@ -66,7 +90,7 @@ const LoginPage = () => {
     // };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-950 dark:to-gray-900 px-4 py-6">
+         <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-950 dark:to-gray-900 px-4 py-6">
 
             <motion.div
                 variants={container}
@@ -178,4 +202,4 @@ const LoginPage = () => {
     );
 };
 
-export default LoginPage;
+export default SignInPage;
