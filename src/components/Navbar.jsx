@@ -22,7 +22,7 @@ export default function Navbar() {
     "text-md font-semibold text-black hover:text-sky-600 transition";
 
   return (
-    <nav className="bg-white shadow-md w-full">
+    <nav className="bg-white shadow-md w-full sticky top-0 z-10">
       <div className="max-w-7xl mx-auto px-4 py-5 flex items-center justify-between">
 
      
