@@ -220,7 +220,7 @@ const SignUpPage = () => {
                     <motion.div whileTap={{ scale: 0.97 }}>
                         <Button
                             variant="secondary"
-                              onClick={handleGoogleLogin}
+                            onClick={handleGoogleLogin}
                             className="w-full flex items-center justify-center gap-2 border dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800"
                         >
                             <FcGoogle size={20} />

@@ -6,14 +6,14 @@ const client = new MongoClient(process.env.MONGODB_URI);
 const db = client.db("quickrent-Platform");
 
 export const auth = betterAuth({
-   secret: process.env.BETTER_AUTH_SECRET,
+  secret: process.env.BETTER_AUTH_SECRET,
   database: mongodbAdapter(db, {
-   
+
     client
   }),
-   emailAndPassword: { 
-    enabled: true, 
-  }, 
+  emailAndPassword: {
+    enabled: true,
+  },
   socialProviders: {
     google: {
       enabled: true,
@@ -21,4 +21,14 @@ export const auth = betterAuth({
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     },
   },
+  user: {
+    additionalFields: {
+      role: {
+       defaultValue: "TENANT",
+      },
+      isBlocked: {
+        defaultValue: false,
+      },
+    }
+  }
 });
