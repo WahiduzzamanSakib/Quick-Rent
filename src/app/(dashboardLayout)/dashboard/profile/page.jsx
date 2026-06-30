@@ -146,7 +146,7 @@ const ProfilePage = () => {
                   Blocked
                 </span>
               ) : (
-                <span className="px-2 py-0.5 rounded text-xs bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-400 font-medium uppercase tracking-wider">
+                <span className="px-2 py-0.5 rounded font-bold bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-400 uppercase tracking-wider">
                   Active
                 </span>
               )}

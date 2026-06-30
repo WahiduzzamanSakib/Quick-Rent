@@ -33,30 +33,77 @@ const AddPropertyPage = () => {
     const email = session?.user?.email || "";
 
 
-    const handleSubmit =async (e) => {
+    const [uploadType, setUploadType] = useState("link");
+    const [selectedFile, setSelectedFile] = useState(null);
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
         const formData = new FormData(e.currentTarget);
         const data = Object.fromEntries(formData.entries());
-        console.log("Submitting property data:", data);
 
 
-  try {
-            const res = await fetch(`http://localhost:5000/dashboard/owner/add-property`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(data),
-            });
+        let finalImageUrl = data.imageUrl;
+
+        if (uploadType === "file") {
+            if (!selectedFile) {
+                toast.error("Please select an image file first!");
+                return;
+            }
+
+            const imgbbApiKey = process.env.IMAGEBIBI_API_KEY;
+            const imgbbFormData = new FormData();
+            imgbbFormData.append("image", selectedFile);
+
+            try {
+                const imgbbRes = await fetch(
+                    `https://api.imgbb.com/1/upload?key=${imgbbApiKey}`,
+                    {
+                        method: "POST",
+                        body: imgbbFormData,
+                    }
+                );
+                const imgbbResult = await imgbbRes.json();
+                
+                if (imgbbResult.success) {
+                    finalImageUrl = imgbbResult.data.display_url;
+                } else {
+                    toast.error("Failed to upload image to ImgBB");
+                    return;
+                }
+            } catch (error) {
+                console.error("ImgBB Upload Error:", error);
+                toast.error("Image upload failed");
+                return;
+            }
+        }
+
+        const finalSubmitData = {
+            ...data,
+            imageUrl: finalImageUrl,
+            status: "pending",
+            owner: email,
+        };
+
+        try {
+            const res = await fetch(
+                "http://localhost:5000/dashboard/owner/add-property",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(finalSubmitData),
+                }
+            );
+
             const result = await res.json();
             console.log(result);
+
             toast.success("Property added successfully!");
-            
         } catch (error) {
             console.error(error);
             toast.error("Failed to add Property");
-        };
-
+        }
 
 
     };
@@ -82,9 +129,8 @@ const AddPropertyPage = () => {
                             </motion.div>
 
                             <Fieldset.Group className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
-                            
+
                                 <motion.div variants={itemVariants} className="md:col-span-2">
-                                   
                                     <TextField isRequired name="title" className="w-full">
                                         <Label>Property Title</Label>
                                         <Input
@@ -95,9 +141,7 @@ const AddPropertyPage = () => {
                                     </TextField>
                                 </motion.div>
 
-                             
                                 <motion.div variants={itemVariants} className="md:col-span-2">
-                                  
                                     <TextField
                                         isRequired
                                         name="description"
@@ -112,9 +156,7 @@ const AddPropertyPage = () => {
                                     </TextField>
                                 </motion.div>
 
-                               
                                 <motion.div variants={itemVariants}>
-                                  
                                     <TextField isRequired name="location" className="w-full">
                                         <Label>Location</Label>
                                         <Input
@@ -129,7 +171,6 @@ const AddPropertyPage = () => {
                                     <label className="text-sm font-semibold text-gray-700 dark:text-gray-300">
                                         Property Type <span className="text-red-500">*</span>
                                     </label>
-
                                     <div className="relative">
                                         <select
                                             name="propertyType"
@@ -151,7 +192,6 @@ const AddPropertyPage = () => {
                                     </div>
                                 </motion.div>
 
-                               
                                 <motion.div variants={itemVariants}>
                                     <TextField isRequired name="rent" type="number" className="w-full">
                                         <Label>Rent (Price)</Label>
@@ -160,12 +200,10 @@ const AddPropertyPage = () => {
                                     </TextField>
                                 </motion.div>
 
-                               
                                 <motion.div variants={itemVariants} className="w-full space-y-1">
                                     <label className="text-sm font-semibold text-gray-700 dark:text-gray-300">
                                         Rent Type <span className="text-red-500">*</span>
                                     </label>
-
                                     <div className="relative">
                                         <select
                                             name="rentType"
@@ -184,7 +222,6 @@ const AddPropertyPage = () => {
                                     </div>
                                 </motion.div>
 
-                              
                                 <motion.div variants={itemVariants}>
                                     <TextField isRequired name="bedrooms" type="number" className="w-full">
                                         <Label>Bedrooms</Label>
@@ -192,7 +229,6 @@ const AddPropertyPage = () => {
                                     </TextField>
                                 </motion.div>
 
-                               
                                 <motion.div variants={itemVariants}>
                                     <TextField isRequired name="bathrooms" type="number" className="w-full">
                                         <Label>Bathrooms</Label>
@@ -200,7 +236,6 @@ const AddPropertyPage = () => {
                                     </TextField>
                                 </motion.div>
 
-                             
                                 <motion.div variants={itemVariants}>
                                     <TextField isRequired name="size" className="w-full">
                                         <Label>Property Size (sq ft)</Label>
@@ -208,7 +243,6 @@ const AddPropertyPage = () => {
                                     </TextField>
                                 </motion.div>
 
-                               
                                 <motion.div variants={itemVariants}>
                                     <TextField isRequired name="amenities" className="w-full">
                                         <Label>Amenities</Label>
@@ -220,19 +254,50 @@ const AddPropertyPage = () => {
                                     </TextField>
                                 </motion.div>
 
-                              
-                                <motion.div variants={itemVariants} className="md:col-span-2">
-                                    <TextField isRequired name="imageUrl" type="url" className="w-full">
-                                        <Label>Property Images URL</Label>
-                                        <Input
-                                            placeholder="https://example.com/image.jpg"
-                                            variant="secondary"
-                                        />
-                                        <FieldError />
-                                    </TextField>
+                                {/* Property image */}
+                                <motion.div variants={itemVariants} className="md:col-span-2 space-y-2">
+                                    <Label className="text-sm font-semibold text-gray-700 dark:text-gray-300 block">Property Image *</Label>
+
+
+                                    <div className="flex gap-2 p-1 bg-gray-100 dark:bg-gray-800 rounded-xl w-fit">
+                                        <button
+                                            type="button"
+                                            onClick={() => setUploadType("link")}
+                                            className={`px-4 py-1.5 text-xs font-medium rounded-lg transition-all ${uploadType === "link" ? "bg-white dark:bg-gray-700 shadow-sm text-foreground" : "text-muted-foreground"}`}
+                                        >
+                                            Image URL
+                                        </button>
+                                        <button
+                                            type="button"
+                                            onClick={() => setUploadType("file")}
+                                            className={`px-4 py-1.5 text-xs font-medium rounded-lg transition-all ${uploadType === "file" ? "bg-white dark:bg-gray-700 shadow-sm text-foreground" : "text-muted-foreground"}`}
+                                        >
+                                            Upload File
+                                        </button>
+                                    </div>
+
+
+                                    {uploadType === "link" ? (
+                                        <TextField isRequired={uploadType === "link"} name="imageUrl" type="url" className="w-full">
+                                            <Input
+                                                placeholder="https://example.com/image.jpg"
+                                                variant="secondary"
+                                            />
+                                            <FieldError />
+                                        </TextField>
+                                    ) : (
+                                        <div className="w-full">
+                                            <input
+                                                type="file"
+                                                accept="image/*"
+                                                required={uploadType === "file"}
+                                                onChange={(e) => setSelectedFile(e.target.files?.[0] || null)}
+                                                className="w-full text-sm text-gray-500 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-medium file:bg-primary/10 file:text-primary hover:file:bg-primary/20 cursor-pointer border border-dashed border-gray-300 dark:border-gray-600 rounded-xl p-1.5"
+                                            />
+                                        </div>
+                                    )}
                                 </motion.div>
 
-                               
                                 <motion.div variants={itemVariants} className="md:col-span-2">
                                     <TextField name="extraFeatures" className="w-full">
                                         <Label>Extra Features</Label>
@@ -243,12 +308,10 @@ const AddPropertyPage = () => {
                                     </TextField>
                                 </motion.div>
 
-                                
                                 <motion.div variants={itemVariants}>
                                     <TextField name="status" className="w-full opacity-80">
                                         <Label>Status</Label>
                                         <Input
-                                          
                                             readOnly
                                             value="pending"
                                             variant="secondary"
@@ -257,14 +320,12 @@ const AddPropertyPage = () => {
                                     </TextField>
                                 </motion.div>
 
-                               
                                 <motion.div variants={itemVariants}>
                                     <TextField name="owner" className="w-full opacity-80">
                                         <Label>Owner Email</Label>
                                         <Input
                                             value={email}
                                             readOnly
-                                           
                                             variant="secondary"
                                             className="font-semibold"
                                         />
