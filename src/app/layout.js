@@ -28,9 +28,9 @@ export default function RootLayout({ children }) {
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-      
+     
         {children}
-       
+     
         <ToastContainer position="top-right" autoClose={3000} />
       </body>
     </html>

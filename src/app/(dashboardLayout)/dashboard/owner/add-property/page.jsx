@@ -96,10 +96,9 @@ const AddPropertyPage = () => {
                 }
             );
 
-            const result = await res.json();
-            console.log(result);
-
+            const result = await res.json()
             toast.success("Property added successfully!");
+            window.location.href = "/dashboard/owner/my-properties";
         } catch (error) {
             console.error(error);
             toast.error("Failed to add Property");
