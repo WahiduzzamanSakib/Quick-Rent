@@ -1,4 +1,5 @@
 import ApprovedLimirCard from "@/components/ApprovedLimirCard";
+import RecentlyAddPage from "@/components/RecentlyAdd,";
 import HeroBanner from "@/components/staticComponents/HeroBanner";
 import StatsSection from "@/components/staticComponents/StatsSection";
 import TestimonialsSection from "@/components/staticComponents/TestimonialsSection";
@@ -14,8 +15,8 @@ export default function Home() {
       <ApprovedLimirCard />
       <StatsSection />
       <TopLocations />
+      <RecentlyAddPage />
       <TestimonialsSection />
-      {/* Reacentlly Added Properties */}
     </div>
   );
 }
