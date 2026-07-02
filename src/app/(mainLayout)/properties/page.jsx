@@ -8,6 +8,7 @@ import {
     FaMoneyBillWave,
     FaMoneyBillWaveAlt
 } from "react-icons/fa";
+import { Link } from "@heroui/react";
 
 const AllPropertiesPage = () => {
     const [properties, setProperties] = useState([]);
@@ -144,9 +145,13 @@ const AllPropertiesPage = () => {
                             </div>
 
                             <div className="pt-3 flex justify-between items-center border-t">
-                                <button className="flex w-full items-center justify-center px-4 py-2 text-sm rounded-xl bg-black text-white hover:bg-gray-800 transition">
-                                    View Details
-                                </button>
+
+                                <Link href={`/properties/${item._id}`}>
+                                    <button
+                                        className="flex w-full items-center justify-center px-4 py-2 text-sm rounded-xl bg-black text-white hover:bg-gray-800 transition">
+                                        View Details
+                                    </button>
+                                </Link>
                             </div>
                         </div>
                     </motion.div>
@@ -168,8 +173,8 @@ const AllPropertiesPage = () => {
                         key={i}
                         onClick={() => setCurrentPage(i + 1)}
                         className={`px-4 py-2 rounded ${currentPage === i + 1
-                                ? "bg-black text-white"
-                                : "bg-gray-200"
+                            ? "bg-black text-white"
+                            : "bg-gray-200"
                             }`}
                     >
                         {i + 1}

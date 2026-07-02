@@ -66,7 +66,7 @@ const ApprovedLimirCard = () => {
             <div className="mb-8">
                 <div className="flex justify-between items-center">
                     <h2 className="text-3xl font-bold text-gray-800">
-                        All Featured Properties <span className="text-gray-500">| Approved</span>
+                        All Featured Properties
                     </h2>
                     <Link href="/properties" className="text-blue-500 hover:underline">
                         View All <FaArrowRight />
@@ -141,9 +141,12 @@ const ApprovedLimirCard = () => {
                             </div>
 
                             <div className="pt-3 flex justify-between items-center border-t">
-                                <button className="flex w-full items-center justify-center px-4 py-2 text-sm rounded-xl bg-black text-white hover:bg-gray-800 transition">
-                                    View Details
-                                </button>
+                                <Link href={`/properties/${item._id}`}>
+                                    <button
+                                        className="flex w-full items-center justify-center px-4 py-2 text-sm rounded-xl bg-black text-white hover:bg-gray-800 transition">
+                                        View Details
+                                    </button>
+                                </Link>
                             </div>
                         </div>
                     </motion.div>
