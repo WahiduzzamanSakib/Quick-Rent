@@ -12,6 +12,7 @@ import {
 } from "react-icons/fa";
 import { useParams } from "next/navigation";
 import ReviewSection from "@/components/ReviewSection";
+import FavoritePage from "@/components/FavoritePage";
 
 const PropertyDetails = () => {
     const [property, setProperty] = useState(null);
@@ -153,13 +154,7 @@ return (
                     Book Now
                 </button>
 
-                <button
-                    onClick={() => setLiked(!liked)}
-                    className="w-full mt-3 border py-2 rounded-xl flex items-center justify-center gap-2"
-                >
-                    <FaHeart className={liked ? "text-red-500" : ""} />
-                    Add to Favorite
-                </button>
+              <FavoritePage property={property} />
 
                 <div className="mt-4 text-sm text-gray-600">
                     <p>Type: {property.propertyType}</p>
