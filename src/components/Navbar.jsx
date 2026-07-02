@@ -2,16 +2,18 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { HiMenu, HiX } from "react-icons/hi";
 import { Button } from "@heroui/react";
 import Image from "next/image";
 import { authClient } from "@/lib/auth-client";
 import { toast } from "react-toastify";
 
+
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [avatarOpen, setAvatarOpen] = useState(false);
+  const router = useRouter();
 
   const pathname = usePathname();
   const { data: session } = authClient.useSession();
@@ -22,11 +24,13 @@ export default function Navbar() {
     { name: "Home", path: "/" },
     { name: "All Properties", path: "/properties" },
   ];
+  
 
   const handleLogout = async () => {
     try {
       await authClient.signOut();
       toast.success("Logout successfully");
+      router.push("/"); // 👈 redirect to home
     } catch (error) {
       toast.error("Logout failed");
     } finally {
@@ -34,7 +38,6 @@ export default function Navbar() {
       setOpen(false);
     }
   };
-
   const isActive = (path) => pathname === path;
 
   const baseLinkClass =
@@ -90,7 +93,7 @@ export default function Navbar() {
                 {avatarOpen && (
                   <div className="absolute right-0 mt-2 w-40 bg-white border rounded-md shadow-md overflow-hidden">
                     <Link
-                     href={`/dashboard/${role}`}
+                      href={`/dashboard/${role}`}
                       className="block px-4 py-2 hover:bg-gray-100"
                       onClick={() => setAvatarOpen(false)}
                     >
