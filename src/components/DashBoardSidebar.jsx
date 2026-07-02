@@ -40,7 +40,8 @@ const DashBoardSidebar = ({ isOpen, setIsOpen }) => {
         { key: "profile", label: "Profile", icon: FaUserShield, href: "/dashboard/profile", },
     ];
 
-     const role = session?.user?.role?.toLowerCase();
+    //  const role = session?.user?.role?.toLowerCase();
+    const role = "admin";
     const menuItems = role === "owner" ? ownerMenu : role === "tenant" ? tenantMenu : role === "admin" ? adminMenu : null;
 
    

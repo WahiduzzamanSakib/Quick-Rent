@@ -15,12 +15,14 @@ export default function Navbar() {
 
   const pathname = usePathname();
   const { data: session } = authClient.useSession();
+  const role = session?.user?.role.toLowerCase();
+
 
   const navLinks = [
     { name: "Home", path: "/" },
     { name: "All Properties", path: "/properties" },
   ];
- 
+
   const handleLogout = async () => {
     try {
       await authClient.signOut();
@@ -88,7 +90,7 @@ export default function Navbar() {
                 {avatarOpen && (
                   <div className="absolute right-0 mt-2 w-40 bg-white border rounded-md shadow-md overflow-hidden">
                     <Link
-                      href="/dashboard"
+                     href={`/dashboard/${role}`}
                       className="block px-4 py-2 hover:bg-gray-100"
                       onClick={() => setAvatarOpen(false)}
                     >
@@ -169,7 +171,11 @@ export default function Navbar() {
             </>
           ) : (
             <>
-              <Link href="/dashboard" className="text-blue-500" onClick={() => setOpen(false)}>
+              <Link
+                href={`/dashboard/${role}`}
+                className="text-blue-500"
+                onClick={() => setOpen(false)}
+              >
                 Dashboard
               </Link>
 

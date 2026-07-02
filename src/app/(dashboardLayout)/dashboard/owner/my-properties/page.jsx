@@ -3,8 +3,6 @@
 import { useEffect, useState } from "react";
 import { authClient } from "@/lib/auth-client";
 import { motion } from "framer-motion";
-import { Button } from "@heroui/react";
-import { FaEdit, FaRegTrashAlt } from "react-icons/fa";
 import { FaBangladeshiTakaSign } from "react-icons/fa6";
 import EditModal from "@/components/EditModal";
 import { DeletedAlert } from "@/components/DeletedAlert";
