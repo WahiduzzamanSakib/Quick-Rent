@@ -1,3 +1,4 @@
+import ApprovedLimirCard from "@/components/ApprovedLimirCard";
 import HeroBanner from "@/components/staticComponents/HeroBanner";
 import StatsSection from "@/components/staticComponents/StatsSection";
 import TestimonialsSection from "@/components/staticComponents/TestimonialsSection";
@@ -10,7 +11,7 @@ export default function Home() {
     <div>
       <HeroBanner />
       <TrustBadges />
-      {/* Featured Properties */}
+      <ApprovedLimirCard />
       <StatsSection />
       <TopLocations />
       <TestimonialsSection />

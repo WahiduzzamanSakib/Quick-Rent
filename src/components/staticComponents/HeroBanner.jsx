@@ -3,6 +3,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { HiOutlineMapPin, HiOutlineMagnifyingGlass } from 'react-icons/hi2';
+import { Link } from '@heroui/react';
 
 export default function HeroBanner() {
     const fadeInUp = {
@@ -108,14 +109,17 @@ export default function HeroBanner() {
                         />
                     </div>
 
-
-                    <button
-                        type="button"
-                        className="w-full bg-black hover:bg-gray-900 text-white font-sans font-semibold text-sm py-3 px-6 rounded-xl flex items-center justify-center space-x-2 transition-transform active:scale-95 duration-150 h-12"
-                    >
-                        <HiOutlineMagnifyingGlass className="w-4 h-4 stroke-[2.5]" />
-                        <span>Search</span>
-                    </button>
+                    <Link 
+                    href="/properties">
+                        <button
+                            type="button"
+                            
+                            className="w-full bg-black hover:bg-gray-900 text-white font-sans font-semibold text-sm py-3 px-6 rounded-xl flex items-center justify-center space-x-2 transition-transform active:scale-95 duration-150 h-12"
+                        >
+                            <HiOutlineMagnifyingGlass className="w-4 h-4 stroke-[2.5]" />
+                            <span>Search</span>
+                        </button>
+                    </Link>
                 </motion.div>
             </motion.div>
         </section>

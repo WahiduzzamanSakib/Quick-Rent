@@ -5,23 +5,22 @@ import {
     FaMapMarkerAlt,
     FaBed,
     FaRulerCombined,
-    FaMoneyBillWave,
-    FaMoneyBillWaveAlt
+    FaArrowRight,
+    FaMoneyBillWaveAlt,
 } from "react-icons/fa";
+import { Link } from "@heroui/react";
 
-const AllPropertiesPage = () => {
+const ApprovedLimirCard = () => {
     const [properties, setProperties] = useState([]);
     const [loading, setLoading] = useState(true);
 
-    // ✅ pagination state
-    const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 6;
+
 
     useEffect(() => {
         const fetchProperties = async () => {
             try {
                 const res = await fetch(
-                    "http://localhost:5000/dashboard/approved/get-properties"
+                    `http://localhost:5000/dashboard/approved-limit/get-properties`
                 );
 
                 const data = await res.json();
@@ -36,16 +35,7 @@ const AllPropertiesPage = () => {
         fetchProperties();
     }, []);
 
-    // ✅ pagination calculation
-    const indexOfLastItem = currentPage * itemsPerPage;
-    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
 
-    const currentProperties = properties.slice(
-        indexOfFirstItem,
-        indexOfLastItem
-    );
-
-    const totalPages = Math.ceil(properties.length / itemsPerPage);
 
     if (loading) {
         return (
@@ -74,9 +64,16 @@ const AllPropertiesPage = () => {
         <div className="max-w-7xl mx-auto px-4 py-10">
             {/* Header */}
             <div className="mb-8">
-                <h2 className="text-3xl font-bold text-gray-800">
-                    All Approved Properties
-                </h2>
+                <div className="flex justify-between items-center">
+                    <h2 className="text-3xl font-bold text-gray-800">
+                        All Featured Properties <span className="text-gray-500">| Approved</span>
+                    </h2>
+                    <Link href="/properties" className="text-blue-500 hover:underline">
+                        View All <FaArrowRight />
+                    </Link>
+
+                </div>
+
                 <p className="text-gray-500 mt-1">
                     Browse verified listings from owners
                 </p>
@@ -84,7 +81,7 @@ const AllPropertiesPage = () => {
 
             {/* Grid */}
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                {currentProperties.map((item, index) => (
+                {properties.map((item, index) => (
                     <motion.div
                         key={item._id}
                         initial={{ opacity: 0, y: 25 }}
@@ -152,40 +149,8 @@ const AllPropertiesPage = () => {
                     </motion.div>
                 ))}
             </div>
-
-            {/* ✅ Pagination */}
-            <div className="flex justify-center mt-10 gap-2 flex-wrap">
-                <button
-                    disabled={currentPage === 1}
-                    onClick={() => setCurrentPage((p) => p - 1)}
-                    className="px-4 py-2 bg-gray-200 rounded disabled:opacity-50"
-                >
-                    Prev
-                </button>
-
-                {Array.from({ length: totalPages }, (_, i) => (
-                    <button
-                        key={i}
-                        onClick={() => setCurrentPage(i + 1)}
-                        className={`px-4 py-2 rounded ${currentPage === i + 1
-                                ? "bg-black text-white"
-                                : "bg-gray-200"
-                            }`}
-                    >
-                        {i + 1}
-                    </button>
-                ))}
-
-                <button
-                    disabled={currentPage === totalPages}
-                    onClick={() => setCurrentPage((p) => p + 1)}
-                    className="px-4 py-2 bg-gray-200 rounded disabled:opacity-50"
-                >
-                    Next
-                </button>
-            </div>
-        </div>
+        </div >
     );
 };
 
-export default AllPropertiesPage;
+export default ApprovedLimirCard;
