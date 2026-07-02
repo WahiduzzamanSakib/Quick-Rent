@@ -2,11 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import {
-    FaCheckCircle,
-    FaTimesCircle,
-    FaMapMarkerAlt,
-} from "react-icons/fa";
+import { FaCheckCircle, FaTimesCircle, FaMapMarkerAlt } from "react-icons/fa";
 
 export default function PropertyTable() {
     const [data, setData] = useState([]);
@@ -39,25 +35,38 @@ export default function PropertyTable() {
     }, []);
 
     const handleAction = async (id, status) => {
-        setActionLoading(id);
-        const res = await fetch(
-            `http://localhost:5000/dashboard/owner/approve-reject-property/${id}`,
-            {
-                method: "PATCH",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ status }),
-            }
-        );
-        const result = await res.json();
+        setActionLoading({ id, type: status });
 
-        setData((prev) =>
-            prev.map((item) =>
-                item._id === id ? { ...item, status } : item
-            )
-        );
-        setActionLoading({ id: null, type: null });
+        try {
+            const res = await fetch(
+                `http://localhost:5000/dashboard/owner/approve-reject-property/${id}`,
+                {
+                    method: "PATCH",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ status }),
+                }
+            );
+
+            const result = await res.json();
+
+            setData((prev) =>
+                prev.map((item) =>
+                    item._id === id
+                        ? {
+                            ...item,
+                            status,
+                            locked: true, // lock permanently
+                        }
+                        : item
+                )
+            );
+        } catch (err) {
+            console.error(err);
+        } finally {
+            setActionLoading({ id: null, type: null });
+        }
     };
 
     return (
@@ -104,77 +113,109 @@ export default function PropertyTable() {
                         </thead>
 
                         <tbody>
-                            {data.map((item) => (
-                                <tr
-                                    key={item._id}
-                                    className="border-t hover:bg-gray-50"
-                                >
-                                    <td className="p-3 font-medium">
-                                        {item.title}
-                                    </td>
+                            {data.map((item) => {
+                                const isLocked =
+                                    item.status === "approved" ||
+                                    item.status === "rejected";
 
-                                    <td className="p-3 flex items-center gap-2 text-gray-600">
-                                        <FaMapMarkerAlt />
-                                        {item.location}
-                                    </td>
+                                return (
+                                    <tr
+                                        key={item._id}
+                                        className="border-t hover:bg-gray-50"
+                                    >
+                                        <td className="p-3 font-medium">
+                                            {item.title}
+                                        </td>
 
-                                    <td className="p-3">
-                                        {item.propertyType}
-                                    </td>
+                                        <td className="p-3 flex items-center gap-2 text-gray-600">
+                                            <FaMapMarkerAlt />
+                                            {item.location}
+                                        </td>
 
-                                    <td className="p-3 font-semibold text-cyan-600">
-                                        {item.rent} / {item.rentType}
-                                    </td>
+                                        <td className="p-3">
+                                            {item.propertyType}
+                                        </td>
 
-                                    <td className="p-3">
-                                        <span
-                                            className={`font-semibold ${item.status === "approved"
-                                                ? "text-green-600"
-                                                : item.status ===
-                                                    "rejected"
-                                                    ? "text-red-600"
-                                                    : "text-yellow-600"
-                                                }`}
-                                        >
-                                            {item.status}
-                                        </span>
-                                    </td>
+                                        <td className="p-3 font-semibold text-cyan-600">
+                                            {item.rent} / {item.rentType}
+                                        </td>
 
-                                    <td className="p-3">
-                                        <div className="flex justify-center gap-2">
-                                            <button
-                                                disabled={
-                                                    actionLoading.id === item._id &&
-                                                    actionLoading.type === "approved"
-                                                }
-                                                onClick={() => handleAction(item._id, "approved")}
-                                                className="flex items-center gap-1 bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded text-sm disabled:opacity-50"
+                                        <td className="p-3">
+                                            <span
+                                                className={`font-semibold ${item.status === "approved"
+                                                        ? "text-green-600"
+                                                        : item.status ===
+                                                            "rejected"
+                                                            ? "text-red-600"
+                                                            : "text-yellow-600"
+                                                    }`}
                                             >
-                                                <FaCheckCircle />
-                                                {actionLoading.id === item._id &&
-                                                    actionLoading.type === "approved"
-                                                    ? "Processing..."
-                                                    : "Approve"}
-                                            </button>
+                                                {item.status}
+                                            </span>
+                                        </td>
 
-                                            <button
-                                                disabled={
-                                                    actionLoading.id === item._id &&
-                                                    actionLoading.type === "rejected"
-                                                }
-                                                onClick={() => handleAction(item._id, "rejected")}
-                                                className="flex items-center gap-1 bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm disabled:opacity-50"
-                                            >
-                                                <FaTimesCircle />
-                                                {actionLoading.id === item._id &&
-                                                    actionLoading.type === "rejected"
-                                                    ? "Processing..."
-                                                    : "Reject"}
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            ))}
+                                        <td className="p-3">
+                                            <div className="flex justify-center gap-2">
+                                                {/* APPROVE */}
+                                                <button
+                                                    disabled={
+                                                        isLocked ||
+                                                        (actionLoading.id ===
+                                                            item._id &&
+                                                            actionLoading.type ===
+                                                            "approved")
+                                                    }
+                                                    onClick={() =>
+                                                        handleAction(
+                                                            item._id,
+                                                            "approved"
+                                                        )
+                                                    }
+                                                    className="flex items-center gap-1 bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded text-sm disabled:opacity-50"
+                                                >
+                                                    <FaCheckCircle />
+                                                    {isLocked
+                                                        ? "Finalized"
+                                                        : actionLoading.id ===
+                                                            item._id &&
+                                                            actionLoading.type ===
+                                                            "approved"
+                                                            ? "Processing..."
+                                                            : "Approve"}
+                                                </button>
+
+                                              
+                                                <button
+                                                    disabled={
+                                                        isLocked ||
+                                                        (actionLoading.id ===
+                                                            item._id &&
+                                                            actionLoading.type ===
+                                                            "rejected")
+                                                    }
+                                                    onClick={() =>
+                                                        handleAction(
+                                                            item._id,
+                                                            "rejected"
+                                                        )
+                                                    }
+                                                    className="flex items-center gap-1 bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm disabled:opacity-50"
+                                                >
+                                                    <FaTimesCircle />
+                                                    {isLocked
+                                                        ? "Finalized"
+                                                        : actionLoading.id ===
+                                                            item._id &&
+                                                            actionLoading.type ===
+                                                            "rejected"
+                                                            ? "Processing..."
+                                                            : "Reject"}
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                );
+                            })}
                         </tbody>
                     </motion.table>
                 </div>
