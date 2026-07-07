@@ -9,10 +9,14 @@ import {
     FaHeart,
     FaParking,
     FaStar,
+    FaDollarSign,
 } from "react-icons/fa";
 import { useParams } from "next/navigation";
 import ReviewSection from "@/components/ReviewSection";
 import FavoritePage from "@/components/FavoritePage";
+import { Button, Link } from "@heroui/react";
+import { BookingModalPage } from "@/components/modal/BookingModal";
+
 
 const PropertyDetails = () => {
     const [property, setProperty] = useState(null);
@@ -27,7 +31,7 @@ const PropertyDetails = () => {
         const fetchProperty = async () => {
             try {
                 const res = await fetch(
-                    `http://localhost:5000/dashboard/signle-prperties/${id}`
+                    `${process.env.NEXT_PUBLIC_API_URL}/dashboard/signle-prperties/${id}`
                 );
 
                 const data = await res.json();
@@ -54,116 +58,114 @@ const PropertyDetails = () => {
         );
     }
 
-if (!property) {
+    if (!property) {
+        return (
+            <div className="text-center mt-10 text-red-500">
+                Property not found
+            </div>
+        );
+    }
+
+    const amenitiesList = property?.amenities?.split(",");
+
     return (
-        <div className="text-center mt-10 text-red-500">
-            Property not found
+        <div className="max-w-6xl mx-auto p-4">
+            {/* IMAGE */}
+            <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="rounded-2xl overflow-hidden shadow-lg"
+            >
+                <img
+                    src={property.imageUrl}
+                    alt={property.title}
+                    className="w-full h-[350px] object-cover"
+                />
+            </motion.div>
+
+            {/* CONTENT */}
+            <div className="mt-6 grid md:grid-cols-3 gap-6">
+                {/* LEFT SIDE */}
+                <div className="md:col-span-2 space-y-4">
+                    {/* HEADER */}
+                    <div className="flex justify-between">
+                        <div>
+                            <h1 className="text-2xl font-bold">{property.title}</h1>
+                            <p className="flex items-center text-gray-500">
+                                <FaMapMarkerAlt className="mr-1" />
+                                {property.location}
+                            </p>
+                        </div>
+
+
+                    </div>
+
+                    <p className="text-gray-600">{property.description}</p>
+
+                    {/* INFO BOXES */}
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-4">
+                        <div className="p-3 bg-gray-100 rounded-xl text-center">
+                            <FaBed className="mx-auto" />
+                            <p>{property.bedrooms} Beds</p>
+                        </div>
+
+                        <div className="p-3 bg-gray-100 rounded-xl text-center">
+                            <FaBath className="mx-auto" />
+                            <p>{property.bathrooms} Baths</p>
+                        </div>
+
+                        <div className="p-3 bg-gray-100 rounded-xl text-center">
+                            <FaRulerCombined className="mx-auto" />
+                            <p>{property.size} sqft</p>
+                        </div>
+
+                        <div className="p-3 bg-gray-100 rounded-xl text-center">
+                            <FaParking className="mx-auto" />
+                            <p>Parking</p>
+                        </div>
+                    </div>
+
+                    {/* AMENITIES */}
+                    <div>
+                        <h2 className="text-lg font-semibold mt-4">Amenities</h2>
+                        <div className="flex flex-wrap gap-2 mt-2">
+                            {amenitiesList?.map((item, i) => (
+                                <span
+                                    key={i}
+                                    className="px-3 py-1 bg-blue-100 text-blue-600 rounded-full text-sm"
+                                >
+                                    {item}
+                                </span>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* REVIEWS */}
+                    <ReviewSection />
+                </div>
+
+                {/* RIGHT SIDEBAR */}
+                <motion.div
+                    initial={{ opacity: 0, x: 50 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    className="p-5 border rounded-2xl shadow-md h-fit"
+                >
+                    <h2 className="flex items-center gap-1 text-xl font-bold text-center">
+                        <FaDollarSign /> {property.rent} / {property.rentType}
+                    </h2>
+
+                    
+                    <BookingModalPage property={property} />
+                    <FavoritePage property={property} />
+
+                    <div className="mt-4 text-sm text-gray-600">
+                        <p>Type: {property.propertyType}</p>
+                        <p>Status: {property.status}</p>
+                    </div>
+                </motion.div>
+            </div>
         </div>
     );
-}
-
-const amenitiesList = property?.amenities?.split(",");
-
-return (
-    <div className="max-w-6xl mx-auto p-4">
-        {/* IMAGE */}
-        <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="rounded-2xl overflow-hidden shadow-lg"
-        >
-            <img
-                src={property.imageUrl}
-                alt={property.title}
-                className="w-full h-[350px] object-cover"
-            />
-        </motion.div>
-
-        {/* CONTENT */}
-        <div className="mt-6 grid md:grid-cols-3 gap-6">
-            {/* LEFT SIDE */}
-            <div className="md:col-span-2 space-y-4">
-                {/* HEADER */}
-                <div className="flex justify-between">
-                    <div>
-                        <h1 className="text-2xl font-bold">{property.title}</h1>
-                        <p className="flex items-center text-gray-500">
-                            <FaMapMarkerAlt className="mr-1" />
-                            {property.location}
-                        </p>
-                    </div>
-
-
-                </div>
-
-                <p className="text-gray-600">{property.description}</p>
-
-                {/* INFO BOXES */}
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-4">
-                    <div className="p-3 bg-gray-100 rounded-xl text-center">
-                        <FaBed className="mx-auto" />
-                        <p>{property.bedrooms} Beds</p>
-                    </div>
-
-                    <div className="p-3 bg-gray-100 rounded-xl text-center">
-                        <FaBath className="mx-auto" />
-                        <p>{property.bathrooms} Baths</p>
-                    </div>
-
-                    <div className="p-3 bg-gray-100 rounded-xl text-center">
-                        <FaRulerCombined className="mx-auto" />
-                        <p>{property.size} sqft</p>
-                    </div>
-
-                    <div className="p-3 bg-gray-100 rounded-xl text-center">
-                        <FaParking className="mx-auto" />
-                        <p>Parking</p>
-                    </div>
-                </div>
-
-                {/* AMENITIES */}
-                <div>
-                    <h2 className="text-lg font-semibold mt-4">Amenities</h2>
-                    <div className="flex flex-wrap gap-2 mt-2">
-                        {amenitiesList?.map((item, i) => (
-                            <span
-                                key={i}
-                                className="px-3 py-1 bg-blue-100 text-blue-600 rounded-full text-sm"
-                            >
-                                {item}
-                            </span>
-                        ))}
-                    </div>
-                </div>
-
-                {/* REVIEWS */}
-                <ReviewSection />
-            </div>
-
-            {/* RIGHT SIDEBAR */}
-            <motion.div
-                initial={{ opacity: 0, x: 50 }}
-                animate={{ opacity: 1, x: 0 }}
-                className="p-5 border rounded-2xl shadow-md h-fit"
-            >
-                <h2 className="text-xl font-bold text-center">
-                    ৳ {property.rent} / {property.rentType}
-                </h2>
-
-                <button className="w-full mt-4 bg-green-600 hover:bg-green-700 text-white py-2 rounded-xl">
-                    Book Now
-                </button>
-
-              <FavoritePage property={property} />
-
-                <div className="mt-4 text-sm text-gray-600">
-                    <p>Type: {property.propertyType}</p>
-                    <p>Status: {property.status}</p>
-                </div>
-            </motion.div>
-        </div>
-    </div>
-);
 };
 
 export default PropertyDetails;

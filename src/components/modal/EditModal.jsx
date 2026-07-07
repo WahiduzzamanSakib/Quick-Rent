@@ -77,7 +77,7 @@ export default function EditModal({ property }) {
         }
 
         const res = await fetch(
-            `http://localhost:5000/dashboard/owner/edit-property/${_id}`,
+            `${process.env.NEXT_PUBLIC_API_URL}/dashboard/owner/edit-property/${_id}`,
             {
                 method: "PATCH",
                 headers: {
@@ -88,7 +88,7 @@ export default function EditModal({ property }) {
         );
 
         const result = await res.json();
-      
+
         setLoading(false);
         if (res.ok) {
             toast.success("Property updated successfully!");
@@ -143,17 +143,14 @@ export default function EditModal({ property }) {
                                                     <TextArea
                                                         defaultValue={property.description}
                                                         placeholder="Write property description..."
-                                                        variant="secondary"
                                                     />
                                                 </TextField>
 
-                                                {/* LOCATION */}
                                                 <TextField name="location">
                                                     <Label>Location</Label>
                                                     <Input
                                                         defaultValue={property.location}
                                                         placeholder="Dhanmondi, Dhaka"
-                                                        variant="secondary"
                                                     />
                                                 </TextField>
 

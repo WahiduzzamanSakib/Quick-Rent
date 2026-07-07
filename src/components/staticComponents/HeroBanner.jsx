@@ -18,14 +18,14 @@ export default function HeroBanner() {
 
     return (
         <section
-            className="relative mx-auto min-h-[85vh] flex flex-col justify-center px-6 sm:px-12 lg:px-24 bg-cover bg-center bg-no-repeat"
+            className="relative z-0  mx-auto min-h-[85vh] flex flex-col justify-center px-6 sm:px-12 lg:px-24 bg-cover bg-center bg-no-repeat"
             style={{
                 backgroundImage: `url('https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1920&q=80')`
             }}
         >
 
-            <div className="absolute inset-0 bg-[#3A4350]/70 mix-blend-multiply" />
-            <div className="absolute inset-0 bg-linear-to-t from-[#2C3540]/80 via-transparent to-transparent" />
+            <div className="absolute z-10 inset-0 bg-[#3A4350]/70 mix-blend-multiply" />
+            <div className="absolute  inset-0 bg-linear-to-t from-[#2C3540]/80 via-transparent to-transparent" />
 
 
             <motion.div
@@ -83,10 +83,11 @@ export default function HeroBanner() {
                             <option value="" disabled>
                                 All Types
                             </option>
-                            <option value="Villa">Villa</option>
-                            <option value="Penthouse">Penthouse</option>
-                            <option value="Apartment">Apartment</option>
-                            <option value="Resort">Resort</option>
+                            <option value="apartment">Apartment</option>
+                            <option value="house">House</option>
+                            <option value="office">Office</option>
+                            <option value="shop">Shop</option>
+                            <option value="others">Others</option>
                         </select>
                     </div>
 
@@ -109,11 +110,11 @@ export default function HeroBanner() {
                         />
                     </div>
 
-                    <Link 
-                    href="/properties">
+                    <Link
+                        href="/properties">
                         <button
                             type="button"
-                            
+
                             className="w-full bg-black hover:bg-gray-900 text-white font-sans font-semibold text-sm py-3 px-6 rounded-xl flex items-center justify-center space-x-2 transition-transform active:scale-95 duration-150 h-12"
                         >
                             <HiOutlineMagnifyingGlass className="w-4 h-4 stroke-[2.5]" />

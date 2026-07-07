@@ -14,7 +14,7 @@ export function DeletedAlert({ property }) {
 
         try {
             const res = await fetch(
-                `http://localhost:5000/dashboard/owner/delete-property/${_id}`,
+                `${process.env.NEXT_PUBLIC_API_URL}/dashboard/owner/delete-property/${_id}`,
                 {
                     method: "DELETE",
                     headers: {

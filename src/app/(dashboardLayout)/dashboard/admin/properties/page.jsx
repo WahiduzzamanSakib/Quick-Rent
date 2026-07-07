@@ -18,7 +18,7 @@ export default function PropertyTable() {
                 setLoading(true);
 
                 const res = await fetch(
-                    "http://localhost:5000/dashboard/admin/get-properties",
+                        `${process.env.NEXT_PUBLIC_API_URL}/dashboard/admin/get-properties`,
                     { cache: "no-store" }
                 );
 
@@ -39,7 +39,7 @@ export default function PropertyTable() {
 
         try {
             const res = await fetch(
-                `http://localhost:5000/dashboard/owner/approve-reject-property/${id}`,
+                `${process.env.NEXT_PUBLIC_API_URL}/dashboard/owner/approve-reject-property/${id}`,
                 {
                     method: "PATCH",
                     headers: {

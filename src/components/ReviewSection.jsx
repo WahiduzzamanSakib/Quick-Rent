@@ -18,7 +18,7 @@ const ReviewSection = ({ user }) => {
     const handleSubmit = async () => {
         try {
             const res = await fetch(
-                `http://localhost:5000/dashboard/single-properties/review`,
+                `${process.env.NEXT_PUBLIC_API_URL}/dashboard/single-properties/review`,
                 {
                     method: "POST",
                     headers: {

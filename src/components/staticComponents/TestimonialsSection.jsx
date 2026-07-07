@@ -13,11 +13,10 @@ export default function TestimonialsSection() {
         const fetchData = async () => {
             try {
                 const res = await fetch(
-                    "http://localhost:5000/dashboard/single-properties/review"
+                    `${process.env.NEXT_PUBLIC_API_URL}/dashboard/single-properties/review`
                 );
 
                 const result = await res.json();
-
                 const reviews = Array.isArray(result)
                     ? result
                     : result?.reviews || [];
@@ -87,7 +86,7 @@ export default function TestimonialsSection() {
                         >
                             <div>
                                 {/* ⭐ Rating */}
-                                <div className="flex gap-1 mb-5">
+                                <div className="flex gap-1 mb-2">
                                     {[...Array(item?.rating || 0)].map((_, i) => (
                                         <HiStar
                                             key={i}
@@ -96,13 +95,13 @@ export default function TestimonialsSection() {
                                     ))}
                                 </div>
 
-                                {/* 📝 Review text */}
-                                <p className="text-slate-600 italic font-medium leading-relaxed mb-6">
+                               
+                                <p className="text-slate-600 italic font-medium leading-relaxed mb-8">
                                     &ldquo;{item?.review}&rdquo;
                                 </p>
                             </div>
 
-                            {/* 👤 User info */}
+                           
                             <div className="flex items-center gap-4">
                                 <div className="relative w-12 h-12 flex-shrink-0">
                                     <Image
@@ -119,7 +118,10 @@ export default function TestimonialsSection() {
                                         {item?.reviewerName}
                                     </h4>
                                     <p className="text-xs text-slate-500 font-medium">
-                                        {item?.reviewerRole}
+                                        {item?.reviewerEmail}
+                                    </p>
+                                    <p className="text-xs text-slate-500 font-medium">
+                                        {item?.createdAt ? item.createdAt.split('T')[0] : ''}
                                     </p>
                                 </div>
                             </div>

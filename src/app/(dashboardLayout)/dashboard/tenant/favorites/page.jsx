@@ -1,9 +1,11 @@
 "use client"
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { FaHeart, FaHome, FaMoneyBillWave } from "react-icons/fa";
+import { FaHeart, FaHome, FaDollarSign } from "react-icons/fa";
 import { Link } from "@heroui/react";
 import { authClient } from "@/lib/auth-client";
+import { FavoriteDelate } from "@/components/modal/FavoriteDelate";
+
 
 const FavoritePropertiesPage = () => {
     const [favorites, setFavorites] = useState([]);
@@ -18,7 +20,7 @@ const FavoritePropertiesPage = () => {
 
             try {
                 const res = await fetch(
-                    `http://localhost:5000/dashboard/tenant/favorite/${email}`
+                    `${process.env.NEXT_PUBLIC_API_URL}/dashboard/tenant/favorite/${email}`
                 );
 
                 const data = await res.json();
@@ -88,18 +90,22 @@ const FavoritePropertiesPage = () => {
                             </div>
 
                             <div className="p-4">
-                                <h3 className="text-lg font-semibold mb-2">
-                                    {item.title}
-                                </h3>
+                                <div className="flex justify-between items-center">
+                                    <h3 className="text-lg font-semibold mb-2">
+                                        {item.title}
+                                    </h3>
+                                 <FavoriteDelate property={item} />
+                                </div>
+
 
                                 <div className="flex items-center gap-2 text-gray-600 text-sm mb-2">
                                     <FaHome />
                                     {item.propertyType}
                                 </div>
 
-                                <div className="flex items-center gap-2 text-gray-600 text-sm mb-4">
-                                    <FaMoneyBillWave />
-                                    ${item.rent} / {item.rentType}
+                                <div className="flex items-center gap-1 text-gray-600 text-sm mb-4">
+
+                                    <FaDollarSign />{item.rent} / {item.rentType}
                                 </div>
 
                                 <Link href={`/properties/${item.propertyId}`}>

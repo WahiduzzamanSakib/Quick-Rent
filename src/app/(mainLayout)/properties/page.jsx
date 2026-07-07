@@ -7,6 +7,7 @@ import {
     FaBed,
     FaRulerCombined,
     FaMoneyBillWaveAlt,
+    FaDollarSign,
 } from "react-icons/fa";
 import { FiRefreshCcw } from "react-icons/fi";
 import { Link, Button } from "@heroui/react";
@@ -38,7 +39,7 @@ const AllPropertiesPage = () => {
         try {
             setLoading(true);
             const res = await fetch(
-                `http://localhost:5000/api/properties?${buildQuery()}`
+                `${process.env.NEXT_PUBLIC_API_URL}/api/properties?${buildQuery()}`
             );
             const data = await res.json();
             setProperties(data || []);
@@ -91,6 +92,7 @@ const AllPropertiesPage = () => {
                         <option value="house">House</option>
                         <option value="apartment">Apartment</option>
                         <option value="office">Office</option>
+                        <option value="shop">Shop</option>
                         <option value="others">Others</option>
                     </select>
 
@@ -126,7 +128,7 @@ const AllPropertiesPage = () => {
                         <option value="price_desc">High → Low</option>
                     </select>
 
-                  
+
                     <button
                         onClick={() =>
                             setFilters({
@@ -196,7 +198,7 @@ const AllPropertiesPage = () => {
 
                             <div className="p-5 space-y-3">
 
-                                <h3 className="text-lg font-semibold text-gray-900">
+                                <h3 className="text-lg font-bold text-gray-900">
                                     {item.title}
                                 </h3>
 
@@ -209,7 +211,7 @@ const AllPropertiesPage = () => {
                                     {item.location}
                                 </div>
 
-                                <div className="flex justify-between text-sm text-gray-600">
+                                <div className="flex justify-between text-md text-gray-600">
                                     <span className="flex items-center gap-1">
                                         <FaBed /> {item.bedrooms}
                                     </span>
@@ -221,11 +223,11 @@ const AllPropertiesPage = () => {
 
                                 <div className="flex justify-between items-center pt-2">
                                     <span className="text-lg font-bold text-black flex items-center gap-1">
-                                        <FaMoneyBillWaveAlt />
+                                       <FaDollarSign/> 
                                         {item.rent}
                                     </span>
 
-                                    <span className="text-xs px-3 py-1 rounded-full bg-gray-100">
+                                    <span className="text-md px-3 py-1 rounded-full bg-gray-100">
                                         {item.propertyType}
                                     </span>
                                 </div>

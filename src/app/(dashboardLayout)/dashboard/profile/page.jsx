@@ -13,7 +13,7 @@ import {
 } from "react-icons/fi"; 
 import Image from "next/image";
 
-// Framer Motion-এর অ্যানিমেশন কনফিগারেশন অবজেক্ট
+
 const containerVariants = {
   hidden: { opacity: 0, y: 20 },
   visible: {
@@ -56,7 +56,7 @@ const ProfilePage = () => {
     );
   }
 
-  // ইউজার ইমেজ না থাকলে নামের প্রথম অক্ষর দেখানোর জন্য fallback UI অথবা placeholder জেনারেট করা হয়েছে
+  
   const avatarPlaceholder = `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(user.name || "User")}`;
 
   return (
@@ -154,7 +154,7 @@ const ProfilePage = () => {
           </div>
         </motion.div>
 
-        {/* Personal Information Card */}
+       
         <motion.div 
           variants={itemVariants}
           className="md:col-span-2 rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6 shadow-md space-y-6"

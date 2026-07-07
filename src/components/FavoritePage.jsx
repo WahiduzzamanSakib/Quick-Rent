@@ -26,7 +26,7 @@ const FavoritePage = ({ property }) => {
 
     try {
       const res = await fetch(
-        "http://localhost:5000/dashboard/tenant/favorite",
+        `${process.env.NEXT_PUBLIC_API_URL}/dashboard/tenant/favorite`,
         {
           method: "POST",
           headers: {

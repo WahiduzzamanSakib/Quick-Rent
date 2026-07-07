@@ -3,7 +3,7 @@
 import { authClient } from '@/lib/auth-client';
 import Image from 'next/image';
 import Link from 'next/link';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
     FaHome, FaMoneyCheckAlt, FaHeart, FaUserCircle, FaChartLine, FaUsersCog, FaPlus, FaClipboardList,
@@ -24,26 +24,26 @@ const DashBoardSidebar = ({ isOpen, setIsOpen }) => {
 
     // Tenant Dashboard Menu
     const tenantMenu = [
-        { key: "overview", label: "Dashboard", icon: FaUserCircle, href: "/dashboard/tenant", },
+        { key: "overview", label: "Profile", icon: FaUser, href: "/dashboard/tenant", },
         { key: "bookings", label: "My Bookings", icon: FaCalendarCheck, href: "/dashboard/tenant/bookings", },
         { key: "favorites", label: "Favorites", icon: FaHeart, href: "/dashboard/tenant/favorites", },
-        { key: "profile", label: "Profile", icon: FaUser, href: "/dashboard/profile", },
     ];
 
     // Admin Dashboard Menu
     const adminMenu = [
-        { key: "overview", label: "Dashboard", icon: FaChartPie, href: "/dashboard/admin", },
+        { key: "overview", label: "Profile", icon: FaUserShield, href: "/dashboard/admin", },
         { key: "users", label: "All Users", icon: FaUsersCog, href: "/dashboard/admin/users", },
         { key: "properties", label: "All Properties", icon: FaBuilding, href: "/dashboard/admin/properties", },
         { key: "bookings", label: "All Bookings", icon: FaClipboardCheck, href: "/dashboard/admin/bookings", },
         { key: "transactions", label: "Transactions", icon: FaMoneyCheckAlt, href: "/dashboard/admin/transactions", },
-        { key: "profile", label: "Profile", icon: FaUserShield, href: "/dashboard/profile", },
     ];
 
-      const role = session?.user?.role?.toLowerCase();
+
+    // const role = session?.user?.role?.toLowerCase();
+   const role = "tenant";
     const menuItems = role === "owner" ? ownerMenu : role === "tenant" ? tenantMenu : role === "admin" ? adminMenu : null;
 
-   
+
     const sidebarVariants = {
         open: { x: 0, opacity: 1, transition: { type: 'spring', stiffness: 300, damping: 30 } },
         closed: { x: '-100%', opacity: 0, transition: { type: 'spring', stiffness: 300, damping: 30 } }
@@ -51,15 +51,15 @@ const DashBoardSidebar = ({ isOpen, setIsOpen }) => {
 
     const SidebarContent = () => (
         <div className="h-full flex flex-col bg-slate-950/95 backdrop-blur-xl border-r border-white/5">
-           
+
             <div className="px-6 py-5 flex items-center justify-between border-b border-white/5">
                 <Link href="/" className="flex items-center gap-2 shrink-0">
                     <Image src="/quickrent.png" alt="QuickRent Logo" width={40} height={40} />
                     <span className="text-2xl font-bold text-white">QuickRent</span>
                 </Link>
-               
-                <button 
-                    onClick={() => setIsOpen(false)} 
+
+                <button
+                    onClick={() => setIsOpen(false)}
                     className="lg:hidden text-slate-400 hover:text-white p-2 rounded-lg bg-white/5"
                 >
                     <FaTimes size={18} />
@@ -89,7 +89,7 @@ const DashBoardSidebar = ({ isOpen, setIsOpen }) => {
                 </div>
             </div>
 
-            
+
             <nav className="flex-grow overflow-y-auto px-3 py-4 space-y-1">
                 <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest px-3 pb-2">
                     Navigation
@@ -110,7 +110,7 @@ const DashBoardSidebar = ({ isOpen, setIsOpen }) => {
                 ))}
             </nav>
 
-          
+
             <div className="px-3 py-2 border-t border-white/5 space-y-1 mb-3">
                 <Link href="/" className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold text-slate-400 hover:text-white hover:bg-white/5 transition-all duration-150">
                     <span className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center shrink-0">
@@ -124,16 +124,16 @@ const DashBoardSidebar = ({ isOpen, setIsOpen }) => {
 
     return (
         <>
-          
+
             <aside className="hidden lg:block w-72 h-screen sticky top-0 shrink-0 overflow-hidden z-40">
                 <SidebarContent />
             </aside>
 
-           
+
             <AnimatePresence>
                 {isOpen && (
                     <>
-                       
+
                         <motion.div
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
@@ -142,7 +142,7 @@ const DashBoardSidebar = ({ isOpen, setIsOpen }) => {
                             className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 lg:hidden"
                         />
 
-                     
+
                         <motion.aside
                             initial="closed"
                             animate="open"

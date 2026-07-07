@@ -41,7 +41,7 @@ export default function AllUsersPage() {
         try {
             setLoading(true);
             const res = await fetch(
-                "http://localhost:5000/dashboard/admin/get-users"
+                `${process.env.NEXT_PUBLIC_API_URL}/dashboard/admin/get-users`
             );
             const data = await res.json();
             setUsers(data);
@@ -60,7 +60,7 @@ export default function AllUsersPage() {
     const updateRole = async (id, role) => {
         try {
             const res = await fetch(
-                `http://localhost:5000/dashboard/admin/update-role/${id}`,
+                `${process.env.NEXT_PUBLIC_API_URL}/dashboard/admin/update-role/${id}`,
                 {
                     method: "PATCH",
                     headers: {

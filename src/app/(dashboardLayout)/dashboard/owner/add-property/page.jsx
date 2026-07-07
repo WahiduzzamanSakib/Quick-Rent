@@ -50,7 +50,7 @@ const AddPropertyPage = () => {
                 return;
             }
 
-            const imgbbApiKey = process.env.IMAGEBIBI_API_KEY;
+            const imgbbApiKey = process.env.NEXT_PUBLIC_IMAGEBB_API_KEY;
             const imgbbFormData = new FormData();
             imgbbFormData.append("image", selectedFile);
 
@@ -63,7 +63,7 @@ const AddPropertyPage = () => {
                     }
                 );
                 const imgbbResult = await imgbbRes.json();
-                
+
                 if (imgbbResult.success) {
                     finalImageUrl = imgbbResult.data.display_url;
                 } else {
@@ -82,11 +82,12 @@ const AddPropertyPage = () => {
             imageUrl: finalImageUrl,
             status: "pending",
             owner: email,
+            createdAt: new Date().toISOString(),
         };
 
         try {
             const res = await fetch(
-                "http://localhost:5000/dashboard/owner/add-property",
+                `${process.env.NEXT_PUBLIC_API_URL}/dashboard/owner/add-property`,
                 {
                     method: "POST",
                     headers: {
@@ -182,10 +183,10 @@ const AddPropertyPage = () => {
                                             </option>
                                             <option value="apartment">Apartment</option>
                                             <option value="house">House</option>
-                                            <option value="villa">Villa</option>
                                             <option value="office">Office</option>
                                             <option value="shop">Shop</option>
-                                            <option value="land">Land</option>
+                                            <option value="others">Others</option>
+
                                         </select>
                                         <HiChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 text-lg" />
                                     </div>

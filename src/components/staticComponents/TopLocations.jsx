@@ -49,17 +49,17 @@ const containerVariants = {
 
 const itemVariants = {
     hidden: { opacity: 0, y: 30 },
-    show: { 
-        opacity: 1, 
-        y: 0, 
-        transition: { type: 'spring', stiffness: 100, damping: 15 } 
+    show: {
+        opacity: 1,
+        y: 0,
+        transition: { type: 'spring', stiffness: 100, damping: 15 }
     },
 };
 
 export default function TopLocations() {
     return (
-        <section className="bg-[#f8faff] py-16 px-4 sm:px-6 lg:px-8 font-sans overflow-hidden">
-            <div className="max-w-6xl mx-auto">
+        <section className="bg-[#f8faff] -z-50 py-16 px-4 sm:px-6 lg:px-8 font-sans overflow-hidden">
+            <div className="max-w-6xl mx-auto -z-50">
 
                 {/* Header Section */}
                 <div className="text-center mb-10">
@@ -72,12 +72,12 @@ export default function TopLocations() {
                 </div>
 
                 {/* Animated Bento Grid Wrapper */}
-                <motion.div 
+                <motion.div
                     variants={containerVariants}
                     initial="hidden"
                     whileInView="show"
                     viewport={{ once: true, margin: "-100px" }} // Triggers once when scrolled into view
-                    className="grid grid-cols-1 md:grid-cols-4 gap-6"
+                    className="grid grid-cols-1 md:grid-cols-4 gap-6 -z-50"
                 >
                     {locations.map((loc) => (
                         <motion.div
@@ -86,8 +86,8 @@ export default function TopLocations() {
                             whileHover="hover" // Syncs hover states across child components
                             className={`relative rounded-2xl overflow-hidden group cursor-pointer shadow-sm hover:shadow-xl transition-shadow duration-300 ${loc.className}`}
                         >
-                          
-                            <motion.div 
+
+                            <motion.div
                                 variants={{
                                     hover: { scale: 1.05 }
                                 }}
@@ -104,7 +104,7 @@ export default function TopLocations() {
                                 />
                             </motion.div>
 
-                            
+
                             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-10" />
 
                             {/* Text Content Overlay */}
