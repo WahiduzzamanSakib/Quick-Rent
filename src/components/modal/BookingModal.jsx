@@ -4,9 +4,9 @@ import { useState } from "react";
 import { authClient } from "@/lib/auth-client";
 import { Button, Input, Label, Modal, Surface, TextField } from "@heroui/react";
 
-
 export function BookingModalPage({ property }) {
     const [isOpen, setIsOpen] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     const { data: session } = authClient.useSession();
     const userName = session?.user?.name;
@@ -17,8 +17,11 @@ export function BookingModalPage({ property }) {
         e.preventDefault();
 
         try {
+            setLoading(true);
+
             const formData = new FormData(e.currentTarget);
             const data = Object.fromEntries(formData.entries());
+
             console.log(data);
 
             const res = await fetch("/api/checkout_sessions", {
@@ -26,16 +29,19 @@ export function BookingModalPage({ property }) {
                 headers: {
                     "Content-Type": "application/json",
                 },
+                body: JSON.stringify(data),
             });
-            const result = await res.json();
 
-            // console.log("Checkout Response:", result);
+            const result = await res.json();
 
             if (result?.url) {
                 window.location.href = result.url;
             }
+
         } catch (error) {
             console.log("Checkout Error:", error);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -58,72 +64,46 @@ export function BookingModalPage({ property }) {
                             <Modal.Body className="p-3">
                                 <Surface variant="default">
                                     <form onSubmit={onSubmit}>
-
                                         <TextField className="w-full">
                                             <Label>Name</Label>
-                                            <Input
-                                                name="name"
-                                                value={userName}
-                                                readOnly
-                                            />
+                                            <Input name="name" value={userName} readOnly />
                                         </TextField>
 
                                         <TextField className="w-full">
                                             <Label>Email</Label>
-                                            <Input
-                                                name="userEmail"
-                                                value={userEmail}
-                                                readOnly
-                                            />
+                                            <Input name="userEmail" value={userEmail} readOnly />
                                         </TextField>
 
                                         <TextField className="w-full">
                                             <Label>Phone</Label>
-                                            <Input
-                                                name="phone"
-                                                type="tel"
-                                                required
-                                                placeholder="Enter your phone number"
-                                            />
+                                            <Input name="phone" type="tel" required placeholder="Enter your phone number" />
                                         </TextField>
 
                                         <TextField className="w-full">
                                             <Label>Date</Label>
-                                            <Input
-                                                name="date"
-                                                type="date"
-                                                required
-                                            />
+                                            <Input name="date" type="date" required />
                                         </TextField>
 
                                         <TextField className="w-full">
                                             <Label>Message</Label>
-                                            <Input
-                                                name="message"
-                                                required
-                                                placeholder="Enter your message"
-                                            />
+                                            <Input name="message" required placeholder="Enter your message" />
                                         </TextField>
 
                                         <TextField className="w-full">
                                             <Label>Owner Email</Label>
-                                            <Input
-                                                name="ownerEmail"
-                                                value={owner}
-                                                readOnly
-                                            />
+                                            <Input name="ownerEmail" value={owner} readOnly />
                                         </TextField>
 
                                         <Modal.Footer>
-
                                             <Button
                                                 className="text-white my-3"
                                                 variant="primary"
-                                                type="submit" role="link">
-                                                Checkout
+                                                type="submit"
+                                                disabled={loading}
+                                            >
+                                                {loading ? "Processing..." : "Make Payment"}
                                             </Button>
                                         </Modal.Footer>
-
                                     </form>
                                 </Surface>
                             </Modal.Body>

@@ -25,7 +25,7 @@ const DashBoardSidebar = ({ isOpen, setIsOpen }) => {
     // Tenant Dashboard Menu
     const tenantMenu = [
         { key: "overview", label: "Profile", icon: FaUser, href: "/dashboard/tenant", },
-        { key: "bookings", label: "My Bookings", icon: FaCalendarCheck, href: "/dashboard/tenant/bookings", },
+        { key: "bookings", label: "My Bookings", icon: FaCalendarCheck, href: "/dashboard/tenant/my-bookings", },
         { key: "favorites", label: "Favorites", icon: FaHeart, href: "/dashboard/tenant/favorites", },
     ];
 
@@ -39,8 +39,8 @@ const DashBoardSidebar = ({ isOpen, setIsOpen }) => {
     ];
 
 
-    // const role = session?.user?.role?.toLowerCase();
-   const role = "tenant";
+    const role = session?.user?.role?.toLowerCase();
+    // const role = "admin";
     const menuItems = role === "owner" ? ownerMenu : role === "tenant" ? tenantMenu : role === "admin" ? adminMenu : null;
 
 

@@ -10,18 +10,18 @@ export async function POST() {
   try {
     const headersList = await headers()
     const origin = headersList.get('origin')
-   const user = await getUser()
+    const user = await getUser()
 
     const session = await stripe.checkout.sessions.create({
       customer_email: user?.email,
       line_items: [
         {
           price: 'price_1TqCnk0mHYtrrA0KTHIY5emV',
-          quantity: 1,
+          quantity: 2,
         },
       ],
       mode: 'subscription',
-      success_url: `${origin}/booking/success?session_id={CHECKOUT_SESSION_ID}`,
+      success_url: `${origin}/dashboard/tenant/payment-success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${origin}/cancel?session_id={CHECKOUT_SESSION_ID}`,
     });
     return NextResponse.json({ url: session.url })

@@ -152,14 +152,7 @@ const AllPropertiesPage = () => {
 
 
                 {loading && (
-                    <div className="grid md:grid-cols-3 gap-6">
-                        {Array.from({ length: 6 }).map((_, i) => (
-                            <div
-                                key={i}
-                                className="h-72 bg-gray-200 animate-pulse rounded-2xl"
-                            />
-                        ))}
-                    </div>
+                       <div className="loader flex mx-auto justify-center items-center  my-20"></div>
                 )}
 
                 {!loading && properties.length === 0 && (
