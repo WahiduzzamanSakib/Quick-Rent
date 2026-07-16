@@ -66,14 +66,14 @@ const ProfilePage = () => {
       animate="visible"
       className="max-w-4xl mx-auto p-4 sm:p-6 md:p-8 space-y-6 text-gray-800 dark:text-gray-100"
     >
-      {/* Profile Header Card */}
+ 
       <motion.div 
         variants={itemVariants}
         className="relative overflow-hidden rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-md"
       >
         <div className="h-28 sm:h-32 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 w-full" />
         
-        {/* Mobile-first adjustment: flex-col on mobile, sm:flex-row on bigger screens */}
+       
         <div className="p-6 pt-0 flex flex-col items-center sm:flex-row sm:items-end sm:space-x-5 text-center sm:text-left">
           <motion.div 
             whileHover={{ scale: 1.05 }}

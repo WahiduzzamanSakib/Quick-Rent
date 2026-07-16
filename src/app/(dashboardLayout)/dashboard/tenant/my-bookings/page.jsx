@@ -34,11 +34,7 @@ const MyBookingsPage = () => {
     }, [session]);
 
 
-    const handleDelete = (id) => {
-        setProperties((prev) =>
-            prev.filter((property) => property._id !== id)
-        );
-    };
+    
 
 
     if (loading) {
