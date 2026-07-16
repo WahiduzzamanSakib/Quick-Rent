@@ -39,7 +39,7 @@ const DashBoardSidebar = ({ isOpen, setIsOpen }) => {
     ];
 
 
-    const role = session?.user?.role?.toLowerCase();
+     const role = session?.user?.role?.toLowerCase();
     const menuItems = role === "owner" ? ownerMenu : role === "tenant" ? tenantMenu : role === "admin" ? adminMenu : null;
 
 
