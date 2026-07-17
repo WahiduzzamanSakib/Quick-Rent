@@ -38,9 +38,8 @@ const DashBoardSidebar = ({ isOpen, setIsOpen }) => {
         { key: "transactions", label: "Transactions", icon: FaMoneyCheckAlt, href: "/dashboard/admin/transactions", },
     ];
 
-
-    //const role = session?.user?.role?.toLowerCase();
-    const role = "owner";
+    //const role = "tenant";
+    const role = session?.user?.role?.toLowerCase();
     const menuItems = role === "owner" ? ownerMenu : role === "tenant" ? tenantMenu : role === "admin" ? adminMenu : null;
 
 

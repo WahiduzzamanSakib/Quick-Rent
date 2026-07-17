@@ -112,6 +112,129 @@ const BookingRequestsPage = () => {
 
                 <>
 
+                    {/* Booking Summary Cards */}
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                        <motion.div
+                            initial={{ opacity: 0, y: 40, scale: 0.9 }}
+                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                            transition={{ duration: 0.5, delay: 0.1 }}
+                            whileHover={{
+                                scale: 1.05,
+                                y: -5
+                            }}
+                            whileTap={{
+                                scale: 0.95
+                            }}
+                            className="bg-white shadow rounded-xl p-4 border cursor-pointer"
+                        >
+                            <p className="text-gray-500 text-sm">
+                                Total Requests
+                            </p>
+
+                            <motion.h2
+                                initial={{ scale: 0 }}
+                                animate={{ scale: 1 }}
+                                transition={{ delay: 0.3 }}
+                                className="text-3xl font-bold mt-2"
+                            >
+                                {properties.length}
+                            </motion.h2>
+                        </motion.div>
+
+                        <motion.div
+                            initial={{ opacity: 0, y: 40, scale: 0.9 }}
+                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                            transition={{ duration: 0.5, delay: 0.2 }}
+                            whileHover={{
+                                scale: 1.05,
+                                y: -5
+                            }}
+                            whileTap={{
+                                scale: 0.95
+                            }}
+                            className="bg-green-50 shadow rounded-xl p-4 border border-green-100 cursor-pointer"
+                        >
+                            <p className="text-green-700 text-sm">
+                                Approved
+                            </p>
+
+                            <motion.h2
+                                initial={{ scale: 0 }}
+                                animate={{ scale: 1 }}
+                                transition={{ delay: 0.4 }}
+                                className="text-3xl font-bold text-green-700 mt-2"
+                            >
+                                {
+                                    properties.filter(
+                                        (item) => item.bookingStatus === "approved"
+                                    ).length
+                                }
+                            </motion.h2>
+                        </motion.div>
+
+                        <motion.div
+                            initial={{ opacity: 0, y: 40, scale: 0.9 }}
+                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                            transition={{ duration: 0.5, delay: 0.3 }}
+                            whileHover={{
+                                scale: 1.05,
+                                y: -5
+                            }}
+                            whileTap={{
+                                scale: 0.95
+                            }}
+                            className="bg-yellow-50 shadow rounded-xl p-4 border border-yellow-100 cursor-pointer"
+                        >
+                            <p className="text-yellow-700 text-sm">
+                                Pending
+                            </p>
+
+                            <motion.h2
+                                initial={{ scale: 0 }}
+                                animate={{ scale: 1 }}
+                                transition={{ delay: 0.5 }}
+                                className="text-3xl font-bold text-yellow-700 mt-2"
+                            >
+                                {
+                                    properties.filter(
+                                        (item) => item.bookingStatus === "pending"
+                                    ).length
+                                }
+                            </motion.h2>
+                        </motion.div>
+
+                        <motion.div
+                            initial={{ opacity: 0, y: 40, scale: 0.9 }}
+                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                            transition={{ duration: 0.5, delay: 0.4 }}
+                            whileHover={{
+                                scale: 1.05,
+                                y: -5
+                            }}
+                            whileTap={{
+                                scale: 0.95
+                            }}
+                            className="bg-red-50 shadow rounded-xl p-4 border border-red-100 cursor-pointer"
+                        >
+                            <p className="text-red-700 text-sm">
+                                Rejected
+                            </p>
+                            <motion.h2
+                                initial={{ scale: 0 }}
+                                animate={{ scale: 1 }}
+                                transition={{ delay: 0.3 }}
+                                className="text-3xl font-bold text-red-700 mt-2"
+                            >
+                                {
+                                    properties.filter(
+                                        (item) => item.bookingStatus === "rejected"
+                                    ).length
+                                }
+                            </motion.h2>
+                        </motion.div>
+
+                    </div>
+
 
                     {/* Desktop Table */}
                     <div className="hidden md:block overflow-x-auto">

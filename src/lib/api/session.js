@@ -10,10 +10,10 @@ export const getUser = async () => {
 };
 
 export const roleValidator = async (role) => {
-  const user = await getUser();
-  console.log(role, user?.role);
 
-  if (!user || user.role !== role) {
-    redirect('/unauthorized');
-  }
+  const user = await getUser();
+
+  if (!user || user.role?.toLowerCase() !== role.toLowerCase()) {
+  redirect('/unauthorized');
+}
 };

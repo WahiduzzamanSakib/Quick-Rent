@@ -136,7 +136,7 @@ const AllTransactionsPage = () => {
                                         "Booking ID",
                                         "Total Days",
                                         "Rent",
-                                        "Payment Status",
+                                        "Booking Date",
                                         "Booking Status"
                                     ].map((item) => (
                                         <th
@@ -189,14 +189,7 @@ const AllTransactionsPage = () => {
 
 
                                         <td className="p-4">
-                                            <span
-                                                className={`inline-flex items-center rounded-full px-3 py-1 text-sm font-medium ${property?.paymentStatus === "paid"
-                                                    ? "bg-green-100 text-green-700"
-                                                    : "bg-red-100 text-red-700"
-                                                    }`}
-                                            >
-                                                {property?.paymentStatus}
-                                            </span>
+                                            {property?.checkIn}
                                         </td>
 
 
@@ -292,16 +285,11 @@ const AllTransactionsPage = () => {
                                 <div className="flex justify-between">
                                     <div className="flex justify-between">
                                         <span className="font-semibold">
-                                            Payment:  
+                                            Booking Date:
                                         </span>
 
-                                        <span
-                                            className={`px-3 py-1 rounded-full text-sm ${property?.paymentStatus === "paid"
-                                                ? "bg-green-100 text-green-700"
-                                                : "bg-red-100 text-red-700"
-                                                }`}
-                                        >
-                                            {property?.paymentStatus}
+                                        <span className="ml-1 font-bold text-cyan-600">
+                                            {property?.checkIn}
                                         </span>
 
                                     </div>
@@ -310,7 +298,7 @@ const AllTransactionsPage = () => {
                                     <div className="flex justify-between">
 
                                         <span className="font-semibold">
-                                            Booking:  
+                                            Booking:
                                         </span>
 
                                         <span

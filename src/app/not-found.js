@@ -9,7 +9,7 @@ export default function NotFoundPage() {
   const router = useRouter();
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 bg-gradient-to-br from-slate-50 via-indigo-50/30 to-blue-100 dark:from-slate-950 dark:via-indigo-950/20 dark:to-slate-900 transition-colors duration-300 relative overflow-hidden">
+    <div className="min-h-screen flex items-center justify-center px-4 bg-gray-800 dark:from-slate-950 dark:via-indigo-950/20 dark:to-slate-900 transition-colors duration-300 relative overflow-hidden">
 
       {/* Background Decorative Blobs */}
       <div className="absolute w-120 h-120 bg-indigo-500/10 blur-3xl rounded-full top-[-100px] left-[-100px]" />
@@ -21,9 +21,9 @@ export default function NotFoundPage() {
         transition={{ duration: 0.5 }}
         className="relative w-full max-w-md"
       >
-        <div className="backdrop-blur-xl bg-white/80 dark:bg-slate-900/70 border border-white/40 dark:border-slate-800 rounded-3xl shadow-2xl p-10 text-center">
+        <div className="backdrop-blur-xl bg-gray-400 dark:bg-slate-900/70 border border-white/40 dark:border-slate-800 rounded-3xl shadow-2xl p-10 text-center">
 
-          {/* Property/Home Animated Icon */}
+
           <motion.div
             animate={{ y: [0, -6, 0] }}
             transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
