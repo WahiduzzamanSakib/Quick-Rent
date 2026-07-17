@@ -29,12 +29,8 @@ const MyBookingsPage = () => {
                 setLoading(false);
             }
         };
-
         fetchProperties();
     }, [session]);
-
-
-    
 
 
     if (loading) {
@@ -48,7 +44,6 @@ const MyBookingsPage = () => {
             </motion.div>
         );
     }
-
 
     return (
         <motion.div
@@ -68,7 +63,6 @@ const MyBookingsPage = () => {
 
 
             {properties.length === 0 ? (
-
                 <motion.p
                     initial={{ scale: 0.8 }}
                     animate={{ scale: 1 }}
@@ -80,8 +74,6 @@ const MyBookingsPage = () => {
             ) : (
 
                 <>
-
-
                     {/* Desktop Table */}
                     <div className="hidden md:block overflow-x-auto">
 
@@ -107,9 +99,7 @@ const MyBookingsPage = () => {
                                 </tr>
                             </thead>
 
-
                             <tbody>
-
                                 {properties.map((property, index) => (
 
                                     <motion.tr
@@ -131,22 +121,18 @@ const MyBookingsPage = () => {
                                         <td className="p-4 font-semibold">
                                             {property?.propertyTitle}
                                         </td>
-
                                         <td className="p-4 text-gray-600 break-all">
                                             {property?.paymentIntent}
                                         </td>
-
-
                                         <td className="p-4 text-green-600 font-bold">
                                             ${property?.totalRent}
                                         </td>
 
-
                                         <td className="p-4">
                                             <span
                                                 className={`inline-flex items-center rounded-full px-3 py-1 text-sm font-medium ${property?.paymentStatus === "paid"
-                                                        ? "bg-green-100 text-green-700"
-                                                        : "bg-red-100 text-red-700"
+                                                    ? "bg-green-100 text-green-700"
+                                                    : "bg-red-100 text-red-700"
                                                     }`}
                                             >
                                                 {property?.paymentStatus}
@@ -173,25 +159,17 @@ const MyBookingsPage = () => {
                                         <td className="p-4">
                                             <DeletedBooking property={property} />
                                         </td>
-
-
                                     </motion.tr>
-
                                 ))}
 
                             </tbody>
 
                         </table>
-
                     </div>
-
-
 
                     {/* Mobile Cards */}
                     <div className="md:hidden space-y-4">
-
                         {properties.map((property, index) => (
-
                             <motion.div
                                 key={property._id}
                                 initial={{
@@ -220,7 +198,6 @@ const MyBookingsPage = () => {
                                         {property?.paymentIntent}
                                     </p>
                                 </div>
-
                                 <div className="flex justify-between">
                                     <div >
                                         <span className="font-semibold">

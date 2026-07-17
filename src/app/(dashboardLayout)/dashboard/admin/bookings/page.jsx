@@ -9,6 +9,9 @@ const AllBookingsPage = () => {
 
     const [properties, setProperties] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 8;
+
 
     useEffect(() => {
         const fetchProperties = async () => {
@@ -56,6 +59,12 @@ const AllBookingsPage = () => {
         };
     }, [properties]);
 
+    const totalPages = Math.ceil(properties.length / itemsPerPage);
+
+    const paginatedProperties = properties.slice(
+        (currentPage - 1) * itemsPerPage,
+        currentPage * itemsPerPage
+    );
 
 
     if (loading) {
@@ -191,7 +200,7 @@ const AllBookingsPage = () => {
                             </thead>
 
                             <tbody>
-                                {properties.map((property, index) => (
+                                {paginatedProperties.map((property, index) => (
                                     <motion.tr
                                         key={property._id}
                                         initial={{
@@ -267,7 +276,7 @@ const AllBookingsPage = () => {
 
                     {/* Mobile Cards */}
                     <div className="md:hidden space-y-4">
-                        {properties.map((property, index) => (
+                        {paginatedProperties.map((property, index) => (
                             <motion.div
                                 key={property._id}
                                 initial={{
@@ -308,7 +317,7 @@ const AllBookingsPage = () => {
                                 <div className="flex justify-between">
                                     <div className="flex justify-between">
                                         <span className="font-semibold">
-                                            Payment Status:  
+                                            Payment Status:
                                         </span>
 
                                         <span
@@ -325,7 +334,7 @@ const AllBookingsPage = () => {
 
                                     <div className="flex justify-between">
                                         <span className="font-semibold">
-                                            Booking Status:  
+                                            Booking Status:
                                         </span>
 
                                         <span
@@ -343,6 +352,52 @@ const AllBookingsPage = () => {
                             </motion.div>
                         ))}
                     </div>
+
+                    {/* Pagination */}
+
+                    {totalPages > 1 && (
+                        <div className="flex justify-center items-center gap-3 mt-8">
+
+                            <button
+                                onClick={() =>
+                                    setCurrentPage((prev) => Math.max(prev - 1, 1))
+                                }
+                                disabled={currentPage === 1}
+                                className=" cursor-pointer px-4 py-2 rounded-lg border disabled:opacity-50"
+                            >
+                                Previous
+                            </button>
+
+                            {[...Array(totalPages)].map((_, index) => (
+                                <button
+                                    key={index}
+                                    onClick={() => setCurrentPage(index + 1)}
+                                    className={`px-4 py-2 rounded-lg border ${currentPage === index + 1
+                                        ? "bg-black text-white"
+                                        : "bg-white"
+                                        }`}
+                                >
+                                    {index + 1}
+                                </button>
+                            ))}
+
+
+                            <button
+                                onClick={() =>
+                                    setCurrentPage((prev) =>
+                                        Math.min(prev + 1, totalPages)
+                                    )
+                                }
+                                disabled={currentPage === totalPages}
+                                className="cursor-pointer px-4 py-2 rounded-lg border disabled:opacity-50"
+                            >
+                                Next
+                            </button>
+
+                        </div>
+                    )}
+
+
                 </>
             )}
         </motion.div>

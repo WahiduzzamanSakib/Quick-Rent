@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { HiMenu, HiX } from "react-icons/hi";
-import { Button } from "@heroui/react";
+import { Button, Card } from "@heroui/react";
 import Image from "next/image";
 import { authClient } from "@/lib/auth-client";
 import { toast } from "react-toastify";
@@ -24,7 +24,7 @@ export default function Navbar() {
     { name: "Home", path: "/" },
     { name: "All Properties", path: "/properties" },
   ];
-  
+
 
   const handleLogout = async () => {
     try {

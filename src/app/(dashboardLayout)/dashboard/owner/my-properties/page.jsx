@@ -13,6 +13,9 @@ const MyPropertiesPage = () => {
 
     const [properties, setProperties] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [currentPage, setCurrentPage] = useState(1);
+
+    const itemsPerPage = 7;
 
     useEffect(() => {
         const fetchProperties = async () => {
@@ -40,6 +43,15 @@ const MyPropertiesPage = () => {
             <div className="loader flex mx-auto justify-center items-center  my-20"></div>
         );
     }
+
+    const totalPages = Math.ceil(properties.length / itemsPerPage);
+
+    const startIndex = (currentPage - 1) * itemsPerPage;
+
+    const currentProperties = properties.slice(
+        startIndex,
+        startIndex + itemsPerPage
+    );
 
     return (
         <div className="p-6">
@@ -170,7 +182,7 @@ const MyPropertiesPage = () => {
                             </thead>
 
                             <tbody>
-                                {properties.map((property) => (
+                                {currentProperties.map((property) => (
                                     <motion.tr
                                         key={property._id}
                                         initial={{ opacity: 0, y: 20 }}
@@ -224,7 +236,7 @@ const MyPropertiesPage = () => {
 
 
                     <div className="md:hidden space-y-2">
-                        {properties.map((property, index) => (
+                        {currentProperties.map((property, index) => (
                             <motion.div
                                 key={property._id}
                                 initial={{
@@ -312,6 +324,38 @@ const MyPropertiesPage = () => {
                             </motion.div>
 
                         ))}
+
+                    </div>
+
+                    <div className="flex justify-center items-center gap-2 mt-6">
+
+                        <button
+
+                            disabled={currentPage === 1}
+                            onClick={() => setCurrentPage(prev => prev - 1)}
+                            className="cursor-pointer px-4 py-2 rounded bg-gray-200 disabled:opacity-50"
+                        >
+                            Previous
+                        </button>
+                        {[...Array(totalPages)].map((_, index) => (
+                            <button
+                                key={index}
+                                onClick={() => setCurrentPage(index + 1)}
+                                className={`px-4 py-2 rounded ${currentPage === index + 1
+                                    ? "bg-blue-600 text-white"
+                                    : "bg-gray-200"
+                                    }`}
+                            >
+                                {index + 1}
+                            </button>
+                        ))}
+                        <button
+                            disabled={currentPage === totalPages}
+                            onClick={() => setCurrentPage(prev => prev + 1)}
+                            className="cursor-pointer px-4 py-2 rounded bg-gray-200 disabled:opacity-50"
+                        >
+                            Next
+                        </button>
 
                     </div>
                 </>

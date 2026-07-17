@@ -24,7 +24,6 @@ const FavoritePropertiesPage = () => {
                 );
 
                 const data = await res.json();
-                console.log("data", data)
                 setFavorites(data);
             } catch (err) {
                 console.error(err);

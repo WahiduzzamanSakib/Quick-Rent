@@ -7,10 +7,14 @@ import { FaCheckCircle, FaTimesCircle, FaMapMarkerAlt } from "react-icons/fa";
 export default function PropertyTable() {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
+
     const [actionLoading, setActionLoading] = useState({
         id: null,
         type: null,
     });
+
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 8;
 
     useEffect(() => {
         const fetchData = async () => {
@@ -55,9 +59,9 @@ export default function PropertyTable() {
                 prev.map((item) =>
                     item._id === id
                         ? {
-                              ...item,
-                              status,
-                          }
+                            ...item,
+                            status,
+                        }
                         : item
                 )
             );
@@ -84,6 +88,11 @@ export default function PropertyTable() {
         (item) => item.status === "pending"
     ).length;
 
+    const totalPages = Math.ceil(data.length / itemsPerPage);
+    const paginatedData = data.slice(
+        (currentPage - 1) * itemsPerPage,
+        currentPage * itemsPerPage
+    );
 
     return (
         <div className="p-4 md:p-8">
@@ -168,12 +177,11 @@ export default function PropertyTable() {
                 </div>
             ) : (
 
-                <div className="overflow-x-auto">
-
+                <div className="overflow-x-auto mt-4">
                     <motion.table
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className="min-w-full border bg-white rounded-lg overflow-hidden"
+                        className="hidden md:block min-w-full border bg-white rounded-lg overflow-hidden"
                     >
 
                         <thead className="bg-gray-100 text-left">
@@ -191,13 +199,10 @@ export default function PropertyTable() {
 
 
                         <tbody>
-
-                            {data.map((item) => {
-
+                            {paginatedData.map((item) => {
                                 const isLocked =
                                     item.status === "approved" ||
                                     item.status === "rejected";
-
 
                                 return (
 
@@ -227,13 +232,12 @@ export default function PropertyTable() {
 
                                         <td className="p-3">
                                             <span
-                                                className={`font-semibold ${
-                                                    item.status === "approved"
-                                                        ? "text-green-600"
-                                                        : item.status === "rejected"
+                                                className={`font-semibold ${item.status === "approved"
+                                                    ? "text-green-600"
+                                                    : item.status === "rejected"
                                                         ? "text-red-600"
                                                         : "text-yellow-600"
-                                                }`}
+                                                    }`}
                                             >
                                                 {item.status}
                                             </span>
@@ -246,7 +250,7 @@ export default function PropertyTable() {
                                                     disabled={
                                                         isLocked ||
                                                         (actionLoading.id === item._id &&
-                                                        actionLoading.type === "approved")
+                                                            actionLoading.type === "approved")
                                                     }
                                                     onClick={() =>
                                                         handleAction(
@@ -258,17 +262,17 @@ export default function PropertyTable() {
                                                 >
                                                     <FaCheckCircle />
                                                     {actionLoading.id === item._id &&
-                                                    actionLoading.type === "approved"
+                                                        actionLoading.type === "approved"
                                                         ? "Processing..."
                                                         : isLocked
-                                                        ? "Finalized"
-                                                        : "Approve"}
+                                                            ? "Finalized"
+                                                            : "Approve"}
                                                 </button>
                                                 <button
                                                     disabled={
                                                         isLocked ||
                                                         (actionLoading.id === item._id &&
-                                                        actionLoading.type === "rejected")
+                                                            actionLoading.type === "rejected")
                                                     }
                                                     onClick={() =>
                                                         handleAction(
@@ -282,27 +286,157 @@ export default function PropertyTable() {
                                                     <FaTimesCircle />
 
                                                     {actionLoading.id === item._id &&
-                                                    actionLoading.type === "rejected"
+                                                        actionLoading.type === "rejected"
                                                         ? "Processing..."
                                                         : isLocked
-                                                        ? "Finalized"
-                                                        : "Reject"}
+                                                            ? "Finalized"
+                                                            : "Reject"}
 
                                                 </button>
-
                                             </div>
 
                                         </td>
 
                                     </tr>
-
                                 );
-
                             })}
-
                         </tbody>
-
                     </motion.table>
+
+
+                    {/* mobile responsive */}
+                    <div className="md:hidden space-y-4 mt-4">
+
+                        {
+                            paginatedData.map((item) => (
+                                <div
+                                    key={item._id}
+                                    className="bg-white border rounded-xl shadow p-4"
+                                >
+
+                                    <div className="flex justify-between items-start">
+
+                                        <h3 className="font-bold text-lg">
+                                            {item.title}
+                                        </h3>
+
+                                        <span
+                                            className={`font-semibold text-sm ${item.status === "approved"
+                                                ? "text-green-600"
+                                                : item.status === "rejected"
+                                                    ? "text-red-600"
+                                                    : "text-yellow-600"
+                                                }`}
+                                        >
+                                            {item.status}
+                                        </span>
+
+                                    </div>
+
+
+                                    <p className="mt-3 text-gray-600 flex gap-2 items-center">
+                                        <FaMapMarkerAlt />
+                                        {item.location}
+                                    </p>
+
+                                    <div className = "flex justify-between">
+                                        <p className="mt-2">
+                                            <b>Type:</b> {item.propertyType}
+                                        </p>
+
+
+                                        <p className="text-black font-semibold mt-2">
+                                            Rent:  <b> {item.rent}/{item.rentType}</b>
+                                        </p>
+
+                                    </div>
+                                    <div className="flex gap-2 mt-4">
+
+                                        <button
+                                            disabled={
+                                                item.status === "approved" ||
+                                                item.status === "rejected"
+                                            }
+                                            onClick={() => handleAction(item._id, "approved")}
+                                            className="
+                flex-1 bg-green-500 text-white
+                py-2 rounded-lg text-sm
+                disabled:opacity-50
+                "
+                                        >
+                                            Approve
+                                        </button>
+
+
+                                        <button
+                                            disabled={
+                                                item.status === "approved" ||
+                                                item.status === "rejected"
+                                            }
+                                            onClick={() => handleAction(item._id, "rejected")}
+                                            className="
+                flex-1 bg-red-500 text-white
+                py-2 rounded-lg text-sm
+                disabled:opacity-50
+                "
+                                        >
+                                            Reject
+                                        </button>
+
+                                    </div>
+
+
+                                </div>
+                            ))
+                        }
+
+                    </div>
+
+                    {/* Pagination */}
+                    {totalPages > 1 && (
+                        <div className="flex cursor-pointer justify-center items-center gap-3 mt-6">
+
+                            <button
+                                onClick={() =>
+                                    setCurrentPage((prev) =>
+                                        Math.max(prev - 1, 1)
+                                    )
+                                }
+                                disabled={currentPage === 1}
+                                className="cursor-pointer px-4 py-2 border rounded-lg disabled:opacity-50"
+                            >
+                                Prev
+                            </button>
+
+
+                            {[...Array(totalPages)].map((_, index) => (
+                                <button
+                                    key={index}
+                                    onClick={() => setCurrentPage(index + 1)}
+                                    className={`cursor-pointer px-4 py-2 rounded-lg border ${currentPage === index + 1
+                                        ? "bg-blue-600 text-white"
+                                        : "bg-white"
+                                        }`}
+                                >
+                                    {index + 1}
+                                </button>
+                            ))}
+
+
+                            <button
+                                onClick={() =>
+                                    setCurrentPage((prev) =>
+                                        Math.min(prev + 1, totalPages)
+                                    )
+                                }
+                                disabled={currentPage === totalPages}
+                                className="cursor-pointer px-4 py-2 border rounded-lg disabled:opacity-50"
+                            >
+                                Next
+                            </button>
+
+                        </div>
+                    )}
 
                 </div>
 

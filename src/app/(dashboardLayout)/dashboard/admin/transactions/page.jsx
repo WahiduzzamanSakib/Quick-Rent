@@ -9,6 +9,8 @@ const AllTransactionsPage = () => {
 
     const [properties, setProperties] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 8;
 
     useEffect(() => {
         const fetchProperties = async () => {
@@ -39,6 +41,13 @@ const AllTransactionsPage = () => {
     const totalRent = properties.reduce(
         (sum, property) => sum + Number(property?.totalRent || 0),
         0
+    );
+
+    const totalPages = Math.ceil(properties.length / itemsPerPage);
+
+    const paginatedProperties = properties.slice(
+        (currentPage - 1) * itemsPerPage,
+        currentPage * itemsPerPage
     );
 
 
@@ -152,7 +161,7 @@ const AllTransactionsPage = () => {
 
                             <tbody>
 
-                                {properties.map((property, index) => (
+                                {paginatedProperties.map((property, index) => (
 
                                     <motion.tr
                                         key={property._id}
@@ -221,7 +230,7 @@ const AllTransactionsPage = () => {
                     {/* Mobile Cards */}
                     <div className="md:hidden space-y-4">
 
-                        {properties.map((property, index) => (
+                        {paginatedProperties.map((property, index) => (
 
                             <motion.div
                                 key={property._id}
@@ -321,6 +330,54 @@ const AllTransactionsPage = () => {
 
                     </div>
 
+                     
+                    {totalPages > 1 && (
+                        <div className="flex justify-center items-center gap-3 mt-8">
+
+                            <button
+                                onClick={() =>
+                                    setCurrentPage((prev) =>
+                                        Math.max(prev - 1, 1)
+                                    )
+                                }
+                                disabled={currentPage === 1}
+                                className="cursor-pointer px-4 py-2 border rounded-lg disabled:opacity-50"
+                            >
+                                Prev
+                            </button>
+
+
+                            {[...Array(totalPages)].map((_, index) => (
+                                <button
+                                    key={index}
+                                    onClick={() =>
+                                        setCurrentPage(index + 1)
+                                    }
+                                    className={`px-4 py-2 rounded-lg border ${
+                                        currentPage === index + 1
+                                            ? "bg-blue-600 text-white"
+                                            : "bg-white"
+                                    }`}
+                                >
+                                    {index + 1}
+                                </button>
+                            ))}
+
+
+                            <button
+                                onClick={() =>
+                                    setCurrentPage((prev) =>
+                                        Math.min(prev + 1, totalPages)
+                                    )
+                                }
+                                disabled={currentPage === totalPages}
+                                className="cursor-pointer px-4 py-2 border rounded-lg disabled:opacity-50"
+                            >
+                                Next
+                            </button>
+
+                        </div>
+                    )}
                 </>
             )}
 

@@ -11,6 +11,9 @@ const BookingRequestsPage = () => {
 
     const [properties, setProperties] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [currentPage, setCurrentPage] = useState(1);
+
+    const itemsPerPage = 8;
 
     useEffect(() => {
         const fetchProperties = async () => {
@@ -67,6 +70,14 @@ const BookingRequestsPage = () => {
             console.log(error);
         }
     };
+
+    const totalPages = Math.ceil(properties.length / itemsPerPage);
+
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const currentProperties = properties.slice(
+        startIndex,
+        startIndex + itemsPerPage
+    );
 
     if (loading) {
         return (
@@ -264,7 +275,7 @@ const BookingRequestsPage = () => {
 
                             <tbody>
 
-                                {properties.map((property, index) => (
+                                {currentProperties.map((property, index) => (
 
                                     <motion.tr
                                         key={property._id}
@@ -366,8 +377,7 @@ const BookingRequestsPage = () => {
                     {/* Mobile Cards */}
 
                     <div className="md:hidden space-y-4 px-2">
-
-                        {properties.map((property, index) => (
+                        {currentProperties.map((property, index) => (
 
                             <motion.div
                                 key={property._id}
@@ -490,6 +500,43 @@ const BookingRequestsPage = () => {
                                 </div>
                             </motion.div>
                         ))}
+                    </div>
+                    <div className="cursor-pointer flex justify-center items-center gap-2 mt-8">
+                        <Button
+                         variant="outline"
+                            isDisabled={currentPage === 1}
+                            onPress={() => setCurrentPage(prev => prev - 1)}
+                             className='bg-gray-400 text-black'
+                        >
+                            Previous
+                        </Button>
+
+                        {
+                            [...Array(totalPages)].map((_, index) => (
+                                <Button
+                                variant="outline"
+                                    key={index}
+                                    onPress={() => setCurrentPage(index + 1)}
+                                    className={
+                                        currentPage === index + 1
+                                            ? " text-black"
+                                            : ""
+                                    }
+                                >
+                                    {index + 1}
+                                </Button>
+                            ))
+                        }
+
+                        <Button
+                         variant="outline"
+                            isDisabled={currentPage === totalPages}
+                            onPress={() => setCurrentPage(prev => prev + 1)}
+                            className='bg-gray-400 text-black'
+                        >
+                            Next
+                        </Button>
+
                     </div>
                 </>
             )}
