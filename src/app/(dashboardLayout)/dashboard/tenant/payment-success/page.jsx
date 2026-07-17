@@ -27,8 +27,8 @@ export default async function PaymentSuccess({ searchParams }) {
     userEmail: session?.metadata?.userEmail,
     userId: session?.metadata?.userId,
     userName: session?.metadata?.userName,
-    paymentIntent: session?.payment_intent?.id
-    // checkIn: session?.metadata?.checkIn,
+    paymentIntent: session?.payment_intent?.id,
+    checkIn: session?.metadata?.checkIn,
     // checkOut: session?.metadata?.checkOut,
     // paymentType: session?.metadata?.paymentType,
     // rentMonthly: session?.metadata?.rentMonthly,
@@ -95,12 +95,20 @@ export default async function PaymentSuccess({ searchParams }) {
               </Card>
             </div>
           </div>
-          <CardFooter className="flex pt-4 justify-center">
+          <CardFooter className="flex pt-4 justify-center gap-2">
             <Link href="/dashboard/tenant/my-bookings">
               <Button
                 className="w-full bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-extrabold h-11 px-8 
                   shadow-lg shadow-blue-500/10 hover:shadow-blue-500/20" radius="lg" endContent={<FaArrowRight />}>
                 View My Bookings
+              </Button>
+            </Link>
+
+            <Link href="/properties">
+              <Button
+                className="w-full bg-gradient-to-r from-orange-500 to-blue-600 text-white font-extrabold h-11 px-8 
+                  shadow-lg shadow-blue-500/10 hover:shadow-blue-500/20" radius="lg" endContent={<FaArrowRight />}>
+                View Properties
               </Button>
             </Link>
           </CardFooter>

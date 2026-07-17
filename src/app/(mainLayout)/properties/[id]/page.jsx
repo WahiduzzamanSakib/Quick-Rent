@@ -35,7 +35,6 @@ const PropertyDetails = () => {
                 const res = await fetch(
                     `${process.env.NEXT_PUBLIC_API_URL}/dashboard/signle-prperties/${id}`
                 );
-
                 const data = await res.json();
                 setProperty(data);
             } catch (err) {

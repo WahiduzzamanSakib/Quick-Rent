@@ -3,44 +3,36 @@ import {
     Card
 } from "@heroui/react";
 
-import {
-    ResponsiveContainer,
-    LineChart,
-    Line,
-    XAxis,
-    YAxis,
-    CartesianGrid,
-    Tooltip,
-} from "recharts";
-
-import {
-    FaDollarSign,
-    FaHome,
-    FaClipboardList,
-    FaChartLine,
-} from "react-icons/fa";
+import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, } from "recharts";
+import { FaDollarSign, FaHome, FaClipboardList, FaChartLine, } from "react-icons/fa";
+import { useEffect, useState } from "react";
 
 const OwnerOverviewPage = () => {
-    const stats = {
-        totalEarnings: 25840,
-        totalProperties: 18,
-        totalBookings: 143,
-    };
+    const [stats, setStats] = useState({
+        totalEarnings: 0,
+        totalProperties: 0,
+        totalBookings: 0,
+    });
 
-    const chartData = [
-        { month: "Jan", earnings: 1200 },
-        { month: "Feb", earnings: 1700 },
-        { month: "Mar", earnings: 2100 },
-        { month: "Apr", earnings: 2600 },
-        { month: "May", earnings: 2400 },
-        { month: "Jun", earnings: 3100 },
-        { month: "Jul", earnings: 3900 },
-        { month: "Aug", earnings: 3600 },
-        { month: "Sep", earnings: 4300 },
-        { month: "Oct", earnings: 4700 },
-        { month: "Nov", earnings: 5200 },
-        { month: "Dec", earnings: 6100 },
-    ];
+    const [chartData, setChartData] = useState([]);
+
+    useEffect(() => {
+
+    const ownerEmail = "asfdfsfaf@ad12.com";
+
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/dashboard/owner/overview/${ownerEmail}`)
+        .then(res => res.json())
+        .then(data => {
+
+            setStats({
+                totalEarnings: data.totalEarnings,
+                totalProperties: data.totalProperties,
+                totalBookings: data.totalBookings,
+            });
+            setChartData(data.chartData);
+        });
+
+}, []);
 
     return (
         <div className="space-y-6 mt-6">
@@ -52,14 +44,11 @@ const OwnerOverviewPage = () => {
 
 
             {/* Summary Cards */}
-
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
 
                 {/* Earnings */}
-
                 <Card className="glass bg-gray-300 border-white/5">
                     <div className="p-6 flex justify-between items-center">
-
                         <div>
                             <p className="text-xs uppercase tracking-wider text-slate-400 font-semibold">
                                 Total Earnings
