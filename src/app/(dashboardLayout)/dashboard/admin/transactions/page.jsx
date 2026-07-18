@@ -144,7 +144,7 @@ const AllTransactionsPage = () => {
                                         "Title",
                                         "Booking ID",
                                         "Total Days",
-                                        "Rent",
+                                        "Amount",
                                         "Booking Date",
                                         "Booking Status"
                                     ].map((item) => (
@@ -197,18 +197,19 @@ const AllTransactionsPage = () => {
                                         </td>
 
 
-                                        <td className="p-4">
+                                        <td className="p-4 font-semibold">
                                             {property?.checkIn}
                                         </td>
 
 
-                                        <td className="p-4">
+                                        <td className="p-4 ">
                                             <span
-                                                className={`px-3 py-1 rounded-full text-xs font-medium ${property?.bookingStatus === "approved"
-                                                    ? "bg-green-100 text-green-700"
-                                                    : property?.bookingStatus === "rejected"
-                                                        ? "bg-red-100 text-red-700"
-                                                        : "bg-yellow-100 text-yellow-700"
+                                                className={`px-3 py-1 rounded-full text-xs font-medium 
+                                                    ${property?.bookingStatus === "approved"
+                                                        ? "bg-green-100 text-green-700"
+                                                        : property?.bookingStatus === "rejected"
+                                                            ? "bg-red-100 text-red-700"
+                                                            : "bg-yellow-100 text-yellow-700"
                                                     }`}
                                             >
                                                 {property?.bookingStatus}
@@ -218,9 +219,7 @@ const AllTransactionsPage = () => {
                                     </motion.tr>
 
                                 ))}
-
                             </tbody>
-
                         </table>
 
                     </div>
@@ -280,7 +279,7 @@ const AllTransactionsPage = () => {
                                     <div className="flex justify-between">
 
                                         <span className="font-semibold mr-1">
-                                            Rent:
+                                            Amount :
                                         </span>
 
                                         <span className="font-bold text-green-600">
@@ -330,7 +329,7 @@ const AllTransactionsPage = () => {
 
                     </div>
 
-                     
+
                     {totalPages > 1 && (
                         <div className="flex justify-center items-center gap-3 mt-8">
 
@@ -353,11 +352,10 @@ const AllTransactionsPage = () => {
                                     onClick={() =>
                                         setCurrentPage(index + 1)
                                     }
-                                    className={`px-4 py-2 rounded-lg border ${
-                                        currentPage === index + 1
+                                    className={`px-4 py-2 rounded-lg border ${currentPage === index + 1
                                             ? "bg-blue-600 text-white"
                                             : "bg-white"
-                                    }`}
+                                        }`}
                                 >
                                     {index + 1}
                                 </button>
