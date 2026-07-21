@@ -230,23 +230,23 @@ export default function PropertyTable() {
 
 
                                         <td className="p-3">
-                                            {item.propertyType}
+                                            {item?.propertyType?.toUpperCase()}
                                         </td>
 
                                         <td className="p-3 font-semibold text-cyan-600">
-                                            {item.rent} / {item.rentType}
+                                            {item?.rent} / {item?.rentType}
                                         </td>
 
                                         <td className="p-3">
                                             <span
                                                 className={`font-semibold ${item.status === "approved"
                                                     ? "text-green-600"
-                                                    : item.status === "rejected"
+                                                    : item?.status === "rejected"
                                                         ? "text-red-600"
                                                         : "text-yellow-600"
                                                     }`}
                                             >
-                                                {item.status}
+                                                {item?.status}
                                             </span>
                                         </td>
 
@@ -272,7 +272,7 @@ export default function PropertyTable() {
                                                         actionLoading.type === "approved"
                                                         ? "Processing..."
                                                         : isLocked
-                                                            ? ""
+                                                            ? "Confirmed"
                                                             : "Approve"}
                                                 </button>
                                                 <button
@@ -296,7 +296,7 @@ export default function PropertyTable() {
                                                         actionLoading.type === "rejected"
                                                         ? "Processing..."
                                                         : isLocked
-                                                            ? ""
+                                                            ? "Confirmed"
                                                             : "Reject"}
 
                                                 </button>
@@ -348,7 +348,7 @@ export default function PropertyTable() {
 
                                     <div className="flex justify-between">
                                         <p className="mt-2">
-                                            <b>Type:</b> {item.propertyType}
+                                            <b>Type:</b> {item?.propertyType?.toUpperCase()}
                                         </p>
 
 
