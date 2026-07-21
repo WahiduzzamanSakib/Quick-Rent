@@ -265,7 +265,7 @@ export default function PropertyTable() {
                                                         actionLoading.type === "approved"
                                                         ? "Processing..."
                                                         : isLocked
-                                                            ? "Finalized"
+                                                            ? ""
                                                             : "Approve"}
                                                 </button>
                                                 <button
@@ -289,7 +289,7 @@ export default function PropertyTable() {
                                                         actionLoading.type === "rejected"
                                                         ? "Processing..."
                                                         : isLocked
-                                                            ? "Finalized"
+                                                            ? ""
                                                             : "Reject"}
 
                                                 </button>

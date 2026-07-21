@@ -32,7 +32,6 @@ const AddPropertyPage = () => {
     const { data: session } = authClient.useSession();
     const email = session?.user?.email || "";
 
-
     const [uploadType, setUploadType] = useState("link");
     const [selectedFile, setSelectedFile] = useState(null);
 
@@ -86,12 +85,17 @@ const AddPropertyPage = () => {
         };
 
         try {
+
+            const { data: token, error: tokenError } = await authClient.token();
+           
+
             const res = await fetch(
                 `${process.env.NEXT_PUBLIC_API_URL}/dashboard/owner/add-property`,
                 {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
+                        authorization: `Bearer ${token?.token}`
                     },
                     body: JSON.stringify(finalSubmitData),
                 }

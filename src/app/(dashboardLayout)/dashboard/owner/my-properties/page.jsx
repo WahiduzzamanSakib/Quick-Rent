@@ -163,7 +163,7 @@ const MyPropertiesPage = () => {
             </div>
 
             {properties.length === 0 ? (
-                <p>No properties found.</p>
+                <p className="text-center text-2xl font-bold text-gray-500">No properties found</p>
             ) : (
                 <>
                     < div className="hidden md:block overflow-x-auto">

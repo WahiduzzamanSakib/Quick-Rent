@@ -69,8 +69,8 @@ const AllPropertiesPage = () => {
                 </p>
             </div>
 
-            <div className="sticky top-0 z-20 bg-white/80 backdrop-blur border-y shadow-sm">
-                <div className="max-w-7xl mx-auto px-4 py-4 grid md:grid-cols-6 gap-3">
+            <div className=" bg-white/80 backdrop-blur border-y shadow-sm">
+                <div className=" max-w-7xl mx-auto px-4 py-4 grid md:grid-cols-6 gap-3">
 
                     <input
                         placeholder="📍 Location"

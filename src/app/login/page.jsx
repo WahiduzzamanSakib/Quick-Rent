@@ -47,6 +47,7 @@ const SignInPage = () => {
         const formData = new FormData(e.currentTarget);
         const { email, password } = Object.fromEntries(formData);
 
+
         if (!email || !password) {
             toast.error("Email and Password are required");
             return;
@@ -63,10 +64,13 @@ const SignInPage = () => {
                 return;
             }
 
+            // const { data: tokenData, error: tokenError } = await authClient.token();
+            // console.log(tokenData);
+
             toast.success("Login successful!");
 
             setTimeout(() => {
-                router.push("/");
+                 router.push("/");
             }, 1000);
         } catch (err) {
             console.error(err);
@@ -90,7 +94,7 @@ const SignInPage = () => {
     };
 
     return (
-         <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-950 dark:to-gray-900 px-4 py-6">
+        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-950 dark:to-gray-900 px-4 py-6">
 
             <motion.div
                 variants={container}
@@ -100,12 +104,12 @@ const SignInPage = () => {
             >
                 <Card className="p-5 sm:p-6 md:p-8 shadow-xl rounded-2xl bg-white dark:bg-gray-900 border dark:border-gray-800">
 
-                   
+
                     <motion.div variants={item} className="text-center mb-6">
 
                         <div className="flex justify-center mb-2">
                             <Image
-                               src="/quickrent.png"
+                                src="/quickrent.png"
                                 alt="Quick Rent Logo"
                                 width={80}
                                 height={80}
@@ -115,21 +119,21 @@ const SignInPage = () => {
                         </div>
 
                         <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-800 dark:text-white">
-                         Quick Rent Platform
+                            Quick Rent Platform
 
                         </h1>
 
-                        <h3 className="text-sm text-gray-600 text-center"> 
-                           Welcome Back to Our Property Rental & Booking Platform
-                            </h3>
+                        <h3 className="text-sm text-gray-600 text-center">
+                            Welcome Back to Our Property Rental & Booking Platform
+                        </h3>
 
                         <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-300 mt-2">
-                         
+
                         </p>
                     </motion.div>
 
-                  
-                    <Form className="flex flex-col gap-4"  onSubmit={handleSubmit}>
+
+                    <Form className="flex flex-col gap-4" onSubmit={handleSubmit}>
 
                         <motion.div variants={item}>
                             <TextField name="email" type="email" isRequired>
@@ -139,7 +143,7 @@ const SignInPage = () => {
                             </TextField>
                         </motion.div>
 
-                      
+
 
                         <motion.div variants={item}>
                             <TextField name="password" type="password" isRequired>
@@ -152,19 +156,19 @@ const SignInPage = () => {
                             </TextField>
                         </motion.div>
 
-                       
+
                         <motion.div whileTap={{ scale: 0.97 }}>
                             <Button
                                 type="submit"
                                 className="w-full bg-black text-white hover:bg-gray-800 dark:bg-gray-700 dark:hover:bg-gray-600"
                             >
                                 <Check />
-                               Login
+                                Login
                             </Button>
                         </motion.div>
                     </Form>
 
-                  
+
                     <motion.div variants={item} className="flex items-center my-3">
                         <div className="flex-1 h-px bg-gray-200 dark:bg-gray-700"></div>
                         <span className="px-3 text-xs text-gray-400 dark:text-gray-500">
@@ -173,10 +177,10 @@ const SignInPage = () => {
                         <div className="flex-1 h-px bg-gray-200 dark:bg-gray-700"></div>
                     </motion.div>
 
-                   
+
                     <motion.div whileTap={{ scale: 0.97 }}>
                         <Button
-                           onClick={handleGoogleLogin}
+                            onClick={handleGoogleLogin}
                             variant="secondary"
                             className="w-full flex items-center justify-center gap-2 border dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800"
                         >
@@ -185,14 +189,14 @@ const SignInPage = () => {
                         </Button>
                     </motion.div>
 
-                 
+
                     <motion.p className="text-center text-xs sm:text-sm text-gray-500 dark:text-gray-400 mt-3">
-                       Create a new account?{" "}
+                        Create a new account?{" "}
                         <Link
                             href="/register"
                             className="text-black dark:text-white font-medium hover:underline"
                         >
-                           Register
+                            Register
                         </Link>
                     </motion.p>
 

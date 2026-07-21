@@ -184,7 +184,8 @@ const AllBookingsPage = () => {
                                         "Total Days",
                                         "Rent",
                                         "Payment Status",
-                                        "Booking Status"
+                                        "Booking Date",
+                                        "Booking Status",
                                     ].map((item) => (
 
                                         <th
@@ -250,6 +251,10 @@ const AllBookingsPage = () => {
 
                                         </td>
 
+                                        <td>
+                                            {property?.checkIn}
+                                        </td>
+
 
                                         <td className="p-4">
 
@@ -313,7 +318,7 @@ const AllBookingsPage = () => {
                                     </p>
                                 </div>
 
-
+                                
                                 <div className="flex justify-between">
                                     <div className="flex justify-between">
                                         <span className="font-semibold">
@@ -332,11 +337,11 @@ const AllBookingsPage = () => {
                                     </div>
 
 
+
                                     <div className="flex justify-between">
                                         <span className="font-semibold">
                                             Booking Status:
                                         </span>
-
                                         <span
                                             className={`px-3 py-1 rounded-full text-xs ${property?.bookingStatus === "approved"
                                                 ? "bg-green-100 text-green-700"
