@@ -20,8 +20,14 @@ const BookingRequestsPage = () => {
             if (!session?.user?.email) return;
 
             try {
+                const { data: tokenData } = await authClient.token();
                 const res = await fetch(
-                    `${process.env.NEXT_PUBLIC_API_URL}/api/properties/all-booking/${session.user.email}`
+                    `${process.env.NEXT_PUBLIC_API_URL}/api/properties/all-booking/${session.user.email}`,
+                    {
+                        headers: {
+                            authorization: `Bearer ${tokenData?.token}`,
+                        },
+                    }
                 );
 
                 const data = await res.json();
@@ -103,7 +109,7 @@ const BookingRequestsPage = () => {
             <motion.h1
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
-                className="text-xl sm:text-2xl font-bold mb-6"
+                className="text-2xl font-bold mb-6"
             >
                 My Booking Requests
             </motion.h1>
@@ -114,7 +120,7 @@ const BookingRequestsPage = () => {
                 <motion.p
                     initial={{ scale: 0.8 }}
                     animate={{ scale: 1 }}
-                    className="text-center text-gray-500 py-10"
+                    className="text-center text-2xl font-bold text-gray-500 py-10"
                 >
                     No Booking Requests found.
                 </motion.p>
@@ -503,10 +509,10 @@ const BookingRequestsPage = () => {
                     </div>
                     <div className="cursor-pointer flex justify-center items-center gap-2 mt-8">
                         <Button
-                         variant="outline"
+                            variant="outline"
                             isDisabled={currentPage === 1}
                             onPress={() => setCurrentPage(prev => prev - 1)}
-                             className='bg-gray-400 text-black'
+                            className='bg-gray-400 text-black'
                         >
                             Previous
                         </Button>
@@ -514,7 +520,7 @@ const BookingRequestsPage = () => {
                         {
                             [...Array(totalPages)].map((_, index) => (
                                 <Button
-                                variant="outline"
+                                    variant="outline"
                                     key={index}
                                     onPress={() => setCurrentPage(index + 1)}
                                     className={
@@ -529,7 +535,7 @@ const BookingRequestsPage = () => {
                         }
 
                         <Button
-                         variant="outline"
+                            variant="outline"
                             isDisabled={currentPage === totalPages}
                             onPress={() => setCurrentPage(prev => prev + 1)}
                             className='bg-gray-400 text-black'

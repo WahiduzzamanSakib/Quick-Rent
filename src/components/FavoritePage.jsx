@@ -25,12 +25,14 @@ const FavoritePage = ({ property }) => {
     };
 
     try {
+       const { data: token, error: tokenError } = await authClient.token();
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/dashboard/tenant/favorite`,
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+              authorization: `Bearer ${token?.token}`
           },
           body: JSON.stringify(favoriteData),
         }

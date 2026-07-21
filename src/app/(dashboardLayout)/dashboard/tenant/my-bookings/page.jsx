@@ -16,8 +16,14 @@ const MyBookingsPage = () => {
             if (!session?.user?.email) return;
 
             try {
+                const { data: tokenData } = await authClient.token();
                 const res = await fetch(
-                    `${process.env.NEXT_PUBLIC_API_URL}/api/properties/booking/${session.user.email}`
+                    `${process.env.NEXT_PUBLIC_API_URL}/api/properties/booking/${session?.user?.email}`,
+                    {
+                        headers: {
+                            authorization: `Bearer ${tokenData?.token}`,
+                        },
+                    }
                 );
 
                 const data = await res.json();

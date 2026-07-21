@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { FaCheckCircle, FaTimesCircle, FaMapMarkerAlt } from "react-icons/fa";
+import { authClient } from "@/lib/auth-client";
 
 export default function PropertyTable() {
     const [data, setData] = useState([]);
@@ -20,10 +21,16 @@ export default function PropertyTable() {
         const fetchData = async () => {
             try {
                 setLoading(true);
-
+                const { data: tokenData } = await authClient.token();
                 const res = await fetch(
                     `${process.env.NEXT_PUBLIC_API_URL}/dashboard/admin/get-properties`,
-                    { cache: "no-store" }
+                    {
+                        cache: "no-store",
+                        headers: {
+                            authorization: `Bearer ${tokenData?.token}`,
+                        },
+                    }
+
                 );
 
                 const json = await res.json();
@@ -339,7 +346,7 @@ export default function PropertyTable() {
                                         {item.location}
                                     </p>
 
-                                    <div className = "flex justify-between">
+                                    <div className="flex justify-between">
                                         <p className="mt-2">
                                             <b>Type:</b> {item.propertyType}
                                         </p>

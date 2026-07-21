@@ -5,7 +5,7 @@ import { FaArrowRight, FaCheckCircle, FaHome } from 'react-icons/fa'
 
 export default async function PaymentSuccess({ searchParams }) {
   const { session_id } = await searchParams
-  console.log(session_id)
+
 
   if (!session_id)
     throw new Error('Please provide a valid session_id (`cs_test_...`)')
@@ -43,7 +43,7 @@ export default async function PaymentSuccess({ searchParams }) {
     body: JSON.stringify(newPayment)
   })
   const PaymentData = await res.json()
-  console.log(PaymentData)
+
 
   return (
 

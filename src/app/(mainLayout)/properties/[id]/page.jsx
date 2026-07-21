@@ -14,9 +14,10 @@ import {
 import { useParams } from "next/navigation";
 import ReviewSection from "@/components/ReviewSection";
 import FavoritePage from "@/components/FavoritePage";
-import { Button, Chip, Card} from "@heroui/react";
+import { Button, Chip, Card } from "@heroui/react";
 import { BookingModalPage } from "@/components/modal/BookingModal";
 import { authClient } from "@/lib/auth-client";
+
 
 
 const PropertyDetails = () => {
@@ -27,14 +28,19 @@ const PropertyDetails = () => {
 
     const { id } = useParams();
 
-
-
     useEffect(() => {
         const fetchProperty = async () => {
             try {
+                const { data: tokenData, error: tokenError } = await authClient.token();
+                
                 const res = await fetch(
-                    `${process.env.NEXT_PUBLIC_API_URL}/dashboard/signle-prperties/${id}`
-                );
+                    `${process.env.NEXT_PUBLIC_API_URL}/dashboard/signle-prperties/${id}`,
+                    {
+                        headers: {
+                            authorization: `Bearer ${tokenData?.token}`,
+                        },
+                    }
+                )
                 const data = await res.json();
                 setProperty(data);
             } catch (err) {
@@ -44,7 +50,9 @@ const PropertyDetails = () => {
             }
         };
 
-        fetchProperty();
+        if (id) {
+            fetchProperty();
+        }
     }, []);
 
     if (loading) {
@@ -173,14 +181,14 @@ const PropertyDetails = () => {
                         <Chip variant="flat"
                             className="text-md font-semibold flex justify-center "
                             color="default">
-                            Type: {property.propertyType.toUpperCase()}
+                            Type: {property?.propertyType?.toUpperCase()}
                         </Chip>
                         <Chip
                             variant="dot"
                             className="text-md font-semibold flex justify-center "
                             color={property.status === "approved" ? "success" : "danger"}
                         >
-                            Status: {property.status.toUpperCase()}
+                            Status: {property?.status?.toUpperCase()}
                         </Chip>
                     </div>
 

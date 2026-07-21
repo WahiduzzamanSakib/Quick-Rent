@@ -17,8 +17,14 @@ const AllTransactionsPage = () => {
             if (!session?.user?.email) return;
 
             try {
+                const { data: tokenData, error: tokenError } = await authClient.token();
                 const res = await fetch(
                     `${process.env.NEXT_PUBLIC_API_URL}/api/all-properties/booking`,
+                    {
+                          headers: {
+                            authorization: `Bearer ${tokenData?.token}`,
+                        },
+                    }
                 );
 
                 const data = await res.json();

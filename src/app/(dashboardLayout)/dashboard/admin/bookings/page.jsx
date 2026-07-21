@@ -18,8 +18,14 @@ const AllBookingsPage = () => {
             if (!session?.user?.email) return;
 
             try {
+                const { data: tokenData } = await authClient.token();
                 const res = await fetch(
                     `${process.env.NEXT_PUBLIC_API_URL}/api/all-properties/booking`,
+                    {
+                        headers: {
+                            authorization: `Bearer ${tokenData?.token}`,
+                        },
+                    }
                 );
 
                 const data = await res.json();
@@ -318,7 +324,7 @@ const AllBookingsPage = () => {
                                     </p>
                                 </div>
 
-                                
+
                                 <div className="flex justify-between">
                                     <div className="flex justify-between">
                                         <span className="font-semibold">

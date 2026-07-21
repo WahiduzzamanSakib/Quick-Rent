@@ -19,8 +19,14 @@ const FavoritePropertiesPage = () => {
             setLoading(true);
 
             try {
+                const { data: tokenData } = await authClient.token();
                 const res = await fetch(
-                    `${process.env.NEXT_PUBLIC_API_URL}/dashboard/tenant/favorite/${email}`
+                    `${process.env.NEXT_PUBLIC_API_URL}/dashboard/tenant/favorite/${email}`,
+                    {
+                        headers: {
+                            authorization: `Bearer ${tokenData?.token}`,
+                        },
+                    }
                 );
 
                 const data = await res.json();
@@ -93,7 +99,7 @@ const FavoritePropertiesPage = () => {
                                     <h3 className="text-lg font-semibold mb-2">
                                         {item.title}
                                     </h3>
-                                 <FavoriteDelate property={item} />
+                                    <FavoriteDelate property={item} />
                                 </div>
 
 
