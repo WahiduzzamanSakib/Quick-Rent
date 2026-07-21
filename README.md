@@ -1,36 +1,74 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 🏠Quick Rent - Property Rental & Booking Platform
 
-## Getting Started
+A full-stack property rental platform where owners can list rental properties and tenants can search, book, pay reservation fees, save favorites, and leave reviews. The platform includes secure authentication, role-based dashboards, Stripe payments, and an admin management system.
 
-First, run the development server:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## ⭐ Main Highlights
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- 🏡 **Complete Rental Marketplace:** Tenants can explore, book, and pay for properties while owners can manage listings and bookings easily.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+- 🔐 **Secure Role-Based System:** JWT authentication with separate access control and dashboards for Tenant, Owner, and Admin users.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- 💳 **Complete Booking Workflow:** Includes property approval, booking management, Stripe payment integration, transactions, and review system.
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🌐 Live Links
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- **Live Site:** https://quick-rent-five.vercel.app
+- **Client Repository:** https://github.com/WahiduzzamanSakib/Quick-Rent
+- **Server Repository:** https://github.com/WahiduzzamanSakib/Quick-Rent-Server
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🚀 Features
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- JWT Authentication & Google Login
+- Role-Based Access (Tenant, Owner, Admin)
+- Property Listing & Management
+- Property Search, Filter & Sorting
+- Add to Favorites
+- Property Booking System
+- Stripe Payment Integration
+- Property Reviews & Ratings
+- Owner Dashboard with Analytics
+- Admin Dashboard for User & Property Management
+- Responsive Design
+- Framer Motion Animations
+
+---
+
+## 🛠️ Tech Stack
+
+### Frontend
+- React
+- React Router
+- Tailwind CSS
+- Hero UI
+- Better Auth Authentication
+- Fetch
+- TanStack Query
+- React Toastify
+- Framer Motion
+- Recharts
+- Stripe
+
+### Backend
+- Node.js
+- Express.js
+- MongoDB
+- JWT
+- Stripe
+- CORS
+- dotenv
+
+---
+
+
+## 👨‍💻 Developer
+
+**Md Waheduzzaman**
+
+GitHub: https://github.com/WahiduzzamanSakib <br>
+Linkden: www.linkedin.com/in/waheduzzaman-md
