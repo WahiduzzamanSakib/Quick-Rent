@@ -25,10 +25,11 @@ const MyPropertiesPage = () => {
                 const { data: tokenData } = await authClient.token();
                 const res = await fetch(
                     `${process.env.NEXT_PUBLIC_API_URL}/dashboard/owner/get-properties/${session.user.email}`,
-                     {
-                          headers: {
+                    {
+                        headers: {
                             authorization: `Bearer ${tokenData?.token}`,
                         },
+                        cache: "no-store",
                     }
                 );
                 const data = await res.json();

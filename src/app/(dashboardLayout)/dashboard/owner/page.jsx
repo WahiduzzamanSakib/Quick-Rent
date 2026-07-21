@@ -6,8 +6,10 @@ import {
 import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, } from "recharts";
 import { FaDollarSign, FaHome, FaClipboardList, FaChartLine, } from "react-icons/fa";
 import { useEffect, useState } from "react";
+import { authClient } from "@/lib/auth-client";
 
 const OwnerOverviewPage = () => {
+
     const [stats, setStats] = useState({
         totalEarnings: 0,
         totalProperties: 0,
@@ -15,24 +17,28 @@ const OwnerOverviewPage = () => {
     });
 
     const [chartData, setChartData] = useState([]);
+    const { data: session } = authClient.useSession();
+    
 
     useEffect(() => {
 
-    const ownerEmail = "asfdfsfaf@ad12.com";
+        fetch(`${process.env.NEXT_PUBLIC_API_URL}/dashboard/owner/overview/${session?.user?.email}`,
+            {
+                cache: "no-store",
+            }
+        )
+            .then(res => res.json())
+            .then(data => {
 
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/dashboard/owner/overview/${ownerEmail}`)
-        .then(res => res.json())
-        .then(data => {
-
-            setStats({
-                totalEarnings: data.totalEarnings,
-                totalProperties: data.totalProperties,
-                totalBookings: data.totalBookings,
+                setStats({
+                    totalEarnings: data.totalEarnings,
+                    totalProperties: data.totalProperties,
+                    totalBookings: data.totalBookings,
+                });
+                setChartData(data.chartData);
             });
-            setChartData(data.chartData);
-        });
 
-}, []);
+    }, []);
 
     return (
         <div className="space-y-6 mt-6">

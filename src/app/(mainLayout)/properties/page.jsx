@@ -39,7 +39,10 @@ const AllPropertiesPage = () => {
         try {
             setLoading(true);
             const res = await fetch(
-                `${process.env.NEXT_PUBLIC_API_URL}/api/properties?${buildQuery()}`
+                `${process.env.NEXT_PUBLIC_API_URL}/api/properties?${buildQuery()}`,
+                {
+                    cache: "no-store",
+                }
             );
             const data = await res.json();
             setProperties(data || []);
@@ -152,7 +155,7 @@ const AllPropertiesPage = () => {
 
 
                 {loading && (
-                       <div className="loader flex mx-auto justify-center items-center  my-20"></div>
+                    <div className="loader flex mx-auto justify-center items-center  my-20"></div>
                 )}
 
                 {!loading && properties.length === 0 && (
@@ -216,7 +219,7 @@ const AllPropertiesPage = () => {
 
                                 <div className="flex justify-between items-center pt-2">
                                     <span className="text-lg font-bold text-black flex items-center gap-1">
-                                       <FaDollarSign/> 
+                                        <FaDollarSign />
                                         {item.rent}
                                     </span>
 

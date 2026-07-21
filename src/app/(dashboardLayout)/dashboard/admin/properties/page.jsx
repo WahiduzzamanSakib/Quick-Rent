@@ -29,6 +29,7 @@ export default function PropertyTable() {
                         headers: {
                             authorization: `Bearer ${tokenData?.token}`,
                         },
+                           cache: "no-store",
                     }
 
                 );

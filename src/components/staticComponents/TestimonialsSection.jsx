@@ -13,7 +13,10 @@ export default function TestimonialsSection() {
         const fetchData = async () => {
             try {
                 const res = await fetch(
-                    `${process.env.NEXT_PUBLIC_API_URL}/dashboard/single-properties/review`
+                    `${process.env.NEXT_PUBLIC_API_URL}/dashboard/single-properties/review`,
+                    {
+                        cache: 'no-store',
+                    }
                 );
 
                 const result = await res.json();

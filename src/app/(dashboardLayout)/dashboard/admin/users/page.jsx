@@ -50,7 +50,10 @@ export default function AllUsersPage() {
             setLoading(true);
 
             const res = await fetch(
-                `${process.env.NEXT_PUBLIC_API_URL}/dashboard/admin/get-users`
+                `${process.env.NEXT_PUBLIC_API_URL}/dashboard/admin/get-users`,
+                {
+                    cache: "no-store",
+                }
             );
 
             const data = await res.json();
@@ -203,14 +206,14 @@ export default function AllUsersPage() {
                         <h3 className="text-2xl font-bold text-yellow-700">
                             {
                                 users.filter(
-                                    (user)=>user.role==="ADMIN"
+                                    (user) => user.role === "ADMIN"
                                 ).length
                             }
                         </h3>
 
                     </div>
 
-                    <FaUserShield className="text-3xl text-yellow-500"/>
+                    <FaUserShield className="text-3xl text-yellow-500" />
 
                 </div>
 
@@ -231,7 +234,7 @@ export default function AllUsersPage() {
 
                             {
                                 users.filter(
-                                    (user)=>user.role==="OWNER"
+                                    (user) => user.role === "OWNER"
                                 ).length
                             }
 
@@ -240,7 +243,7 @@ export default function AllUsersPage() {
                     </div>
 
 
-                    <FaCrown className="text-3xl text-purple-500"/>
+                    <FaCrown className="text-3xl text-purple-500" />
 
 
                 </div>
@@ -264,7 +267,7 @@ export default function AllUsersPage() {
 
                             {
                                 users.filter(
-                                    (user)=>user.role==="TENANT"
+                                    (user) => user.role === "TENANT"
                                 ).length
                             }
 
@@ -273,7 +276,7 @@ export default function AllUsersPage() {
                     </div>
 
 
-                    <FaUser className="text-3xl text-gray-500"/>
+                    <FaUser className="text-3xl text-gray-500" />
 
 
                 </div>
@@ -328,7 +331,7 @@ export default function AllUsersPage() {
 
 
                         {
-                            users.map((user,index)=>(
+                            users.map((user, index) => (
 
 
                                 <motion.tr
@@ -336,17 +339,17 @@ export default function AllUsersPage() {
                                     key={user._id}
 
                                     initial={{
-                                        opacity:0,
-                                        y:10
+                                        opacity: 0,
+                                        y: 10
                                     }}
 
                                     animate={{
-                                        opacity:1,
-                                        y:0
+                                        opacity: 1,
+                                        y: 0
                                     }}
 
                                     transition={{
-                                        delay:index*0.03
+                                        delay: index * 0.03
                                     }}
 
                                     className="border-t hover:bg-gray-50"
@@ -394,19 +397,19 @@ export default function AllUsersPage() {
                                         {
                                             user.isBlocked ?
 
-                                            <span className="flex items-center gap-1 text-red-600">
+                                                <span className="flex items-center gap-1 text-red-600">
 
-                                                <FaBan/>
+                                                    <FaBan />
 
-                                                Blocked
+                                                    Blocked
 
-                                            </span>
+                                                </span>
 
-                                            :
+                                                :
 
-                                            <span className="text-green-600">
-                                                Active
-                                            </span>
+                                                <span className="text-green-600">
+                                                    Active
+                                                </span>
                                         }
 
 
@@ -422,7 +425,7 @@ export default function AllUsersPage() {
 
                                             value={user.role}
 
-                                            onChange={(e)=>
+                                            onChange={(e) =>
                                                 updateRole(
                                                     user._id,
                                                     e.target.value
@@ -434,7 +437,7 @@ export default function AllUsersPage() {
                                         >
 
                                             {
-                                                roles.map(role=>(
+                                                roles.map(role => (
 
                                                     <option
                                                         key={role}
@@ -478,7 +481,7 @@ export default function AllUsersPage() {
 
 
                 {
-                    users.map((user,index)=>(
+                    users.map((user, index) => (
 
 
                         <motion.div
@@ -486,13 +489,13 @@ export default function AllUsersPage() {
                             key={user._id}
 
                             initial={{
-                                opacity:0,
-                                y:10
+                                opacity: 0,
+                                y: 10
                             }}
 
                             animate={{
-                                opacity:1,
-                                y:0
+                                opacity: 1,
+                                y: 0
                             }}
 
                             className="bg-white border rounded-xl shadow-sm p-4 space-y-3"
@@ -518,22 +521,22 @@ export default function AllUsersPage() {
                             {
                                 user.isBlocked ?
 
-                                <span className="text-red-600 flex gap-1">
+                                    <span className="text-red-600 flex gap-1">
 
-                                    <FaBan/>
+                                        <FaBan />
 
-                                    Blocked
+                                        Blocked
 
-                                </span>
-                                :
-                                <span className="text-green-600">
-                                    Active
-                                </span>
+                                    </span>
+                                    :
+                                    <span className="text-green-600">
+                                        Active
+                                    </span>
                             }
                             <select
                                 value={user.role}
 
-                                onChange={(e)=>
+                                onChange={(e) =>
                                     updateRole(
                                         user._id,
                                         e.target.value
@@ -545,7 +548,7 @@ export default function AllUsersPage() {
                             >
 
                                 {
-                                    roles.map(role=>(
+                                    roles.map(role => (
 
                                         <option
                                             key={role}

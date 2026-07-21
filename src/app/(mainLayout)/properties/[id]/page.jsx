@@ -39,6 +39,7 @@ const PropertyDetails = () => {
                         headers: {
                             authorization: `Bearer ${tokenData?.token}`,
                         },
+                        cache: "no-store",
                     }
                 )
                 const data = await res.json();

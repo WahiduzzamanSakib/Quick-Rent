@@ -21,7 +21,10 @@ const ApprovedLimirCard = () => {
         const fetchProperties = async () => {
             try {
                 const res = await fetch(
-                    `${process.env.NEXT_PUBLIC_API_URL}/dashboard/approved-limit/get-properties`
+                    `${process.env.NEXT_PUBLIC_API_URL}/dashboard/approved-limit/get-properties`,
+                    {
+                        cache: "no-store",
+                    }
                 );
 
                 const data = await res.json();

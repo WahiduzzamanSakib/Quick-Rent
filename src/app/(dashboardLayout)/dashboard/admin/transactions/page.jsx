@@ -21,9 +21,10 @@ const AllTransactionsPage = () => {
                 const res = await fetch(
                     `${process.env.NEXT_PUBLIC_API_URL}/api/all-properties/booking`,
                     {
-                          headers: {
+                        headers: {
                             authorization: `Bearer ${tokenData?.token}`,
                         },
+                        cache: "no-store",
                     }
                 );
 
@@ -359,8 +360,8 @@ const AllTransactionsPage = () => {
                                         setCurrentPage(index + 1)
                                     }
                                     className={`px-4 py-2 rounded-lg border ${currentPage === index + 1
-                                            ? "bg-blue-600 text-white"
-                                            : "bg-white"
+                                        ? "bg-blue-600 text-white"
+                                        : "bg-white"
                                         }`}
                                 >
                                     {index + 1}

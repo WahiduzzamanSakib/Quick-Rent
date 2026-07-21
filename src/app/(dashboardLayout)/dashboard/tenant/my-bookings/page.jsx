@@ -23,6 +23,7 @@ const MyBookingsPage = () => {
                         headers: {
                             authorization: `Bearer ${tokenData?.token}`,
                         },
+                        cache: "no-store",
                     }
                 );
 
