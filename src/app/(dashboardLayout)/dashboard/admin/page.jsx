@@ -14,6 +14,7 @@ import {
 import Image from "next/image";
 
 
+
 const containerVariants = {
   hidden: { opacity: 0, y: 20 },
   visible: {
@@ -105,7 +106,7 @@ const ProfilePage = () => {
                 whileTap={{ scale: 0.98 }}
                 className="inline-flex justify-center items-center gap-2 px-4 py-2.5 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors shadow-sm w-full sm:w-auto"
               >
-                <FiEdit3 />
+                <FiEdit3 className="text-gray-500 dark:text-gray-400" />
                 Edit Profile
               </motion.button>
             </div>

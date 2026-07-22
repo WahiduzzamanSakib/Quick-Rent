@@ -29,7 +29,7 @@ export default function PropertyTable() {
                         headers: {
                             authorization: `Bearer ${tokenData?.token}`,
                         },
-                           cache: "no-store", // Disable caching
+                        cache: "no-store", // Disable caching
                     }
 
                 );
@@ -171,17 +171,13 @@ export default function PropertyTable() {
 
             {loading ? (
                 <div className="text-center">
-                    <svg
-                        aria-hidden="true"
-                        className="inline w-12 h-12 animate-spin text-gray-300 fill-blue-600"
-                        viewBox="0 0 100 101"
-                        fill="none"
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        className="flex justify-center items-center min-h-[300px]"
                     >
-                        <path
-                            d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908Z"
-                            fill="currentColor"
-                        />
-                    </svg>
+                        <div className="loader"></div>
+                    </motion.div>
                 </div>
             ) : (
 
@@ -230,7 +226,7 @@ export default function PropertyTable() {
                                         </td>
 
 
-                                        <td className="p-3">
+                                        <td className="p-3 text-sm">
                                             {item?.propertyType?.toUpperCase()}
                                         </td>
 

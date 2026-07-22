@@ -30,7 +30,7 @@ const AllBookingsPage = () => {
                 );
 
                 const data = await res.json();
-
+                // console.log(data);
                 setProperties(Array.isArray(data) ? data : [data]);
 
             } catch (err) {
@@ -191,6 +191,7 @@ const AllBookingsPage = () => {
                                         "Total Days",
                                         "Rent",
                                         "Payment Status",
+                                        "Booking Name",
                                         "Booking Date",
                                         "Booking Status",
                                     ].map((item) => (
@@ -257,6 +258,8 @@ const AllBookingsPage = () => {
                                             </span>
 
                                         </td>
+
+                                        <td> {property?.userName}</td>
 
                                         <td>
                                             {property?.checkIn}
