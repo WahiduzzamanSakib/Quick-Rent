@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { authClient } from "@/lib/auth-client";
 import { motion } from "framer-motion";
+import { FcApprove, FcDisapprove } from "react-icons/fc";
 
 const AllBookingsPage = () => {
     const { data: session } = authClient.useSession();
@@ -44,6 +45,35 @@ const AllBookingsPage = () => {
 
     }, [session]);
 
+
+    const handleBookingStatus = async (id, bookingStatus) => {
+        try {
+            const { data: tokenData } = await authClient.token();
+            const res = await fetch(
+                `${process.env.NEXT_PUBLIC_API_URL}/api/bookings/${id}`,
+                {
+                    method: "PATCH",
+                    headers: {
+                        "Content-Type": "application/json",
+                        authorization: `Bearer ${tokenData?.token}`,
+                    },
+                    body: JSON.stringify({ bookingStatus }),
+                }
+            );
+            const data = await res.json();
+            if (data.modifiedCount > 0) {
+                setProperties((prev) =>
+                    prev.map((item) =>
+                        item._id === id
+                            ? { ...item, bookingStatus }
+                            : item
+                    )
+                );
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     const bookingStats = useMemo(() => {
         return {
@@ -191,9 +221,9 @@ const AllBookingsPage = () => {
                                         "Total Days",
                                         "Rent",
                                         "Payment Status",
-                                        // "Booking Name",
                                         "Booking Date",
                                         "Booking Status",
+                                        "Manage",
                                     ].map((item) => (
 
                                         <th
@@ -259,26 +289,54 @@ const AllBookingsPage = () => {
 
                                         </td>
 
-                                        {/* <td> {property?.userName}</td> */}
+
 
                                         <td>
                                             {property?.checkIn}
                                         </td>
 
 
-                                        <td className="p-4">
-
+                                        <td>
                                             <span
-                                                className={`px-3 py-1 rounded-full text-xs ${property?.bookingStatus === "approved"
+                                                className={`px-2 py-1 rounded-full text-xs ${property.bookingStatus === "approved"
                                                     ? "bg-green-100 text-green-700"
-                                                    : property?.bookingStatus === "rejected"
+                                                    : property.bookingStatus === "rejected"
                                                         ? "bg-red-100 text-red-700"
                                                         : "bg-yellow-100 text-yellow-700"
                                                     }`}
                                             >
-                                                {property?.bookingStatus}
+                                                {property.bookingStatus}
                                             </span>
+                                        </td>
 
+                                        <td className="p-4">
+                                            <div className="flex items-center gap-2">
+                                                <button
+                                                    onClick={() =>
+                                                        handleBookingStatus(property._id, "approved")
+                                                    }
+                                                    disabled={property.bookingStatus !== "pending"}
+                                                    className={`px-3 py-1 rounded text-white text-xs ${property.bookingStatus === "pending"
+                                                        ? "bg-green-600 hover:bg-green-700 cursor-pointer"
+                                                        : "bg-gray-400 cursor-not-allowed"
+                                                        }`}
+                                                >
+                                                    <FcApprove size={20} />
+                                                </button>
+                                                <button
+                                                    onClick={() =>
+                                                        handleBookingStatus(property._id, "rejected")
+                                                    }
+                                                    disabled={property.bookingStatus !== "pending"}
+                                                    className={`px-3 py-1 rounded text-white text-xs ${property.bookingStatus === "pending"
+                                                        ? "bg-red-600 hover:bg-red-700 cursor-pointer"
+                                                        : "bg-gray-400 cursor-not-allowed"
+                                                        }`}
+                                                >
+                                                    <FcDisapprove size={20} />
+
+                                                </button>
+                                            </div>
                                         </td>
 
 
@@ -362,8 +420,36 @@ const AllBookingsPage = () => {
                                         >
                                             {property?.bookingStatus}
                                         </span>
-                                    </div>
+                                    </div>  
                                 </div>
+
+                                  <div className="flex items-center justify-end gap-2 pt-2">
+                                        <button
+                                            onClick={() =>
+                                                handleBookingStatus(property._id, "approved")
+                                            }
+                                            disabled={property.bookingStatus !== "pending"}
+                                            className={`flex items-center gap-1 justify-center px-3 py-2 rounded text-white text-xs ${property.bookingStatus === "pending"
+                                                    ? "bg-green-600 hover:bg-green-700 cursor-pointer"
+                                                    : "bg-gray-400 cursor-not-allowed"
+                                                }`}
+                                        >
+                                            <FcApprove size={20} /> Approve
+                                        </button>
+
+                                        <button
+                                            onClick={() =>
+                                                handleBookingStatus(property._id, "rejected")
+                                            }
+                                            disabled={property.bookingStatus !== "pending"}
+                                            className={`flex items-center gap-2 px-3 py-2 rounded text-white text-xs ${property.bookingStatus === "pending"
+                                                    ? "bg-red-600 hover:bg-red-700 cursor-pointer"
+                                                    : "bg-gray-400 cursor-not-allowed"
+                                                }`}
+                                        >
+                                            <FcDisapprove size={20} /> Reject
+                                        </button>
+                                    </div>
                             </motion.div>
                         ))}
                     </div>
