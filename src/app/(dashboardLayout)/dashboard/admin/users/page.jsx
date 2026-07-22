@@ -11,6 +11,7 @@ import {
 } from "react-icons/fa";
 import { MdRefresh } from "react-icons/md";
 import { toast } from "react-toastify";
+import { authClient } from "@/lib/auth-client";
 
 const roles = ["TENANT", "ADMIN", "OWNER"];
 
@@ -39,9 +40,11 @@ const roleBadgeColor = (role) => {
 };
 
 export default function AllUsersPage() {
+    const { data: session } = authClient.useSession();
 
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
+
 
 
     /* GET USERS */
@@ -126,13 +129,7 @@ export default function AllUsersPage() {
     if (loading) {
         return (
             <div className="flex flex-col items-center justify-center py-20">
-
-                <div className="w-10 h-10 border-4 border-gray-300 border-t-gray-900 rounded-full animate-spin"></div>
-
-                <p className="mt-3 text-gray-500">
-                    Loading users...
-                </p>
-
+                <div className="loader"></div>
             </div>
         );
     }
@@ -158,18 +155,11 @@ export default function AllUsersPage() {
                 >
 
                     <MdRefresh />
-
                     Refresh
-
                 </button>
-
-
             </div>
 
-
-
             {/* SUMMARY CARDS */}
-
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
 
 
@@ -285,248 +275,119 @@ export default function AllUsersPage() {
 
             </div>
 
-
-
-
-
             {/* DESKTOP TABLE */}
-
             <div className="hidden md:block bg-white shadow-md rounded-xl border overflow-x-auto">
-
 
                 <table className="w-full text-left">
 
-
                     <thead className="bg-gray-100 text-gray-600 text-sm uppercase">
-
                         <tr>
-
-                            <th className="p-4">
-                                User
-                            </th>
-
-                            <th className="p-4">
-                                Email
-                            </th>
-
-                            <th className="p-4">
-                                Role
-                            </th>
-
-                            <th className="p-4">
-                                Status
-                            </th>
-
-                            <th className="p-4">
-                                Action
-                            </th>
-
+                            <th className="p-4">User</th>
+                            <th className="p-4">Email</th>
+                            <th className="p-4">Role</th>
+                            <th className="p-4">Status</th>
+                            <th className="p-4">Action</th>
                         </tr>
-
                     </thead>
 
-
-
                     <tbody>
-
-
                         {
                             users.map((user, index) => (
 
-
                                 <motion.tr
-
                                     key={user._id}
-
-                                    initial={{
-                                        opacity: 0,
-                                        y: 10
-                                    }}
-
-                                    animate={{
-                                        opacity: 1,
-                                        y: 0
-                                    }}
-
-                                    transition={{
-                                        delay: index * 0.03
-                                    }}
-
+                                    initial={{ opacity: 0, y: 10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: index * 0.03 }}
                                     className="border-t hover:bg-gray-50"
-
                                 >
-
-
-
                                     <td className="p-4 flex items-center gap-2 font-medium">
-
                                         {roleIcon(user.role)}
-
                                         {user.name}
-
                                     </td>
-
-
 
                                     <td className="p-4 text-gray-600">
-
                                         {user.email}
-
                                     </td>
 
-
-
                                     <td className="p-4">
-
                                         <span
                                             className={`px-3 py-1 rounded-full text-xs font-semibold border ${roleBadgeColor(user.role)}`}
                                         >
-
                                             {user.role}
-
                                         </span>
 
                                     </td>
-
-
-
-
                                     <td className="p-4">
-
-
                                         {
                                             user.isBlocked ?
-
                                                 <span className="flex items-center gap-1 text-red-600">
-
                                                     <FaBan />
-
                                                     Blocked
-
                                                 </span>
-
                                                 :
-
                                                 <span className="text-green-600">
                                                     Active
                                                 </span>
                                         }
-
-
                                     </td>
 
-
-
-
                                     <td className="p-4">
-
-
                                         <select
-
                                             value={user.role}
-
+                                            disabled={user.email === session?.user?.email}
                                             onChange={(e) =>
                                                 updateRole(
                                                     user._id,
                                                     e.target.value
                                                 )
                                             }
-
-                                            className="px-3 py-2 border rounded-lg"
-
+                                            className={`px-3 py-2 border rounded-lg ${user.email === session?.user?.email
+                                                ? "bg-gray-100 cursor-not-allowed"
+                                                : ""
+                                                }`}
                                         >
-
                                             {
                                                 roles.map(role => (
-
-                                                    <option
-                                                        key={role}
-                                                        value={role}
-                                                    >
+                                                    <option key={role} value={role}>
                                                         {role}
                                                     </option>
 
                                                 ))
                                             }
-
-
                                         </select>
-
-
                                     </td>
-
-
-
                                 </motion.tr>
-
-
                             ))
                         }
-
-
                     </tbody>
-
-
                 </table>
-
-
             </div>
 
-
-
-
             {/* MOBILE CARDS */}
-
             <div className="grid grid-cols-1 gap-4 md:hidden">
-
-
                 {
                     users.map((user, index) => (
-
-
                         <motion.div
-
                             key={user._id}
-
-                            initial={{
-                                opacity: 0,
-                                y: 10
-                            }}
-
-                            animate={{
-                                opacity: 1,
-                                y: 0
-                            }}
-
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
                             className="bg-white border rounded-xl shadow-sm p-4 space-y-3"
-
                         >
-
-
                             <div className="flex items-center gap-2 font-semibold">
-
                                 {roleIcon(user.role)}
-
                                 {user.name}
-
                             </div>
-
 
                             <p className="text-sm text-gray-600">
                                 {user.email}
                             </p>
 
-
-
                             {
                                 user.isBlocked ?
-
                                     <span className="text-red-600 flex gap-1">
-
                                         <FaBan />
-
                                         Blocked
-
                                     </span>
                                     :
                                     <span className="text-green-600">
@@ -535,28 +396,25 @@ export default function AllUsersPage() {
                             }
                             <select
                                 value={user.role}
-
+                                disabled={user.email === session?.user?.email}
                                 onChange={(e) =>
                                     updateRole(
                                         user._id,
                                         e.target.value
                                     )
                                 }
-
-                                className="w-full px-3 py-2 border rounded-lg"
-
+                                className={`w-full px-3 py-2 border rounded-lg ${user.email === session?.user?.email
+                                        ? "bg-gray-100 cursor-not-allowed"
+                                        : ""
+                                    }`}
                             >
-
                                 {
                                     roles.map(role => (
-
                                         <option
                                             key={role}
                                             value={role}
                                         >
-
                                             {role}
-
                                         </option>
 
                                     ))
