@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { FaCheckCircle, FaTimesCircle, FaMapMarkerAlt } from "react-icons/fa";
 import { authClient } from "@/lib/auth-client";
+import EditModal from "@/components/modal/EditModal";
+import { DeletedAlert } from "@/components/modal/DeletedAlert";
 
 export default function PropertyTable() {
     const [data, setData] = useState([]);
@@ -198,6 +200,9 @@ export default function PropertyTable() {
                                 <th className="p-3 text-center">
                                     Action
                                 </th>
+                                <th className="p-3 text-center">
+                                    Manage
+                                </th>
                             </tr>
                         </thead>
 
@@ -269,7 +274,7 @@ export default function PropertyTable() {
                                                         actionLoading.type === "approved"
                                                         ? "Processing..."
                                                         : isLocked
-                                                            ? "Confirmed"
+                                                            ? ""
                                                             : "Approve"}
                                                 </button>
                                                 <button
@@ -293,12 +298,22 @@ export default function PropertyTable() {
                                                         actionLoading.type === "rejected"
                                                         ? "Processing..."
                                                         : isLocked
-                                                            ? "Confirmed"
+                                                            ? ""
                                                             : "Reject"}
 
                                                 </button>
                                             </div>
 
+                                        </td>
+
+                                        <td>
+                                            <div className="flex justify-end gap-2 pt-2">
+
+                                                <EditModal property={item} />
+
+                                                <DeletedAlert property={item} />
+
+                                            </div>
                                         </td>
 
                                     </tr>
@@ -354,7 +369,16 @@ export default function PropertyTable() {
                                         </p>
 
                                     </div>
-                                    <div className="flex gap-2 mt-4">
+                                   
+
+
+                                    <div className="flex justify-between gap-2 py-2">
+                                        <EditModal property={item} />
+
+                                        <DeletedAlert property={item} />
+                                    </div>
+
+                                     <div className="flex gap-2 mt-4">
 
                                         <button
                                             disabled={

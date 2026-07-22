@@ -153,7 +153,8 @@ const AllTransactionsPage = () => {
                                         "Total Days",
                                         "Amount",
                                         "Booking Date",
-                                        "Booking Status"
+                                        "Check in",
+                                        "Booking Name"
                                     ].map((item) => (
                                         <th
                                             key={item}
@@ -205,24 +206,17 @@ const AllTransactionsPage = () => {
 
 
                                         <td className="p-4 font-semibold">
+                                             {property?.createdAt
+                                                ? new Date(property.createdAt).toLocaleDateString("en-GB")
+                                                : ""}
+                                        </td>
+
+                                        <td className="p-4 font-semibold">
                                             {property?.checkIn}
                                         </td>
-
-
-                                        <td className="p-4 ">
-                                            <span
-                                                className={`px-3 py-1 rounded-full text-xs font-medium 
-                                                    ${property?.bookingStatus === "approved"
-                                                        ? "bg-green-100 text-green-700"
-                                                        : property?.bookingStatus === "rejected"
-                                                            ? "bg-red-100 text-red-700"
-                                                            : "bg-yellow-100 text-yellow-700"
-                                                    }`}
-                                            >
-                                                {property?.bookingStatus}
-                                            </span>
+                                        <td className="p-4 font-semibold">
+                                            {property?.userName}
                                         </td>
-
                                     </motion.tr>
 
                                 ))}
@@ -300,7 +294,7 @@ const AllTransactionsPage = () => {
                                 <div className="flex justify-between">
                                     <div className="flex justify-between">
                                         <span className="font-semibold">
-                                            Booking Date:
+                                          Check in:
                                         </span>
 
                                         <span className="ml-1 font-bold text-cyan-600">

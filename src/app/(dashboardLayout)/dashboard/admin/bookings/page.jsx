@@ -191,7 +191,7 @@ const AllBookingsPage = () => {
                                         "Total Days",
                                         "Rent",
                                         "Payment Status",
-                                        "Booking Name",
+                                        // "Booking Name",
                                         "Booking Date",
                                         "Booking Status",
                                     ].map((item) => (
@@ -259,7 +259,7 @@ const AllBookingsPage = () => {
 
                                         </td>
 
-                                        <td> {property?.userName}</td>
+                                        {/* <td> {property?.userName}</td> */}
 
                                         <td>
                                             {property?.checkIn}

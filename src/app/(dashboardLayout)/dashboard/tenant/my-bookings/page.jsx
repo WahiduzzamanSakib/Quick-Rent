@@ -28,7 +28,7 @@ const MyBookingsPage = () => {
                 );
 
                 const data = await res.json();
-
+                console.log(data)
                 setProperties(Array.isArray(data) ? data : [data]);
             } catch (err) {
                 console.error("Failed to fetch properties:", err);
@@ -90,10 +90,12 @@ const MyBookingsPage = () => {
                                 <tr>
                                     {[
                                         "Title",
-                                        "Booking ID",
+                                        "Days",
                                         "Rent",
-                                        "Payment Status",
-                                        "Booking Status",
+                                        "Booking",
+                                        "Check in",
+                                        "Payment ",
+                                        "Booking ",
                                         "Actions"
                                     ].map((item) => (
                                         <th
@@ -128,12 +130,23 @@ const MyBookingsPage = () => {
                                         <td className="p-4 font-semibold">
                                             {property?.propertyTitle}
                                         </td>
-                                        <td className="p-4 text-gray-600 break-all">
-                                            {property?.paymentIntent}
+                                        <td className="p-4">
+                                            {property?.totalDays}
                                         </td>
                                         <td className="p-4 text-green-600 font-bold">
                                             ${property?.totalRent}
                                         </td>
+                                        
+                                        <td className="p-4">
+                                            {property?.createdAt
+                                                ? new Date(property.createdAt).toLocaleDateString("en-GB")
+                                                : ""}
+                                        </td>
+
+                                        <td className="p-4">
+                                            {property?.checkIn}
+                                        </td>
+
 
                                         <td className="p-4">
                                             <span
@@ -197,14 +210,6 @@ const MyBookingsPage = () => {
                                     {property?.propertyTitle}
                                 </h2>
 
-                                <div className="text-sm">
-                                    <span className="font-semibold">
-                                        Booking ID:
-                                    </span>
-                                    <p className="text-gray-500 break-all">
-                                        {property?.paymentIntent}
-                                    </p>
-                                </div>
                                 <div className="flex justify-between">
                                     <div >
                                         <span className="font-semibold">
@@ -228,6 +233,31 @@ const MyBookingsPage = () => {
                                                 }`}
                                         >
                                             {property?.paymentStatus}
+                                        </span>
+                                    </div>
+
+                                </div>
+
+                                <div className="flex justify-between">
+                                    <div >
+                                        <span className="font-semibold">
+                                            Booking:
+                                        </span>
+
+                                        <span className=" ml-2">
+                                            {property?.createdAt
+                                                ? new Date(property.createdAt).toLocaleDateString("en-GB")
+                                                : ""}
+                                        </span>
+                                    </div>
+
+                                    <div>
+                                        <span >
+                                            Check in:
+                                        </span>
+
+                                        <span className="ml-2">
+                                            {property?.checkIn}
                                         </span>
                                     </div>
 
