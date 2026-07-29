@@ -9,8 +9,7 @@ import Image from "next/image";
 import { authClient } from "@/lib/auth-client";
 import { toast } from "react-toastify";
 
-
-export default function Navbar() {
+const Navbar = () => {
   const [open, setOpen] = useState(false);
   const [avatarOpen, setAvatarOpen] = useState(false);
   const router = useRouter();
@@ -195,3 +194,5 @@ export default function Navbar() {
     </nav>
   );
 }
+
+export default Navbar;
