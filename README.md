@@ -43,7 +43,7 @@ A full-stack property rental platform where owners can list rental properties an
 ## 🛠️ Tech Stack
 
 ### Frontend
-- React
+- Next.js
 - React Router
 - Tailwind CSS
 - Hero UI
