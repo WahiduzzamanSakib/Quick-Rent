@@ -17,7 +17,7 @@ A full-stack property rental platform where owners can list rental properties an
 ## 🌐 Live Links
 
 <!-- **Live Site:** https://quick-rent-five.vercel.app -->
-- **Live Site:**  https://quick-rent.onrender.com
+- **Live Site:**  [https://quick-rent-ecru.vercel.app](https://quick-rent-ecru.vercel.app)
 - **Client Repository:** https://github.com/WahiduzzamanSakib/Quick-Rent
 - **Server Repository:** https://github.com/WahiduzzamanSakib/Quick-Rent-Server
 
