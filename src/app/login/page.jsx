@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import {
     Card,
     Button,
@@ -18,7 +18,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { authClient } from "@/lib/auth-client";
 import { motion } from "framer-motion";
-import { Check } from "@gravity-ui/icons";
+import { Check, Eye, EyeSlash } from "@gravity-ui/icons";
+
 
 const container = {
     hidden: { opacity: 0, y: 20 },
@@ -40,6 +41,7 @@ const item = {
 
 const SignInPage = () => {
     const router = useRouter();
+    const [showPassword, setShowPassword] = useState(false);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -70,7 +72,7 @@ const SignInPage = () => {
             toast.success("Login successful!");
 
             setTimeout(() => {
-                 router.push("/");
+                router.push("/");
             }, 1000);
         } catch (err) {
             console.error(err);
@@ -146,12 +148,36 @@ const SignInPage = () => {
 
 
                         <motion.div variants={item}>
-                            <TextField name="password" type="password" isRequired>
+                            <TextField
+                                name="password"
+                                type={showPassword ? "text" : "password"}
+                                isRequired
+                            >
                                 <Label>Password</Label>
-                                <Input className="dark:bg-gray-800 dark:text-white" placeholder="Enter password" />
+
+                                <div className="relative">
+                                    <Input
+                                        className="dark:bg-gray-800 dark:text-white pr-12"
+                                        placeholder="Enter password"
+                                    />
+
+                                    <button
+                                        type="button"
+                                        onClick={() => setShowPassword(!showPassword)}
+                                        className="absolute right-3 top-1/2 -translate-y-1/2"
+                                    >
+                                        {showPassword ? (
+                                            <EyeSlash width={18} height={18} />
+                                        ) : (
+                                            <Eye width={18} height={18} />
+                                        )}
+                                    </button>
+                                </div>
+
                                 <Description className="dark:text-gray-400">
                                     Minimum 6 characters with uppercase, lowercase and number
                                 </Description>
+
                                 <FieldError />
                             </TextField>
                         </motion.div>
