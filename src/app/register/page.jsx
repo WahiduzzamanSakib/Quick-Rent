@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import {
     Card,
     Button,
@@ -20,6 +20,7 @@ import { toast } from "react-toastify";
 import { authClient } from "@/lib/auth-client";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { FiEye, FiEyeOff } from "react-icons/fi";
 
 const container = {
     hidden: { opacity: 0, y: 25 },
@@ -41,6 +42,7 @@ const item = {
 
 const SignUpPage = () => {
     const router = useRouter();
+    const [showPassword, setShowPassword] = useState(false);
 
     const onSubmit = async (e) => {
         e.preventDefault();
@@ -182,16 +184,31 @@ const SignUpPage = () => {
                             <TextField>
                                 <Label>Password</Label>
 
-                                <Input
-                                    name="password"
-                                    type="password"
-                                    placeholder="Enter password"
-                                />
+                                <div className="relative w-full">
+                                    <Input
+                                        name="password"
+                                        type={showPassword ? "text" : "password"}
+                                        placeholder="Enter password"
+                                        className="w-full pr-12"
+                                    />
+
+                                    <button
+                                        type="button"
+                                        onClick={() => setShowPassword((prev) => !prev)}
+                                        className=" absolute right-3  top-1/2 -translate-y-1/2  z-20 flex items-center justify-center p-1  text-gray-400 hover:text-gray-600 dark:text-gray-400 dark:hover:text-gray-200 "
+                                        aria-label={showPassword ? "Hide password" : "Show password"}
+                                    >
+                                        {showPassword ? (
+                                            <FiEyeOff size={20} />
+                                        ) : (
+                                            <FiEye size={20} />
+                                        )}
+                                    </button>
+                                </div>
+
                                 <Description className="dark:text-gray-400">
                                     Minimum 6 characters with uppercase, lowercase and number
                                 </Description>
-
-
                             </TextField>
                         </motion.div>
 
