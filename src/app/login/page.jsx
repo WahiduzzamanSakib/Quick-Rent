@@ -155,26 +155,38 @@ const SignInPage = () => {
                             >
                                 <Label>Password</Label>
 
-                                <div className="relative">
+                                {/* Ei wrapper-i ekhon box */}
+                                <div
+                                    className="flex items-center gap-2 rounded-2xl px-4 py-3
+                       bg-white/70 dark:bg-gray-800/70 backdrop-blur-md
+                       border border-gray-200 dark:border-gray-700
+                       shadow-sm transition
+                       focus-within:ring-2 focus-within:ring-blue-500
+                       focus-within:border-transparent"
+                                >
                                     <Input
-                                        className="dark:bg-gray-800 dark:text-white pr-12"
                                         placeholder="Enter password"
+                                        className="flex-1 bg-transparent border-0 shadow-none p-0 h-auto
+                           outline-none focus:outline-none focus:ring-0
+                           text-gray-800 dark:text-white
+                           placeholder:text-gray-400"
                                     />
 
                                     <button
                                         type="button"
                                         onClick={() => setShowPassword(!showPassword)}
-                                        className="absolute right-3 top-1/2 -translate-y-1/2"
+                                        aria-label={showPassword ? "Hide password" : "Show password"}
+                                        className="text-black hover:text-gray-600 dark:hover:text-gray-200 transition"
                                     >
                                         {showPassword ? (
-                                            <EyeSlash width={18} height={18} />
+                                            <EyeSlash width={20} height={20} />
                                         ) : (
-                                            <Eye width={18} height={18} />
+                                            <Eye width={20} height={20} />
                                         )}
                                     </button>
                                 </div>
 
-                                <Description className="dark:text-gray-400">
+                                <Description className="dark:text-gray-400 mt-1">
                                     Minimum 6 characters with uppercase, lowercase and number
                                 </Description>
 
