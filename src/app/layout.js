@@ -4,6 +4,7 @@ import "./globals.css";
 import Footer from "@/components/Footer";
 import { ToastContainer } from "react-toastify";
 import Navbar from "@/components/Navbar";
+import { Analytics } from "@vercel/analytics/next";
 
 
 const geistSans = Geist({
@@ -32,6 +33,7 @@ export default function RootLayout({ children }) {
         {children}
      
         <ToastContainer position="top-right" autoClose={3000} />
+         <Analytics />
       </body>
     </html>
   );
