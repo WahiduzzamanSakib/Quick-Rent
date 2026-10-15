@@ -46,7 +46,7 @@ const ReviewSection = ({ user }) => {
     };
 
     return (
-        <div className="mt-6">
+        <div className="mt-6 ">
             <h2 className="text-lg font-semibold flex items-center gap-2">
                 <FaStar className="text-yellow-500" />
                 Reviews

@@ -67,7 +67,7 @@ export default function TestimonialsSection() {
     };
 
     return (
-        <section className="bg-slate-50 py-20 overflow-hidden w-full select-none">
+        <section className="bg-slate-50 border-t border-blue-300 py-16 overflow-hidden w-full select-none">
             <div className="max-w-7xl mx-auto px-4 mb-12 text-center">
                 <h2 className="text-3xl font-bold text-slate-900 sm:text-4xl">
                     What Our Guests Say
