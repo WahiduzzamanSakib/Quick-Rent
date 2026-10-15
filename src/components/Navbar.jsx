@@ -1,10 +1,11 @@
+
 "use client";
 
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { HiMenu, HiX } from "react-icons/hi";
-import { Button, Card } from "@heroui/react";
+import { HiMenu, HiX, HiChevronDown } from "react-icons/hi";
+import { Button } from "@heroui/react";
 import Image from "next/image";
 import { authClient } from "@/lib/auth-client";
 import { toast } from "react-toastify";
@@ -16,21 +17,19 @@ const Navbar = () => {
 
   const pathname = usePathname();
   const { data: session } = authClient.useSession();
-  const role = session?.user?.role.toLowerCase();
-
+  const role = session?.user?.role?.toLowerCase();
 
   const navLinks = [
     { name: "Home", path: "/" },
     { name: "All Properties", path: "/properties" },
-    { name:"About Us", path: "/about" },
+    { name: "About Us", path: "/about" },
   ];
-
 
   const handleLogout = async () => {
     try {
       await authClient.signOut();
       toast.success("Logout successfully");
-      router.push("/"); // 👈 redirect to home
+      router.push("/");
     } catch (error) {
       toast.error("Logout failed");
     } finally {
@@ -38,85 +37,105 @@ const Navbar = () => {
       setOpen(false);
     }
   };
+
   const isActive = (path) => pathname === path;
-
-  const baseLinkClass =
-    "text-md font-semibold text-black hover:text-sky-600 transition";
-
   const isLoggedIn = !!session?.user;
 
+ const baseLinkClass =
+  "relative text-md font-semibold text-black border p-2 rounded-md transition-colors duration-200 hover:border-blue-600 after:absolute after:-bottom-2 after:left-0 after:h-0.5 after:w-full after:rounded-full after:bg-blue-600 after:transition-transform after:duration-300 after:content-[''] after:scale-x-0";
+
+const activeLinkClass =
+  "border-blue-600 text-blue-600";
+// const activeLinkClass =
+//   "border-blue-600 text-blue-600 after:scale-x-100";
+
   return (
-    <nav className="bg-white shadow-md w-full sticky top-0 z-10">
-      <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
-
-
-        <Link href="/" className="flex items-center gap-2 shrink-0">
-          <Image src="/quickrent.png" alt="QuickRent Logo" width={40} height={40} />
-          <span className="text-2xl font-bold text-black">QuickRent</span>
+    <nav className="sticky top-0 z-50 w-full border-b border-slate-200/80 bg-white/95 shadow-sm backdrop-blur-md">
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
+        {/* Logo */}
+        <Link href="/" className="group flex shrink-0 items-center gap-2.5">
+          <Image
+            src="/quickrent.png"
+            alt="QuickRent Logo"
+            width={42}
+            height={42}
+            className="transition-transform duration-300 group-hover:scale-105"
+          />
+          <span className="text-2xl font-extrabold tracking-tight text-slate-900">
+            Quick<span className="text-blue-600">Rent</span>
+          </span>
         </Link>
 
-
-        <div className="hidden md:flex flex-1 justify-center gap-8">
+        {/* Desktop Navigation */}
+        <div className="hidden flex-1 items-center justify-center gap-4 md:flex">
           {navLinks.map((link) => (
             <Link
               key={link.path}
               href={link.path}
-              className={`${baseLinkClass} ${isActive(link.path) ? "text-sky-600" : ""
-                }`}
+              className={`${baseLinkClass} ${
+                isActive(link.path) ? activeLinkClass : ""
+              }`}
             >
               {link.name}
             </Link>
           ))}
         </div>
 
-
-        <div className="hidden md:flex items-center gap-4 shrink-0 relative">
-
+        {/* Desktop Actions */}
+        <div className="relative hidden shrink-0 items-center gap-4 md:flex">
           {isLoggedIn ? (
-            <>
+            <div className="relative">
+              <button
+                type="button"
+                aria-label="Open user menu"
+                aria-expanded={avatarOpen}
+                onClick={() => setAvatarOpen(!avatarOpen)}
+                className="flex items-center gap-2 rounded-full border border-slate-200 bg-white p-1 pr-2 transition-all duration-200 hover:border-blue-300 hover:shadow-md"
+              >
+                <Image
+                  src={session?.user?.image || "/avatar.png"}
+                  alt="User avatar"
+                  width={36}
+                  height={36}
+                  className="h-9 w-9 rounded-full object-cover"
+                />
+                <HiChevronDown
+                  size={17}
+                  className={`text-slate-500 transition-transform duration-200 ${
+                    avatarOpen ? "rotate-180" : ""
+                  }`}
+                />
+              </button>
 
-              <div className="relative">
-                <button
-                  className="cursor-pointer rounded-full overflow-hidden"
-                  onClick={() => setAvatarOpen(!avatarOpen)}
-                >
-                  <Image
-                    src={session?.user?.image || "/avatar.png"}
-                    alt="avatar"
-                    width={40}
-                    height={36}
-                    className="rounded-full"
-                  />
-                </button>
+              {avatarOpen && (
+                <div className="absolute right-0 top-full mt-3 w-48 overflow-hidden rounded-xl border border-slate-200 bg-white p-1.5 shadow-xl shadow-slate-200/60">
+                  <Link
+                    href={`/dashboard/${role}`}
+                    onClick={() => setAvatarOpen(false)}
+                    className="block rounded-lg px-4 py-2.5 text-sm font-medium text-slate-700 transition-colors hover:bg-blue-50 hover:text-blue-600"
+                  >
+                    Dashboard
+                  </Link>
 
+                  <div className="my-1 border-t border-slate-100" />
 
-                {avatarOpen && (
-                  <div className="absolute right-0 mt-2 w-40 bg-white border rounded-md shadow-md overflow-hidden">
-                    <Link
-                      href={`/dashboard/${role}`}
-                      className="block px-4 py-2 hover:bg-gray-100"
-                      onClick={() => setAvatarOpen(false)}
-                    >
-                      Dashboard
-                    </Link>
-
-                    <button
-                      onClick={handleLogout}
-                      className="w-full text-left px-4 py-2 hover:bg-gray-100"
-                    >
-                      Logout
-                    </button>
-                  </div>
-                )}
-              </div>
-            </>
+                  <button
+                    type="button"
+                    onClick={handleLogout}
+                    className="w-full rounded-lg px-4 py-2.5 text-left text-sm font-medium text-red-600 transition-colors hover:bg-red-50"
+                  >
+                    Logout
+                  </button>
+                </div>
+              )}
+            </div>
           ) : (
             <>
-
               <Link
                 href="/login"
-                className={`${baseLinkClass} ${isActive("/login") ? "text-sky-600" : ""
-                  }`}
+                className={`${baseLinkClass} ${
+                  isActive("/login") ? "text-blue-600" : ""
+                }`}
               >
                 Login
               </Link>
@@ -124,8 +143,8 @@ const Navbar = () => {
               <Link href="/register">
                 <Button
                   color="primary"
-                  size="sm"
-                  className="text-black font-bold hover:bg-sky-600"
+                  size="md"
+                  className="rounded-lg px-5 font-semibold text-white shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:bg-blue-700 hover:shadow-md"
                 >
                   Register
                 </Button>
@@ -134,66 +153,83 @@ const Navbar = () => {
           )}
         </div>
 
-        <div className="md:hidden text-black">
-          <button onClick={() => setOpen(!open)}>
-            {open ? <HiX size={26} /> : <HiMenu size={26} />}
-          </button>
-        </div>
+        {/* Mobile Menu Toggle */}
+        <button
+          type="button"
+          aria-label={open ? "Close menu" : "Open menu"}
+          aria-expanded={open}
+          onClick={() => setOpen(!open)}
+          className="flex h-10 w-10 items-center justify-center rounded-lg border border-slate-200 text-slate-700 transition-colors duration-200 hover:border-blue-200 hover:bg-blue-50 hover:text-blue-600 md:hidden"
+        >
+          {open ? <HiX size={23} /> : <HiMenu size={23} />}
+        </button>
       </div>
 
-
+      {/* Mobile Navigation */}
       {open && (
-        <div className="md:hidden px-4 pb-4 flex flex-col gap-3">
-          {navLinks.map((link) => (
-            <Link
-              key={link.path}
-              href={link.path}
-              onClick={() => setOpen(false)}
-              className={`${baseLinkClass} ${isActive(link.path) ? "text-sky-600" : ""
+        <div className="border-t border-slate-100 bg-white px-4 pb-5 pt-3 shadow-lg md:hidden">
+          <div className="mx-auto flex max-w-7xl flex-col gap-1">
+            {navLinks.map((link) => (
+              <Link
+                key={link.path}
+                href={link.path}
+                onClick={() => setOpen(false)}
+                className={`rounded-lg px-4 py-3 text-sm font-semibold transition-colors duration-200 ${
+                  isActive(link.path)
+                    ? "bg-blue-50 text-blue-600"
+                    : "text-slate-600 hover:bg-slate-50 hover:text-blue-600"
                 }`}
-            >
-              {link.name}
-            </Link>
-          ))}
-
-          {!isLoggedIn ? (
-            <>
-              <Link
-                href="/login"
-                onClick={() => setOpen(false)}
-                className={baseLinkClass}
               >
-                Login
+                {link.name}
               </Link>
+            ))}
 
-              <Link href="/register" onClick={() => setOpen(false)}>
-                <Button className="w-full text-black hover:bg-sky-600" color="primary" size="sm">
-                  Register
-                </Button>
-              </Link>
-            </>
-          ) : (
-            <>
-              <Link
-                href={`/dashboard/${role}`}
-                className="text-blue-500"
-                onClick={() => setOpen(false)}
-              >
-                Dashboard
-              </Link>
+            <div className="my-2 border-t border-slate-100" />
 
-              <button
-                onClick={handleLogout}
-                className="w-full text-left px-4 py-2 hover:bg-gray-100"
-              >
-                Logout
-              </button>
-            </>
-          )}
+            {!isLoggedIn ? (
+              <div className="flex flex-col gap-2">
+                <Link
+                  href="/login"
+                  onClick={() => setOpen(false)}
+                  className="rounded-lg px-4 py-3 text-sm font-semibold text-slate-600 transition-colors hover:bg-slate-50 hover:text-blue-600"
+                >
+                  Login
+                </Link>
+
+                <Link href="/register" onClick={() => setOpen(false)}>
+                  <Button
+                    className="w-full rounded-lg font-semibold text-white transition-colors hover:bg-blue-700"
+                    color="primary"
+                    size="md"
+                  >
+                    Register
+                  </Button>
+                </Link>
+              </div>
+            ) : (
+              <div className="flex flex-col gap-1">
+                <Link
+                  href={`/dashboard/${role}`}
+                  className="rounded-lg px-4 py-3 text-sm font-semibold text-slate-600 transition-colors hover:bg-blue-50 hover:text-blue-600"
+                  onClick={() => setOpen(false)}
+                >
+                  Dashboard
+                </Link>
+
+                <button
+                  type="button"
+                  onClick={handleLogout}
+                  className="w-full rounded-lg px-4 py-3 text-left text-sm font-semibold text-red-600 transition-colors hover:bg-red-50"
+                >
+                  Logout
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       )}
     </nav>
   );
-}
+};
 
 export default Navbar;
