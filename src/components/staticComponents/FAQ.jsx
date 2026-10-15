@@ -1,9 +1,9 @@
-
 "use client";
 
 import { useState } from "react";
 import Link from "next/link";
 import { FiChevronDown } from "react-icons/fi";
+import { motion, AnimatePresence } from "framer-motion";
 
 const faqs = [
   {
@@ -32,6 +32,30 @@ const faqs = [
   },
 ];
 
+const listVariants = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.1,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: {
+    opacity: 0,
+    y: 20,
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.45,
+      ease: "easeOut",
+    },
+  },
+};
+
 export default function FAQ() {
   const [openIndex, setOpenIndex] = useState(null);
 
@@ -42,21 +66,33 @@ export default function FAQ() {
   };
 
   return (
-    <section className="bg-gray-50 border-t border-blue-300 py-10 sm:py-10">
+    <section className="border-t border-blue-300 bg-gray-50 py-10 sm:py-10">
       <div className="mx-auto max-w-3xl px-4">
-        <h2 className="animate-fade-in-up text-center text-3xl font-bold text-slate-900 sm:text-4xl">
+        <motion.h2
+          initial={{ opacity: 0, y: 25 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          className="text-center text-3xl font-bold text-slate-900 sm:text-4xl"
+        >
           Frequently asked questions
-        </h2>
+        </motion.h2>
 
-        <div className="mt-10 divide-y divide-slate-200 overflow-hidden rounded-xl border border-slate-200">
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.15 }}
+          variants={listVariants}
+          className="mt-10 divide-y divide-slate-200 overflow-hidden rounded-xl border border-slate-200"
+        >
           {faqs.map(({ q, a }, index) => {
             const isOpen = openIndex === index;
 
             return (
-              <div
+              <motion.div
                 key={q}
-                style={{ animationDelay: `${index * 100}ms` }}
-                className="animate-fade-in-up"
+                variants={itemVariants}
+                className="bg-white"
               >
                 <button
                   type="button"
@@ -66,39 +102,54 @@ export default function FAQ() {
                 >
                   <span>{q}</span>
 
-                  <FiChevronDown
-                    size={20}
-                    className={`shrink-0 text-slate-500 transition-transform duration-300 ease-in-out ${
-                      isOpen ? "rotate-180 text-blue-600" : ""
-                    }`}
-                  />
+                  <motion.span
+                    animate={{ rotate: isOpen ? 180 : 0 }}
+                    transition={{ duration: 0.3, ease: "easeInOut" }}
+                    className="shrink-0 text-slate-500"
+                  >
+                    <FiChevronDown
+                      size={20}
+                      className={isOpen ? "text-blue-600" : ""}
+                    />
+                  </motion.span>
                 </button>
 
-                <div
-                  className={`grid transition-[grid-template-rows] duration-500 ease-in-out ${
-                    isOpen
-                      ? "grid-rows-[1fr]"
-                      : "grid-rows-[0fr]"
-                  }`}
-                >
-                  <div className="overflow-hidden">
-                    <p
-                      className={`px-5 text-sm leading-7 text-slate-600 transition-[padding,opacity] duration-300 ease-in-out sm:text-base ${
-                        isOpen
-                          ? "pb-5 opacity-100"
-                          : "pb-0 opacity-0"
-                      }`}
+                <AnimatePresence initial={false}>
+                  {isOpen && (
+                    <motion.div
+                      key="answer"
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{
+                        height: {
+                          duration: 0.35,
+                          ease: "easeInOut",
+                        },
+                        opacity: {
+                          duration: 0.25,
+                        },
+                      }}
+                      className="overflow-hidden"
                     >
-                      {a}
-                    </p>
-                  </div>
-                </div>
-              </div>
+                      <p className="px-5 pb-5 text-sm leading-7 text-slate-600 sm:text-base">
+                        {a}
+                      </p>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.div>
             );
           })}
-        </div>
+        </motion.div>
 
-        <p className="mt-6 text-center text-sm text-slate-600">
+        <motion.p
+          initial={{ opacity: 0, y: 15 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="mt-6 text-center text-sm text-slate-600"
+        >
           Still have a question?{" "}
           <Link
             href="/contact"
@@ -106,7 +157,7 @@ export default function FAQ() {
           >
             Contact us →
           </Link>
-        </p>
+        </motion.p>
       </div>
     </section>
   );
