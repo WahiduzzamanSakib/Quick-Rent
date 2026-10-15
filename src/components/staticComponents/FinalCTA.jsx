@@ -1,3 +1,4 @@
+
 import Link from "next/link";
 
 export default function FinalCTA() {
@@ -13,13 +14,13 @@ export default function FinalCTA() {
         <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
           <Link
             href="/properties"
-            className="rounded-lg bg-white px-6 py-3 font-semibold text-blue-600 hover:bg-blue-50"
+            className="rounded-lg bg-white px-6 py-3 font-semibold text-blue-600 transition-all duration-300 hover:-translate-y-1 hover:bg-blue-50 hover:shadow-lg"
           >
             Browse properties
           </Link>
           <Link
             href="/register"
-            className="rounded-lg border border-white px-6 py-3 font-semibold text-white hover:bg-white/10"
+            className="rounded-lg border border-white px-6 py-3 font-semibold text-white transition-all duration-300 hover:-translate-y-1 hover:bg-white/10 hover:shadow-lg"
           >
             Create free account
           </Link>
