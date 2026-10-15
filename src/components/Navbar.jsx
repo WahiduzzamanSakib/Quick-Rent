@@ -41,13 +41,13 @@ const Navbar = () => {
   const isActive = (path) => pathname === path;
   const isLoggedIn = !!session?.user;
 
- const baseLinkClass =
-  "relative text-md font-semibold text-black border p-2 rounded-md transition-colors duration-200 hover:border-blue-600 after:absolute after:-bottom-2 after:left-0 after:h-0.5 after:w-full after:rounded-full after:bg-blue-600 after:transition-transform after:duration-300 after:content-[''] after:scale-x-0";
+  const baseLinkClass =
+    "relative text-md font-semibold text-black border p-2 rounded-md transition-colors duration-200 hover:border-blue-600 after:absolute after:-bottom-2 after:left-0 after:h-0.5 after:w-full after:rounded-full after:bg-blue-600 after:transition-transform after:duration-300 after:content-[''] after:scale-x-0";
 
-const activeLinkClass =
-  "border-blue-600 text-blue-600";
-// const activeLinkClass =
-//   "border-blue-600 text-blue-600 after:scale-x-100";
+  const activeLinkClass =
+    "border-blue-600 text-blue-600";
+  // const activeLinkClass =
+  //   "border-blue-600 text-blue-600 after:scale-x-100";
 
   return (
     <nav className="sticky top-0 z-50 w-full border-b border-slate-200/80 bg-white/95 shadow-sm backdrop-blur-md">
@@ -72,9 +72,8 @@ const activeLinkClass =
             <Link
               key={link.path}
               href={link.path}
-              className={`${baseLinkClass} ${
-                isActive(link.path) ? activeLinkClass : ""
-              }`}
+              className={`${baseLinkClass} ${isActive(link.path) ? activeLinkClass : ""
+                }`}
             >
               {link.name}
             </Link>
@@ -90,20 +89,20 @@ const activeLinkClass =
                 aria-label="Open user menu"
                 aria-expanded={avatarOpen}
                 onClick={() => setAvatarOpen(!avatarOpen)}
-                className="flex items-center gap-2 rounded-full border border-slate-200 bg-white p-1 pr-2 transition-all duration-200 hover:border-blue-300 hover:shadow-md"
+                className="flex h-12 items-center gap-3 rounded-full border border-slate-200 bg-white py-1 pl-1 pr-3 shadow-sm transition-all duration-200 hover:border-blue-400 hover:shadow-md"
               >
                 <Image
                   src={session?.user?.image || "/avatar.png"}
                   alt="User avatar"
-                  width={36}
-                  height={36}
-                  className="h-9 w-9 rounded-full object-cover"
+                  width={40}
+                  height={40}
+                  className="h-10 w-10 shrink-0 rounded-full object-cover"
                 />
+
                 <HiChevronDown
-                  size={17}
-                  className={`text-slate-500 transition-transform duration-200 ${
-                    avatarOpen ? "rotate-180" : ""
-                  }`}
+                  size={18}
+                  className={`shrink-0 text-slate-500 transition-transform duration-200 ${avatarOpen ? "rotate-180" : ""
+                    }`}
                 />
               </button>
 
@@ -133,9 +132,8 @@ const activeLinkClass =
             <>
               <Link
                 href="/login"
-                className={`${baseLinkClass} ${
-                  isActive("/login") ? "text-blue-600" : ""
-                }`}
+                className={`${baseLinkClass} ${isActive("/login") ? "text-blue-600" : ""
+                  }`}
               >
                 Login
               </Link>
@@ -174,11 +172,10 @@ const activeLinkClass =
                 key={link.path}
                 href={link.path}
                 onClick={() => setOpen(false)}
-                className={`rounded-lg px-4 py-3 text-sm font-semibold transition-colors duration-200 ${
-                  isActive(link.path)
+                className={`rounded-lg px-4 py-3 text-sm font-semibold transition-colors duration-200 ${isActive(link.path)
                     ? "bg-blue-50 text-blue-600"
                     : "text-slate-600 hover:bg-slate-50 hover:text-blue-600"
-                }`}
+                  }`}
               >
                 {link.name}
               </Link>
