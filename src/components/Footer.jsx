@@ -14,12 +14,15 @@ export default function Footer() {
 
         {/* Brand Section */}
         <div>
-          <h2 className="text-2xl font-bold text-sky-400">QuickRent</h2>
+          {/* <h2 className="text-2xl font-bold text-sky-400">QuickRent</h2> */}
+          <span className="text-2xl font-extrabold  text-white">
+            Quick <span className="text-blue-600">Rent</span>
+          </span>
           <p className="text-slate-400 mt-3 text-sm leading-relaxed">
             Find your perfect stay anywhere, anytime. Fast, secure, and seamless booking experience.
           </p>
 
-         
+
         </div>
 
         {/* Company Links */}
@@ -34,8 +37,8 @@ export default function Footer() {
             </li>
 
             <li>
-              <Link href="/careers" className="hover:text-white">
-                Careers
+              <Link href="/properties" className="hover:text-white">
+                Properties
               </Link>
             </li>
 
@@ -97,7 +100,7 @@ export default function Footer() {
               rel="noopener noreferrer"
               className="hover:text-sky-400"
             >
-              <FaFacebookF size={24}/>
+              <FaFacebookF size={24} />
             </a>
 
             <a
@@ -106,7 +109,7 @@ export default function Footer() {
               rel="noopener noreferrer"
               className="hover:text-pink-400"
             >
-              <FaInstagram size={24}/>
+              <FaInstagram size={24} />
             </a>
 
             <a
@@ -115,7 +118,7 @@ export default function Footer() {
               rel="noopener noreferrer"
               className="hover:text-sky-300"
             >
-              <FaTwitter size={24}/>
+              <FaTwitter size={24} />
             </a>
 
             <a
@@ -124,10 +127,10 @@ export default function Footer() {
               rel="noopener noreferrer"
               className="hover:text-sky-500 rounded-full"
             >
-              <FaLinkedin size={24}/>
+              <FaLinkedin size={24} />
             </a>
           </div>
-        
+
         </div>
 
       </div>
