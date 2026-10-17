@@ -9,6 +9,7 @@ import {
     FaHome, FaMoneyCheckAlt, FaHeart, FaUserCircle, FaChartLine, FaUsersCog, FaPlus, FaClipboardList,
     FaCalendarCheck, FaUser, FaChartPie, FaClipboardCheck, FaBuilding, FaUserShield, FaTimes
 } from 'react-icons/fa';
+import { MdReviews } from "react-icons/md";
 
 const DashBoardSidebar = ({ isOpen, setIsOpen }) => {
     const { data: session } = authClient.useSession();
@@ -36,6 +37,7 @@ const DashBoardSidebar = ({ isOpen, setIsOpen }) => {
         { key: "properties", label: "All Properties", icon: FaBuilding, href: "/dashboard/admin/properties", },
         { key: "bookings", label: "All Bookings", icon: FaClipboardCheck, href: "/dashboard/admin/bookings", },
         { key: "transactions", label: "Transactions", icon: FaMoneyCheckAlt, href: "/dashboard/admin/transactions", },
+        { key: "allreviews", label: "All Reviews", icon: MdReviews , href: "/dashboard/admin/allreviews", },
     ];
 
     
