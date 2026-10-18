@@ -8,17 +8,6 @@ QuickRent empowers tenants to discover, filter, and reserve rental properties wi
   <img width="800" alt="Quick-Rent Banner" src="https://github.com/user-attachments/assets/341ba444-ba67-4090-b937-52a843b20af0" />
 </p>
 
-<p align="center">
-  <img src="https://img.shields.io/badge/Next.js-16.2-black?style=for-the-badge&logo=next.js" alt="Next.js" />
-  <img src="https://img.shields.io/badge/React-19.2-61DAFB?style=for-the-badge&logo=react&logoColor=black" alt="React" />
-  <img src="https://img.shields.io/badge/Tailwind_CSS-v4-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" alt="Tailwind CSS" />
-  <img src="https://img.shields.io/badge/HeroUI-v3-000000?style=for-the-badge" alt="HeroUI" />
-  <img src="https://img.shields.io/badge/Better_Auth-1.6-purple?style=for-the-badge" alt="Better Auth" />
-  <img src="https://img.shields.io/badge/MongoDB-7.3-47A248?style=for-the-badge&logo=mongodb&logoColor=white" alt="MongoDB" />
-  <img src="https://img.shields.io/badge/Stripe-Payment-635BFF?style=for-the-badge&logo=stripe&logoColor=white" alt="Stripe" />
-  <img src="https://img.shields.io/badge/Vercel-Deployed-000000?style=for-the-badge&logo=vercel" alt="Vercel" />
-</p>
-
 ---
 
 ## 🌐 Live Links & Repositories
@@ -150,15 +139,6 @@ Open [http://localhost:3000](http://localhost:3000) in your browser to view the 
 
 ---
 
-## 📜 Available NPM Scripts
-
-| Command | Description |
-| :--- | :--- |
-| `npm run dev` | Starts the Next.js development server with hot module reloading at `localhost:3000` |
-| `npm run build` | Compiles and builds the production-ready application |
-| `npm run start` | Boots up the production server after building |
-| `npm run lint` | Runs Next.js ESLint to verify code quality and consistency |
-
 ---
 
 ## 🔒 Role-Based Access Control (RBAC)
@@ -180,7 +160,3 @@ Open [http://localhost:3000](http://localhost:3000) in your browser to view the 
 - **LinkedIn:** [Md waheduzzaman](https://www.linkedin.com/in/waheduzzaman-md)
 
 ---
-
-## 📄 License
-
-This project is licensed under the [MIT License](LICENSE).
