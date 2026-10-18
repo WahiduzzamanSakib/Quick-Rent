@@ -95,55 +95,6 @@ QuickRent empowers tenants to discover, filter, and reserve rental properties wi
 
 ---
 
-## 📁 Project Directory Structure
-
-```text
-Quick-Rent/
-├── public/                         # Static assets, logos, and icons
-├── src/
-│   ├── app/                        # Next.js App Router
-│   │   ├── (dashboardLayout)/      # Role-based dashboard layouts & routes
-│   │   │   └── dashboard/
-│   │   │       ├── admin/          # Admin suite (properties, users, bookings, transactions, reviews)
-│   │   │       ├── owner/          # Owner portal (overview, add-property, my-properties, booking-requests)
-│   │   │       ├── tenant/         # Tenant area (profile, favorites, my-bookings, payment-success)
-│   │   │       └── profile/        # Unified profile management
-│   │   ├── (mainLayout)/           # Public marketplace layout
-│   │   │   ├── about/              # About us page
-│   │   │   ├── booking/            # Booking confirmation
-│   │   │   ├── properties/         # Discover properties catalog & [id] details
-│   │   │   └── page.js             # Homepage / Landing page
-│   │   ├── api/                    # Next.js Server Route Handlers
-│   │   │   ├── auth/[...all]/      # Better Auth handler endpoints
-│   │   │   └── checkout_sessions/  # Stripe checkout session creation
-│   │   ├── login/                  # User login page
-│   │   ├── register/               # User registration page
-│   │   ├── globals.css             # Tailwind CSS & global rules
-│   │   ├── layout.js               # Root HTML layout & providers
-│   │   └── not-found.js            # Custom 404 page
-│   ├── components/                 # Reusable React components
-│   │   ├── fetureProperties/       # Featured properties cards
-│   │   ├── modal/                  # Reusable modals (Booking, Edit, Delete, Review, Profile)
-│   │   ├── staticComponents/       # Landing page sections (Hero, FAQ, Testimonials, CTA, etc.)
-│   │   ├── DashBoardSidebar.jsx    # Responsive role-aware sidebar
-│   │   ├── FavoritePage.jsx        # Saved wishlist component
-│   │   ├── Navbar.jsx              # Responsive navigation bar
-│   │   ├── Footer.jsx              # Global footer component
-│   │   └── ReviewSection.jsx       # Property review display & submission
-│   ├── lib/                        # Server & client utilities
-│   │   ├── api/                    # Session & role validation helpers
-│   │   ├── auth-client.js          # Better Auth React client instance
-│   │   ├── auth.js                 # Better Auth server configuration with MongoDB adapter
-│   │   └── stripe.js               # Stripe Node instance configuration
-│   └── proxy.js                    # Route authorization proxy
-├── .env                            # Environment configuration (ignored in git)
-├── next.config.mjs                 # Next.js configuration
-├── package.json                    # Project dependencies & npm scripts
-└── tailwind.config.js              # Tailwind CSS configuration
-```
-
----
-
 ## ⚙️ Installation & Setup
 
 ### Prerequisites
@@ -226,7 +177,7 @@ Open [http://localhost:3000](http://localhost:3000) in your browser to view the 
 **Md Waheduzzaman**
 
 - **GitHub:** [@WahiduzzamanSakib](https://github.com/WahiduzzamanSakib)
-- **LinkedIn:** [waheduzzaman-md](https://www.linkedin.com/in/waheduzzaman-md)
+- **LinkedIn:** [Md waheduzzaman](https://www.linkedin.com/in/waheduzzaman-md)
 
 ---
 
