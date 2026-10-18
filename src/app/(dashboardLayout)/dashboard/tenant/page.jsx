@@ -2,16 +2,17 @@
 import React from "react";
 import { authClient } from "@/lib/auth-client";
 import { motion } from "framer-motion";
-import { 
-  FiUser, 
-  FiMail, 
-  FiShield, 
-  FiCheckCircle, 
-  FiXCircle, 
-  FiEdit3, 
-  FiActivity 
-} from "react-icons/fi"; 
+import {
+  FiUser,
+  FiMail,
+  FiShield,
+  FiCheckCircle,
+  FiXCircle,
+  FiEdit3,
+  FiActivity
+} from "react-icons/fi";
 import Image from "next/image";
+import { EditProfileModal } from "@/components/modal/EditProfile";
 
 
 const containerVariants = {
@@ -39,7 +40,7 @@ const ProfilePage = () => {
   if (isPending) {
     return (
       <div className="flex justify-center items-center min-h-[60vh]">
-        <motion.div 
+        <motion.div
           animate={{ rotate: 360 }}
           transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
           className="rounded-full h-10 w-10 border-t-2 border-b-2 border-indigo-600"
@@ -58,34 +59,34 @@ const ProfilePage = () => {
   const avatarPlaceholder = `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(user.name || "User")}`;
 
   return (
-    <motion.div 
+    <motion.div
       variants={containerVariants}
       initial="hidden"
       animate="visible"
       className="max-w-4xl mx-auto p-4 sm:p-6 md:p-8 space-y-6 text-gray-800 dark:text-gray-100"
     >
       {/* Profile Header Card */}
-      <motion.div 
+      <motion.div
         variants={itemVariants}
         className="relative overflow-hidden rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-md"
       >
         <div className="h-28 sm:h-32 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 w-full" />
-        
+
         {/* Mobile-first adjustment: flex-col on mobile, sm:flex-row on bigger screens */}
         <div className="p-6 pt-0 flex flex-col items-center sm:flex-row sm:items-end sm:space-x-5 text-center sm:text-left">
-          <motion.div 
+          <motion.div
             whileHover={{ scale: 1.05 }}
             className="relative -mt-14 sm:-mt-16 flex z-10"
           >
             <Image
               src={user.image || avatarPlaceholder}
               alt={user.name || "User Avatar"}
-              width={112} 
-              height={112} 
+              width={112}
+              height={112}
               className="h-24 w-24 sm:h-28 sm:w-28 rounded-2xl object-cover ring-4 ring-white dark:ring-gray-900 bg-white shadow-xl"
             />
           </motion.div>
-          
+
           <div className="mt-4 sm:mt-6 flex-1 min-w-0 w-full flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-6 sm:pb-1">
             <div className="min-w-0 flex-1">
               <h1 className="text-xl sm:text-2xl font-bold tracking-tight truncate">
@@ -96,33 +97,26 @@ const ProfilePage = () => {
                 {user.role || "user"}
               </div>
             </div>
-            
+
             <div className="flex flex-col justify-stretch w-full sm:w-auto">
-              <motion.button 
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className="inline-flex justify-center items-center gap-2 px-4 py-2.5 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors shadow-sm w-full sm:w-auto"
-              >
-                <FiEdit3 />
-                Edit Profile
-              </motion.button>
+              <EditProfileModal user={user} />
             </div>
           </div>
         </div>
       </motion.div>
 
-     
+
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        
-       
-        <motion.div 
+
+
+        <motion.div
           variants={itemVariants}
           className="md:col-span-1 rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6 space-y-4 shadow-md"
         >
           <h3 className="font-bold text-lg flex items-center justify-center sm:justify-start gap-2">
             <FiActivity className="text-indigo-500" /> Account Status
           </h3>
-          
+
           <div className="space-y-3 border-t border-gray-100 dark:border-gray-800 pt-3">
             <div className="flex items-center justify-between text-sm">
               <span className="text-gray-500 dark:text-gray-400">Email Verified</span>
@@ -152,13 +146,13 @@ const ProfilePage = () => {
           </div>
         </motion.div>
 
-       
-        <motion.div 
+
+        <motion.div
           variants={itemVariants}
           className="md:col-span-2 rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6 shadow-md space-y-6"
         >
           <h3 className="font-bold text-lg text-center sm:text-left">Personal Information</h3>
-          
+
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 border-t border-gray-100 dark:border-gray-800 pt-4">
             <div className="flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left gap-3">
               <div className="p-2.5 rounded-xl bg-gray-50 dark:bg-gray-800 border border-gray-100 dark:border-gray-850 text-gray-500">
