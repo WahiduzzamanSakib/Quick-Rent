@@ -1,55 +1,48 @@
+
 "use client";
 
 import Link from "next/link";
-import { motion } from "framer-motion";
-import {
-  FiSearch,
-  FiHeart,
-  FiCreditCard,
-  FiStar,
-  FiHome,
-  FiBarChart2,
-  FiUsers,
-  FiCheckCircle,
-  FiLock,
-  FiUserCheck,
-  FiShield,
-} from "react-icons/fi";
+import { motion, useReducedMotion } from "framer-motion";
+import { FiSearch, FiHeart, FiCreditCard, FiStar, FiHome, FiBarChart2, FiUsers, FiCheckCircle, FiLock, FiUserCheck, FiShield, FiArrowRight, FiMapPin, FiKey, FiTrendingUp,} from "react-icons/fi";
 
 const audiences = [
   {
     icon: FiSearch,
-    title: "For tenants",
-    text: "Find the right place faster, and book it with confidence.",
+    number: "01",
+    title: "For Tenants",
+    text: "Discover a place that fits your lifestyle, location, and budget.",
     points: [
-      "Search by location, type and price, then sort results",
-      "Save properties to your favorites",
-      "Book online and pay your reservation fee securely",
-      "Track every booking and payment from your dashboard",
-      "Rate and review the places you stayed in",
+      "Search and filter approved properties",
+      "Save favorite properties for later",
+      "Book properties and pay securely",
+      "Track booking and payment status",
+      "Share ratings and reviews",
     ],
   },
   {
     icon: FiHome,
-    title: "For property owners",
-    text: "List your property and manage everything in one place.",
+    number: "02",
+    title: "For Property Owners",
+    text: "Manage your listings, bookings, and rental performance in one place.",
     points: [
-      "Add listings with photos, amenities and rent details",
-      "Review and approve or reject booking requests",
-      "See total earnings, properties and bookings at a glance",
-      "Follow monthly earnings on a 12-month chart",
-      "Read feedback if a listing needs changes",
+      "Create and manage property listings",
+      "Review incoming booking requests",
+      "Approve or reject tenant requests",
+      "Track earnings and monthly analytics",
+      "View feedback on rejected listings",
     ],
   },
   {
-    icon: FiUserCheck,
-    title: "For administrators",
-    text: "Keep the marketplace accurate, fair and safe.",
+    icon: FiShield,
+    number: "03",
+    title: "For Administrators",
+    text: "Keep the rental marketplace organized, transparent, and accountable.",
     points: [
-      "Approve or reject every property before it goes live",
-      "Give owners clear feedback on rejected listings",
-      "Manage users and change roles",
-      "Monitor all bookings and transactions",
+      "Review and moderate property listings",
+      "Manage users and account roles",
+      "Provide property rejection feedback",
+      "Monitor bookings and transactions",
+      "Oversee marketplace activity",
     ],
   },
 ];
@@ -57,51 +50,75 @@ const audiences = [
 const standards = [
   {
     icon: FiCheckCircle,
-    title: "Reviewed listings",
-    text: "A property appears publicly only after an administrator approves it.",
+    title: "Reviewed Properties",
+    text: "Administrators review property listings before they become publicly available.",
   },
   {
     icon: FiLock,
-    title: "Protected access",
-    text: "JWT-based authentication and role-based access keep each account limited to what it should see.",
+    title: "Role-Based Access",
+    text: "Protected routes and JWT-based authentication help restrict access to authorized users.",
   },
   {
     icon: FiCreditCard,
-    title: "Secure payments",
-    text: "Reservation fees are processed through Stripe, and every payment is saved as a transaction record.",
+    title: "Stripe Payments",
+    text: "Reservation payments are handled through Stripe, with successful transactions recorded.",
   },
   {
     icon: FiStar,
-    title: "Honest reviews",
-    text: "Only logged-in tenants can leave a rating, so feedback comes from real users.",
+    title: "Community Reviews",
+    text: "Authenticated tenants can share ratings and feedback about their rental experiences.",
   },
 ];
 
 const steps = [
   {
     icon: FiSearch,
-    title: "Search",
-    text: "Filter listings by location, type and price.",
+    title: "Discover",
+    text: "Search properties by location, property type, and price without logging in.",
   },
   {
     icon: FiHeart,
-    title: "Shortlist",
-    text: "Save favorites and compare details.",
+    title: "Choose",
+    text: "Log in or create an account to view full property details and save your favorite places.",
   },
   {
     icon: FiCreditCard,
-    title: "Book and pay",
-    text: "Send a booking request and pay the reservation fee.",
+    title: "Book Securely",
+    text: "Logged-in tenants can submit booking requests and pay the reservation fee securely.",
   },
   {
-    icon: FiBarChart2,
-    title: "Track",
-    text: "Follow booking status and payments in your dashboard.",
+    icon: FiKey,
+    title: "Stay Informed",
+    text: "Track your booking status and payment information anytime from your dashboard.",
+  },
+];
+
+
+const highlights = [
+  {
+    icon: FiUsers,
+    title: "Three Dedicated Roles",
+    description: "Separate experiences for tenants, owners, and administrators.",
+  },
+  {
+    icon: FiShield,
+    title: "Approval-Based Listings",
+    description: "Property moderation helps keep published listings organized.",
+  },
+  {
+    icon: FiTrendingUp,
+    title: "Owner Analytics",
+    description: "Track property activity, bookings, and monthly earnings.",
+  },
+  {
+    icon: FiMapPin,
+    title: "Flexible Property Search",
+    description: "Explore apartments, houses, offices, and shops.",
   },
 ];
 
 const fadeUp = {
-  hidden: { opacity: 0, y: 30 },
+  hidden: { opacity: 0, y: 24 },
   visible: { opacity: 1, y: 0 },
 };
 
@@ -109,236 +126,302 @@ const containerVariants = {
   hidden: {},
   visible: {
     transition: {
-      staggerChildren: 0.12,
+      staggerChildren: 0.1,
     },
   },
 };
 
-export default function AboutPage() {
+function SectionHeading({ eyebrow, title, description, light = false }) {
   return (
-    <main>
-      {/* Header */}
-      <section className="bg-[#050a30] py-16 sm:py-24">
-        <motion.div
-          initial="hidden"
-          animate="visible"
-          variants={containerVariants}
-          className="mx-auto max-w-4xl px-4 text-center"
-        >
-          <motion.h1
-            variants={fadeUp}
-            transition={{ duration: 0.6 }}
-            className="text-4xl font-bold text-white sm:text-5xl"
-          >
-            A clearer way to rent property
-          </motion.h1>
+    <motion.div
+      variants={fadeUp}
+      className="mx-auto max-w-2xl text-center"
+    >
+      <p
+        className={`text-xs font-bold uppercase tracking-[0.22em] ${
+          light ? "text-blue-300" : "text-blue-600"
+        }`}
+      >
+        {eyebrow}
+      </p>
 
-          <motion.p
-            variants={fadeUp}
-            transition={{ duration: 0.6, delay: 0.15 }}
-            className="mx-auto mt-5 max-w-2xl text-lg leading-relaxed text-slate-300"
-          >
-            QuickRent is a rental marketplace where owners list their
-            properties and tenants discover, book and pay online. We keep the
-            process transparent for everyone involved.
-          </motion.p>
+      <h2
+        className={`mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl ${
+          light ? "text-white" : "text-[#101828]"
+        }`}
+      >
+        {title}
+      </h2>
+
+      <p
+        className={`mt-4 text-sm leading-7 sm:text-base ${
+          light ? "text-slate-300" : "text-slate-600"
+        }`}
+      >
+        {description}
+      </p>
+    </motion.div>
+  );
+}
+
+export default function AboutPage() {
+  const shouldReduceMotion = useReducedMotion();
+
+  const reveal = shouldReduceMotion
+    ? {}
+    : {
+        initial: "hidden",
+        whileInView: "visible",
+        viewport: { once: true, amount: 0.15 },
+        variants: containerVariants,
+      };
+
+  const itemReveal = shouldReduceMotion
+    ? {}
+    : {
+        variants: fadeUp,
+        transition: { duration: 0.5 },
+      };
+
+  return (
+    <main className="overflow-hidden bg-white text-[#101828]">
+      {/* Hero */}
+      <section className="relative isolate bg-[#050a30]">
+        <div className="absolute inset-0 -z-10">
+          <img
+            src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=2000&q=85"
+            alt=""
+            className="h-full w-full object-cover opacity-35 "
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#050a30] via-[#050a30]/90 to-[#050a30]/45" />
+        </div>
+
+        <motion.div
+          initial={shouldReduceMotion ? false : { opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: shouldReduceMotion ? 0 : 0.65 }}
+          className="mx-auto grid max-w-7xl items-center gap-12 px-5 py-12 sm:px-8 sm:py-16 lg:grid-cols-[1.1fr_0.9fr]"
+        >
+          <div>
+            <span className="inline-flex items-center gap-2 rounded-full border border-blue-300/25 bg-blue-400/10 px-4 py-2 text-sm font-medium text-blue-200">
+              <FiHome />
+              About QuickRent
+            </span>
+
+            <h1 className="mt-7 max-w-2xl text-4xl font-extrabold leading-tight tracking-tight text-white sm:text-5xl lg:text-6xl">
+              Find a Place.
+              <span className="block text-blue-400">
+                Feel at Home.
+              </span>
+            </h1>
+
+            <p className="mt-6 max-w-xl text-base leading-8 text-slate-300 sm:text-lg">
+              QuickRent connects property owners and tenants through a
+              transparent rental marketplace. Discover suitable properties,
+              manage bookings, and handle reservation payments in one
+              convenient place.
+            </p>
+
+            <div className="mt-9 flex flex-wrap gap-4">
+              <Link
+                href="/properties"
+                className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-6 py-3.5 font-semibold text-white shadow-lg shadow-blue-950/30 transition-colors hover:bg-blue-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-300 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050a30]"
+              >
+                Explore Properties
+                <FiArrowRight />
+              </Link>
+
+              <Link
+                href="/register"
+                className="inline-flex items-center gap-2 rounded-lg border border-white/30 px-6 py-3.5 font-semibold text-white transition-colors hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+              >
+                Join QuickRent
+              </Link>
+            </div>
+          </div>
+
+          <div className="relative mx-auto w-full max-w-lg">
+            <div className="absolute -inset-5 rounded-[2rem] bg-blue-500/15 blur-3xl" />
+
+            <div className="relative overflow-hidden rounded-2xl border border-white/15 bg-white/10 p-3 shadow-2xl backdrop-blur-sm">
+              <img
+                src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=85"
+                alt="Modern residential property with a welcoming interior"
+                className="h-64 w-full rounded-xl object-cover sm:h-80"
+              />
+
+              <div className="flex items-center gap-3 px-3 py-4">
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-blue-500/20 text-blue-300">
+                  <FiCheckCircle size={22} />
+                </div>
+                <div>
+                  <p className="font-semibold text-white">
+                    A clearer rental journey
+                  </p>
+                  <p className="mt-1 text-sm text-slate-300">
+                    Discover, book, and manage in one place.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
         </motion.div>
       </section>
 
-      {/* Mission */}
-      <section className="bg-white py-16 sm:py-20">
-        <div className="mx-auto grid max-w-6xl gap-10 px-4 lg:grid-cols-2 lg:items-center">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.2 }}
-            variants={containerVariants}
-          >
-            <motion.h2
-              variants={fadeUp}
-              className="text-3xl font-bold text-slate-900 sm:text-4xl"
-            >
-              Our mission
-            </motion.h2>
+      {/* Introduction */}
+      <section className="bg-white py-14 sm:py-18">
+        <motion.div
+          {...reveal}
+          className="mx-auto grid max-w-7xl items-center gap-12 px-5 sm:px-8 lg:grid-cols-2"
+        >
+          <motion.div {...itemReveal}>
+            <p className="text-xs font-bold uppercase tracking-[0.22em] text-blue-600">
+              Our Mission
+            </p>
 
-            <motion.p
-              variants={fadeUp}
-              className="mt-4 leading-relaxed text-slate-600"
-            >
-              Finding a rental should not mean chasing phone numbers or
-              guessing whether a listing is real. QuickRent brings owners and
-              tenants together on one platform, with reviewed listings, online
-              booking and secure payment built in.
-            </motion.p>
+            <h2 className="mt-4 text-3xl font-extrabold leading-tight tracking-tight sm:text-4xl">
+              Making property rental simpler for everyone.
+            </h2>
 
-            <motion.p
-              variants={fadeUp}
-              className="mt-4 leading-relaxed text-slate-600"
-            >
-              Apartments, houses, offices and shops are all listed here. Each
-              property goes through approval, each booking has a clear status,
-              and each payment is recorded, so tenants and owners always know
-              where they stand.
-            </motion.p>
+            <p className="mt-6 leading-8 text-slate-600">
+              Finding a place to rent can involve too many separate steps.
+              QuickRent brings property discovery, listing management,
+              booking requests, and reservation payments into a single
+              platform.
+            </p>
+
+            <p className="mt-4 leading-8 text-slate-600">
+              Our goal is to make the rental process easier to understand.
+              Property owners can manage their listings and bookings, while
+              tenants can compare properties, save favorites, and follow
+              their booking progress.
+            </p>
+
+            <div className="mt-7 flex items-start gap-3">
+              <FiCheckCircle className="mt-1 shrink-0 text-blue-600" size={20} />
+              <p className="text-sm leading-7 text-slate-700">
+                Clear property information, visible booking statuses, and
+                structured property reviews help everyone stay informed.
+              </p>
+            </div>
           </motion.div>
 
           <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.2 }}
-            variants={containerVariants}
-            className="grid grid-cols-2 gap-4"
+            {...itemReveal}
+            className="grid grid-cols-1 gap-4 sm:grid-cols-2"
           >
-            {[
-              {
-                icon: FiUsers,
-                label: "Three roles",
-                text: "Tenant, Owner and Admin",
-              },
-              {
-                icon: FiShield,
-                label: "Approval first",
-                text: "Listings are reviewed before going live",
-              },
-              {
-                icon: FiCreditCard,
-                label: "Stripe payments",
-                text: "Secure reservation fees",
-              },
-              {
-                icon: FiStar,
-                label: "Real reviews",
-                text: "Ratings from logged-in tenants",
-              },
-            ].map(({ icon: Icon, label, text }) => (
+            {highlights.map(({ icon: Icon, title, description }) => (
               <motion.div
-                key={label}
-                variants={fadeUp}
-                transition={{ duration: 0.5 }}
-                whileHover={{ y: -5, scale: 1.02 }}
-                className="rounded-xl border border-slate-200 bg-slate-50 p-5"
+                key={title}
+                whileHover={shouldReduceMotion ? undefined : { y: -5 }}
+                className="rounded-2xl border border-slate-200 bg-slate-50 p-6 transition-colors hover:border-blue-200 hover:bg-blue-50/40"
               >
-                <Icon className="text-blue-600" size={24} />
-                <h3 className="mt-3 font-semibold text-slate-900">{label}</h3>
-                <p className="mt-1 text-sm leading-relaxed text-slate-600">
-                  {text}
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-100 text-blue-700">
+                  <Icon size={23} />
+                </div>
+
+                <h3 className="mt-5 font-bold text-slate-900">{title}</h3>
+
+                <p className="mt-2 text-sm leading-7 text-slate-600">
+                  {description}
                 </p>
               </motion.div>
             ))}
           </motion.div>
-        </div>
+        </motion.div>
       </section>
 
       {/* Audiences */}
-      <section className="bg-slate-50 py-16 sm:py-20">
-        <div className="mx-auto max-w-6xl px-4">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.3 }}
-            variants={containerVariants}
-            className="text-center"
-          >
-            <motion.h2
-              variants={fadeUp}
-              className="text-3xl font-bold text-slate-900 sm:text-4xl"
-            >
-              Built for everyone in the rental process
-            </motion.h2>
-
-            <motion.p
-              variants={fadeUp}
-              className="mx-auto mt-3 max-w-2xl text-slate-600"
-            >
-              Each role gets its own dashboard with only the tools it needs.
-            </motion.p>
+      <section className="bg-slate-50 py-14 sm:py-18">
+        <div className="mx-auto max-w-7xl px-5 sm:px-8">
+          <motion.div {...reveal}>
+            <SectionHeading
+              eyebrow="Who We Serve"
+              title="One platform. Three dedicated experiences."
+              description="Tenants, property owners, and administrators get the tools they need through role-specific dashboards."
+            />
           </motion.div>
 
           <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.15 }}
-            variants={containerVariants}
-            className="mt-12 grid gap-6 lg:grid-cols-3"
+            {...reveal}
+            className="mt-12 grid items-stretch gap-6 lg:grid-cols-3"
           >
-            {audiences.map(({ icon: Icon, title, text, points }) => (
-              <motion.div
+            {audiences.map(({ icon: Icon, number, title, text, points }) => (
+              <motion.article
                 key={title}
-                variants={fadeUp}
-                transition={{ duration: 0.5 }}
-                whileHover={{ y: -6 }}
-                className="flex h-full flex-col rounded-xl border border-slate-200 bg-white p-6 shadow-sm transition-shadow duration-300 hover:shadow-xl"
+                {...itemReveal}
+                whileHover={shouldReduceMotion ? undefined : { y: -6 }}
+                className="flex h-full flex-col rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition-shadow hover:shadow-xl sm:p-7"
               >
-                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-blue-600 text-white">
-                  <Icon size={22} />
+                <div className="flex items-center justify-between">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 text-blue-700">
+                    <Icon size={24} />
+                  </div>
+
+                  <span className="text-sm font-bold tracking-widest text-slate-300">
+                    {number}
+                  </span>
                 </div>
 
-                <h3 className="mt-4 text-xl font-semibold text-slate-900">
+                <h3 className="mt-5 text-xl font-bold text-slate-900">
                   {title}
                 </h3>
 
-                <p className="mt-1 text-slate-600">{text}</p>
+                <p className="mt-3 min-h-14 text-sm leading-7 text-slate-600">
+                  {text}
+                </p>
 
-                <ul className="mt-5 space-y-3 text-sm text-slate-700">
-                  {points.map((p) => (
-                    <li key={p} className="flex gap-2">
+                <div className="my-5 border-t border-slate-100" />
+
+                <ul className="space-y-3">
+                  {points.map((point) => (
+                    <li
+                      key={point}
+                      className="flex items-start gap-2.5 text-sm leading-6 text-slate-700"
+                    >
                       <FiCheckCircle
-                        className="mt-0.5 shrink-0 text-blue-600"
+                        className="mt-1 shrink-0 text-blue-600"
                         size={16}
                       />
-                      <span>{p}</span>
+                      <span>{point}</span>
                     </li>
                   ))}
                 </ul>
-              </motion.div>
+              </motion.article>
             ))}
           </motion.div>
         </div>
       </section>
 
-      {/* Standards */}
-      <section className="bg-white py-16 sm:py-20">
-        <div className="mx-auto max-w-6xl px-4">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.3 }}
-            variants={containerVariants}
-            className="text-center"
-          >
-            <motion.h2
-              variants={fadeUp}
-              className="text-3xl font-bold text-slate-900 sm:text-4xl"
-            >
-              How we keep QuickRent trustworthy
-            </motion.h2>
-
-            <motion.p
-              variants={fadeUp}
-              className="mx-auto mt-3 max-w-2xl text-slate-600"
-            >
-              Trust is built into how the platform works, not added afterwards.
-            </motion.p>
+      {/* Trust and security */}
+      <section className="bg-white py-14 sm:py-18">
+        <div className="mx-auto max-w-7xl px-5 sm:px-8">
+          <motion.div {...reveal}>
+            <SectionHeading
+              eyebrow="Trust & Transparency"
+              title="A better rental experience starts with trust."
+              description="QuickRent brings together listing moderation, protected access, payment processing, and tenant feedback."
+            />
           </motion.div>
 
           <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.15 }}
-            variants={containerVariants}
-            className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4"
+            {...reveal}
+            className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4"
           >
             {standards.map(({ icon: Icon, title, text }) => (
               <motion.div
                 key={title}
-                variants={fadeUp}
-                transition={{ duration: 0.5 }}
-                whileHover={{ y: -5 }}
-                className="h-full rounded-xl border border-slate-200 bg-slate-50 p-5 transition-shadow duration-300 hover:shadow-lg"
+                {...itemReveal}
+                whileHover={shouldReduceMotion ? undefined : { y: -5 }}
+                className="rounded-2xl border border-slate-200 bg-white p-6 transition-shadow hover:shadow-lg"
               >
-                <Icon className="text-blue-600" size={26} />
-                <h3 className="mt-3 font-semibold text-slate-900">{title}</h3>
-                <p className="mt-1 text-sm leading-relaxed text-slate-600">
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 text-blue-700">
+                  <Icon size={24} />
+                </div>
+
+                <h3 className="mt-5 font-bold text-slate-900">{title}</h3>
+
+                <p className="mt-3 text-sm leading-7 text-slate-600">
                   {text}
                 </p>
               </motion.div>
@@ -347,96 +430,86 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Process */}
-      <section className="bg-slate-50 py-16 sm:py-20">
-        <div className="mx-auto max-w-6xl px-4">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.3 }}
-            variants={fadeUp}
-            className="text-center"
-          >
-            <h2 className="text-3xl font-bold text-slate-900 sm:text-4xl">
-              From search to booking
-            </h2>
+      {/* How it works */}
+      <section className="bg-[#f4f7fc] py-14 sm:py-18">
+        <div className="mx-auto max-w-7xl px-5 sm:px-8">
+          <motion.div {...reveal}>
+            <SectionHeading
+              eyebrow="How It Works"
+              title="Your next place is just a few steps away."
+              description="From the first search to checking your reservation, QuickRent keeps the process organized."
+            />
           </motion.div>
 
-          <motion.ol
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.15 }}
-            variants={containerVariants}
-            className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-4"
+          <motion.div
+            {...reveal}
+            className="relative mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4"
           >
-            {steps.map(({ icon: Icon, title, text }, i) => (
-              <motion.li
+            {steps.map(({ icon: Icon, title, text }, index) => (
+              <motion.article
                 key={title}
-                variants={fadeUp}
-                transition={{ duration: 0.5 }}
-                whileHover={{ y: -8, scale: 1.02 }}
-                className="rounded-2xl border border-slate-200 bg-white p-6 text-center shadow-sm transition-all duration-300 ease-out hover:border-blue-200 hover:shadow-xl hover:shadow-blue-100/60"
+                {...itemReveal}
+                whileHover={shouldReduceMotion ? undefined : { y: -6 }}
+                className="relative rounded-2xl border border-slate-200 bg-white p-6 text-center shadow-sm transition-shadow hover:shadow-lg"
               >
-                <motion.div
-                  whileHover={{ rotate: 8, scale: 1.1 }}
-                  transition={{ type: "spring", stiffness: 300 }}
-                  className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-blue-600 text-white"
-                >
-                  <Icon size={24} />
-                </motion.div>
-
-                <span className="mt-4 block text-sm font-semibold text-blue-600">
-                  Step {i + 1}
+                <span className="absolute right-4 top-4 text-xs font-bold text-slate-300">
+                  0{index + 1}
                 </span>
 
-                <h3 className="mt-1 text-lg font-semibold text-slate-900">
+                <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-600 text-white shadow-lg shadow-blue-600/20">
+                  <Icon size={24} />
+                </div>
+
+                <h3 className="mt-5 text-lg font-bold text-slate-900">
                   {title}
                 </h3>
 
-                <p className="mx-auto mt-2 max-w-xs text-sm text-slate-600">
+                <p className="mt-3 text-sm leading-7 text-slate-600">
                   {text}
                 </p>
-              </motion.li>
+              </motion.article>
             ))}
-          </motion.ol>
+          </motion.div>
         </div>
       </section>
 
       {/* CTA */}
-      <section className="bg-blue-900 py-16 sm:py-20">
+      <section className="bg-[#050a30] py-14 sm:py-18">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={shouldReduceMotion ? false : { opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.6 }}
-          className="mx-auto max-w-3xl px-4 text-center"
+          transition={{ duration: shouldReduceMotion ? 0 : 0.6 }}
+          className="mx-auto max-w-3xl px-5 text-center sm:px-8"
         >
-          <h2 className="text-3xl font-bold text-white sm:text-4xl">
-            Start with Quick Rent today
+          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-500/15 text-blue-300">
+            <FiHome size={28} />
+          </div>
+
+          <h2 className="mt-6 text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
+            Ready to find your next place?
           </h2>
 
-          <p className="mx-auto mt-4 max-w-xl text-blue-100">
-            Browse approved properties, or create an account to list your own.
+          <p className="mx-auto mt-4 max-w-xl leading-7 text-slate-300">
+            Explore available properties or create an account to start your
+            rental journey with QuickRent.
           </p>
 
-          <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-            <motion.div whileHover={{ y: -4 }} whileTap={{ scale: 0.97 }}>
-              <Link
-                href="/properties"
-                className="block rounded-lg bg-white px-6 py-3 font-semibold text-blue-600 transition-all duration-300 hover:bg-blue-50 hover:shadow-lg"
-              >
-                Browse properties
-              </Link>
-            </motion.div>
+          <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
+            <Link
+              href="/properties"
+              className="inline-flex items-center justify-center gap-2 rounded-lg bg-blue-600 px-6 py-3.5 font-semibold text-white transition-colors hover:bg-blue-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-300"
+            >
+              Browse Properties
+              <FiArrowRight />
+            </Link>
 
-            <motion.div whileHover={{ y: -4 }} whileTap={{ scale: 0.97 }}>
-              <Link
-                href="/register"
-                className="block rounded-lg border border-white px-6 py-3 font-semibold text-white transition-all duration-300 hover:bg-white/10 hover:shadow-lg"
-              >
-                Create free account
-              </Link>
-            </motion.div>
+            <Link
+              href="/register"
+              className="inline-flex items-center justify-center rounded-lg border border-white/30 px-6 py-3.5 font-semibold text-white transition-colors hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+            >
+              Create Free Account
+            </Link>
           </div>
         </motion.div>
       </section>
