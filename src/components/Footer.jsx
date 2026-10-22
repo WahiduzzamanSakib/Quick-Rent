@@ -43,14 +43,14 @@ export default function Footer() {
             </li>
 
             <li>
-              <Link href="/blog" className="hover:text-white">
-                Blog
+              <Link href="/#how-to-works" className="hover:text-white">
+            How it works
               </Link>
             </li>
 
             <li>
-              <Link href="/press" className="hover:text-white">
-                Press
+              <Link href="/#reviews" className="hover:text-white">
+               Give Review
               </Link>
             </li>
 
@@ -63,25 +63,25 @@ export default function Footer() {
           <ul className="space-y-2 text-slate-400 text-sm">
 
             <li>
-              <Link href="/help" className="hover:text-white">
+              <Link href="/#help" className="hover:text-white">
                 Help Center
               </Link>
             </li>
 
             <li>
-              <Link href="/contact" className="hover:text-white">
+              <Link href="#" className="hover:text-white">
                 Contact Us
               </Link>
             </li>
 
             <li>
-              <Link href="/cancellation" className="hover:text-white">
+              <Link href="#" className="hover:text-white">
                 Cancellation
               </Link>
             </li>
 
             <li>
-              <Link href="/safety" className="hover:text-white">
+              <Link href="#" className="hover:text-white">
                 Safety
               </Link>
             </li>

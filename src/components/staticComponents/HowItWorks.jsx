@@ -47,7 +47,7 @@ const itemVariants = {
 
 export default function HowItWorks() {
   return (
-    <section className="bg-slate-50 py-16 sm:py-20">
+    <section id="how-to-works" className="scroll-mt-20 bg-slate-50 py-16 sm:py-20">
       <div className="mx-auto max-w-6xl px-4">
         {/* Heading */}
         <motion.div

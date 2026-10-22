@@ -66,7 +66,7 @@ export default function FAQ() {
   };
 
   return (
-    <section className="border-t border-blue-300 bg-gray-50 py-10 sm:py-10">
+    <section id="help" className="scroll-mt-20 border-t border-blue-300 bg-gray-50 py-10 sm:py-10">
       <div className="mx-auto max-w-3xl px-4">
         <motion.h2
           initial={{ opacity: 0, y: 25 }}
@@ -142,22 +142,6 @@ export default function FAQ() {
             );
           })}
         </motion.div>
-
-        <motion.p
-          initial={{ opacity: 0, y: 15 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          className="mt-6 text-center text-sm text-slate-600"
-        >
-          Still have a question?{" "}
-          <Link
-            href="/contact"
-            className="font-semibold text-blue-600 transition-colors duration-300 hover:text-blue-800 hover:underline"
-          >
-            Contact us →
-          </Link>
-        </motion.p>
       </div>
     </section>
   );
