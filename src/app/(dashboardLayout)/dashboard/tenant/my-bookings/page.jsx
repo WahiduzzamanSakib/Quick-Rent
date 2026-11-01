@@ -4,292 +4,213 @@ import { useEffect, useState } from "react";
 import { authClient } from "@/lib/auth-client";
 import { motion } from "framer-motion";
 import { DeletedBooking } from "@/components/modal/DelateBooking";
+import Link from "next/link";
+import { FiCalendar, FiClock, FiCheckCircle, FiXCircle, FiCreditCard, FiSearch } from "react-icons/fi";
 
 const MyBookingsPage = () => {
-    const { data: session } = authClient.useSession();
+  const { data: session } = authClient.useSession();
 
-    const [properties, setProperties] = useState([]);
-    const [loading, setLoading] = useState(true);
+  const [properties, setProperties] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        const fetchProperties = async () => {
-            if (!session?.user?.email) return;
+  useEffect(() => {
+    const fetchProperties = async () => {
+      if (!session?.user?.email) return;
 
-            try {
-                const { data: tokenData } = await authClient.token();
-                const res = await fetch(
-                    `${process.env.NEXT_PUBLIC_API_URL}/api/properties/booking/${session?.user?.email}`,
-                    {
-                        headers: {
-                            authorization: `Bearer ${tokenData?.token}`,
-                        },
-                        cache: "no-store",
-                    }
-                );
-
-                const data = await res.json();
-                console.log(data)
-                setProperties(Array.isArray(data) ? data : [data]);
-            } catch (err) {
-                console.error("Failed to fetch properties:", err);
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchProperties();
-    }, [session]);
-
-
-    if (loading) {
-        return (
-            <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                className="flex justify-center items-center min-h-[300px]"
-            >
-                <div className="loader"></div>
-            </motion.div>
+      try {
+        const { data: tokenData } = await authClient.token();
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/properties/booking/${session?.user?.email}`,
+          {
+            headers: {
+              authorization: `Bearer ${tokenData?.token}`,
+            },
+            cache: "no-store",
+          }
         );
-    }
 
+        const data = await res.json();
+        setProperties(Array.isArray(data) ? data : data?.data || [data]);
+      } catch (err) {
+        console.error("Failed to fetch tenant bookings:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchProperties();
+  }, [session]);
+
+  if (loading) {
     return (
-        <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="p-4 sm:p-6 max-w-7xl mx-auto"
-        >
-
-            <motion.h1
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                className="text-xl sm:text-2xl font-bold mb-6"
-            >
-                My Bookings
-            </motion.h1>
-
-
-            {properties.length === 0 ? (
-                <motion.p
-                    initial={{ scale: 0.8 }}
-                    animate={{ scale: 1 }}
-                    className="text-center text-gray-500 py-10"
-                >
-                    No Bookings found.
-                </motion.p>
-
-            ) : (
-
-                <>
-                    {/* Desktop Table */}
-                    <div className="hidden md:block overflow-x-auto">
-
-                        <table className="min-w-full bg-white shadow rounded-xl overflow-hidden">
-
-                            <thead className="bg-gray-100">
-                                <tr>
-                                    {[
-                                        "Title",
-                                        "Days",
-                                        "Rent",
-                                        "Booking",
-                                        "Check in",
-                                        "Payment ",
-                                        "Booking ",
-                                        "Actions"
-                                    ].map((item) => (
-                                        <th
-                                            key={item}
-                                            className="text-left p-4 text-sm font-semibold"
-                                        >
-                                            {item}
-                                        </th>
-                                    ))}
-                                </tr>
-                            </thead>
-
-                            <tbody>
-                                {properties.map((property, index) => (
-
-                                    <motion.tr
-                                        key={property._id}
-                                        initial={{
-                                            opacity: 0,
-                                            y: 30
-                                        }}
-                                        animate={{
-                                            opacity: 1,
-                                            y: 0
-                                        }}
-                                        transition={{
-                                            delay: index * 0.1
-                                        }}
-                                        className="border-t hover:bg-gray-50 transition"
-                                    >
-
-                                        <td className="p-4 font-semibold">
-                                            {property?.propertyTitle}
-                                        </td>
-                                        <td className="p-4">
-                                            {property?.totalDays}
-                                        </td>
-                                        <td className="p-4 text-green-600 font-bold">
-                                            ${property?.totalRent}
-                                        </td>
-                                        
-                                        <td className="p-4">
-                                            {property?.createdAt
-                                                ? new Date(property.createdAt).toLocaleDateString("en-GB")
-                                                : ""}
-                                        </td>
-
-                                        <td className="p-4">
-                                            {property?.checkIn}
-                                        </td>
-
-
-                                        <td className="p-4">
-                                            <span
-                                                className={`inline-flex items-center rounded-full px-3 py-1 text-sm font-medium ${property?.paymentStatus === "paid"
-                                                    ? "bg-green-100 text-green-700"
-                                                    : "bg-red-100 text-red-700"
-                                                    }`}
-                                            >
-                                                {property?.paymentStatus}
-                                            </span>
-                                        </td>
-
-                                        <td className="p-4">
-                                            <span
-                                                className={`px-3 py-1 rounded-full text-xs font-medium
-                                                ${property?.bookingStatus === "approved"
-                                                        ? "bg-green-100 text-green-700"
-                                                        : property?.bookingStatus === "rejected"
-                                                            ? "bg-red-100 text-red-700"
-                                                            : "bg-yellow-100 text-yellow-700"
-                                                    }
-                                                `}
-                                            >
-                                                {property?.bookingStatus}
-                                            </span>
-
-                                        </td>
-
-
-                                        <td className="p-4">
-                                            <DeletedBooking property={property} />
-                                        </td>
-                                    </motion.tr>
-                                ))}
-
-                            </tbody>
-
-                        </table>
-                    </div>
-
-                    {/* Mobile Cards */}
-                    <div className="md:hidden space-y-4">
-                        {properties.map((property, index) => (
-                            <motion.div
-                                key={property._id}
-                                initial={{
-                                    opacity: 0,
-                                    scale: 0.9
-                                }}
-                                animate={{
-                                    opacity: 1,
-                                    scale: 1
-                                }}
-                                transition={{
-                                    delay: index * 0.1
-                                }}
-                                className="bg-white shadow rounded-xl p-4 space-y-3"
-                            >
-
-                                <h2 className="font-bold text-lg">
-                                    {property?.propertyTitle}
-                                </h2>
-
-                                <div className="flex justify-between">
-                                    <div >
-                                        <span className="font-semibold">
-                                            Rent:
-                                        </span>
-
-                                        <span className="text-green-600 font-bold ml-2">
-                                            ${property?.totalRent}
-                                        </span>
-                                    </div>
-
-                                    <div>
-                                        <span className="font-semibold">
-                                            Payment:
-                                        </span>
-
-                                        <span
-                                            className={`ml-2 inline-flex items-center rounded-full px-3 py-1 text-sm font-medium ${property?.paymentStatus === "paid"
-                                                ? "bg-green-100 text-green-700"
-                                                : "bg-red-100 text-red-700"
-                                                }`}
-                                        >
-                                            {property?.paymentStatus}
-                                        </span>
-                                    </div>
-
-                                </div>
-
-                                <div className="flex justify-between">
-                                    <div >
-                                        <span className="font-semibold">
-                                            Booking:
-                                        </span>
-
-                                        <span className=" ml-2">
-                                            {property?.createdAt
-                                                ? new Date(property.createdAt).toLocaleDateString("en-GB")
-                                                : ""}
-                                        </span>
-                                    </div>
-
-                                    <div>
-                                        <span >
-                                            Check in:
-                                        </span>
-
-                                        <span className="ml-2">
-                                            {property?.checkIn}
-                                        </span>
-                                    </div>
-
-                                </div>
-
-                                <div className="flex justify-between">
-                                    <div>
-                                        <span className="font-semibold">
-                                            Status:
-                                        </span>
-
-                                        <span
-                                            className={`ml-2 px-3 py-1 rounded-full text-xs
-                                        ${property?.bookingStatus === "approved"
-                                                    ? "bg-green-100 text-green-700"
-                                                    : property?.bookingStatus === "rejected"
-                                                        ? "bg-red-100 text-red-700"
-                                                        : "bg-yellow-100 text-yellow-700"
-                                                }`}
-                                        >
-                                            {property?.bookingStatus}
-                                        </span>
-                                    </div>
-                                    <DeletedBooking property={property} />
-                                </div>
-                            </motion.div>
-                        ))}
-                    </div>
-                </>
-            )}
-        </motion.div>
+      <div className="min-h-[50vh] flex flex-col items-center justify-center gap-3">
+        <div className="loader"></div>
+        <p className="text-xs font-semibold tracking-wider text-slate-400 uppercase">
+          Loading Your Bookings...
+        </p>
+      </div>
     );
+  }
+
+  return (
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <span className="text-xs font-bold uppercase tracking-widest text-blue-600">
+            Tenant Reservations
+          </span>
+          <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight mt-0.5">
+            My Bookings
+          </h1>
+          <p className="text-xs sm:text-sm text-slate-500 mt-1">
+            Review your confirmed stays, reservation payments, and check-in schedules.
+          </p>
+        </div>
+
+        <Link
+          href="/properties"
+          className="inline-flex items-center gap-2 rounded-xl bg-blue-600 px-4 py-2.5 text-xs font-bold text-white shadow-md shadow-blue-600/20 hover:bg-blue-700 transition active:scale-98 w-fit"
+        >
+          <FiSearch />
+          <span>Browse More Places</span>
+        </Link>
+      </div>
+
+      {properties.length === 0 ? (
+        <div className="text-center py-20 rounded-3xl border border-dashed border-slate-300 bg-white p-8">
+          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-50 text-blue-600 mb-3">
+            <FiCalendar size={26} />
+          </div>
+          <h2 className="text-lg font-bold text-slate-900">No active bookings found</h2>
+          <p className="text-xs text-slate-500 mt-1 max-w-sm mx-auto">
+            You haven't booked any rental spaces yet. Explore available apartments, houses, and studios today.
+          </p>
+          <Link
+            href="/properties"
+            className="mt-4 inline-flex items-center gap-2 rounded-xl bg-blue-600 px-4 py-2 text-xs font-bold text-white shadow-xs hover:bg-blue-700 transition"
+          >
+            <span>Explore Properties</span>
+          </Link>
+        </div>
+      ) : (
+        <>
+          {/* Desktop Table */}
+          <div className="hidden lg:block rounded-2xl border border-slate-200/90 bg-white shadow-xs overflow-hidden">
+            <table className="min-w-full divide-y divide-slate-100">
+              <thead className="bg-slate-50/80">
+                <tr>
+                  <th className="text-left text-xs font-bold uppercase tracking-wider text-slate-400 p-4">Property</th>
+                  <th className="text-left text-xs font-bold uppercase tracking-wider text-slate-400 p-4">Duration</th>
+                  <th className="text-left text-xs font-bold uppercase tracking-wider text-slate-400 p-4">Total Paid</th>
+                  <th className="text-left text-xs font-bold uppercase tracking-wider text-slate-400 p-4">Check In</th>
+                  <th className="text-left text-xs font-bold uppercase tracking-wider text-slate-400 p-4">Payment</th>
+                  <th className="text-left text-xs font-bold uppercase tracking-wider text-slate-400 p-4">Status</th>
+                  <th className="text-center text-xs font-bold uppercase tracking-wider text-slate-400 p-4">Actions</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-100">
+                {properties.map((item) => (
+                  <tr key={item._id} className="hover:bg-slate-50/60 transition-colors">
+                    <td className="p-4">
+                      <p className="text-xs font-bold text-slate-900 line-clamp-1 max-w-xs">
+                        {item.propertyTitle || "Reserved Property"}
+                      </p>
+                      <p className="text-[11px] text-slate-400">ID: {item.propertyId?.slice(-6) || "N/A"}</p>
+                    </td>
+
+                    <td className="p-4 text-xs font-medium text-slate-600">
+                      {item.totalDays ? `${item.totalDays} Days` : "1 Month"}
+                    </td>
+
+                    <td className="p-4 text-xs font-black text-slate-900">
+                      ${Number(item.totalRent || 0).toLocaleString()}
+                    </td>
+
+                    <td className="p-4 text-xs font-medium text-slate-600">
+                      {item.checkIn || "Flexible"}
+                    </td>
+
+                    <td className="p-4">
+                      <span className="inline-flex items-center gap-1 text-[11px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">
+                        <FiCheckCircle size={11} />
+                        {item.paymentStatus || "Paid"}
+                      </span>
+                    </td>
+
+                    <td className="p-4">
+                      <span
+                        className={`inline-block text-[11px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full ${
+                          item.bookingStatus === "approved"
+                            ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
+                            : item.bookingStatus === "rejected"
+                            ? "bg-rose-50 text-rose-700 border border-rose-200"
+                            : "bg-amber-50 text-amber-700 border border-amber-200"
+                        }`}
+                      >
+                        {item.bookingStatus || "pending"}
+                      </span>
+                    </td>
+
+                    <td className="p-4 text-center">
+                      <DeletedBooking property={item} />
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Mobile Cards */}
+          <div className="grid grid-cols-1 gap-4 lg:hidden">
+            {properties.map((item) => (
+              <div key={item._id} className="rounded-2xl border border-slate-200/90 bg-white p-5 shadow-xs space-y-3">
+                <div className="flex items-start justify-between gap-2">
+                  <div>
+                    <h3 className="text-xs font-bold text-slate-900">{item.propertyTitle || "Reserved Space"}</h3>
+                    <p className="text-[11px] text-slate-400 mt-0.5">Booking Ref: {item._id?.slice(-6)}</p>
+                  </div>
+                  <span
+                    className={`text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full shrink-0 ${
+                      item.bookingStatus === "approved"
+                        ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
+                        : item.bookingStatus === "rejected"
+                        ? "bg-rose-50 text-rose-700 border border-rose-200"
+                        : "bg-amber-50 text-amber-700 border border-amber-200"
+                    }`}
+                  >
+                    {item.bookingStatus || "pending"}
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-2 gap-2 text-xs text-slate-600 pt-1">
+                  <div>
+                    <span className="text-slate-400 text-[10px] block">Check In Date</span>
+                    <span className="font-semibold">{item.checkIn || "Flexible"}</span>
+                  </div>
+                  <div>
+                    <span className="text-slate-400 text-[10px] block">Duration</span>
+                    <span className="font-semibold">{item.totalDays || 0} Days</span>
+                  </div>
+                  <div>
+                    <span className="text-slate-400 text-[10px] block">Total Amount</span>
+                    <span className="font-black text-slate-900">${Number(item.totalRent || 0).toLocaleString()}</span>
+                  </div>
+                  <div>
+                    <span className="text-slate-400 text-[10px] block">Payment</span>
+                    <span className="font-semibold text-emerald-600">{item.paymentStatus || "Paid"}</span>
+                  </div>
+                </div>
+
+                <div className="pt-2 border-t border-slate-100 flex justify-end">
+                  <DeletedBooking property={item} />
+                </div>
+              </div>
+            ))}
+          </div>
+        </>
+      )}
+    </div>
+  );
 };
 
 export default MyBookingsPage;

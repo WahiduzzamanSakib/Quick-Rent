@@ -3,11 +3,10 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import {
-    FaUserShield,
-    FaUser,
-    FaCrown,
-    FaBan,
-    FaUsers
+  FaUserShield,
+  FaUser,
+  FaCrown,
+  FaUsers,
 } from "react-icons/fa";
 import { MdRefresh } from "react-icons/md";
 import { toast } from "react-toastify";
@@ -15,415 +14,219 @@ import { authClient } from "@/lib/auth-client";
 
 const roles = ["TENANT", "ADMIN", "OWNER"];
 
-/* ROLE ICON */
 const roleIcon = (role) => {
-    switch (role) {
-        case "ADMIN":
-            return <FaUserShield className="text-yellow-500" />;
-        case "OWNER":
-            return <FaCrown className="text-purple-500" />;
-        default:
-            return <FaUser className="text-gray-500" />;
-    }
-};
-
-/* ROLE BADGE COLOR */
-const roleBadgeColor = (role) => {
-    switch (role) {
-        case "ADMIN":
-            return "bg-yellow-100 text-yellow-700 border-yellow-300";
-        case "OWNER":
-            return "bg-purple-100 text-purple-700 border-purple-300";
-        default:
-            return "bg-gray-100 text-gray-700 border-gray-300";
-    }
+  switch (role?.toUpperCase()) {
+    case "ADMIN":
+      return <FaUserShield className="text-amber-500" />;
+    case "OWNER":
+      return <FaCrown className="text-purple-500" />;
+    default:
+      return <FaUser className="text-blue-500" />;
+  }
 };
 
 export default function AllUsersPage() {
-    const { data: session } = authClient.useSession();
+  const { data: session } = authClient.useSession();
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [updatingId, setUpdatingId] = useState(null);
 
-    const [users, setUsers] = useState([]);
-    const [loading, setLoading] = useState(true);
-
-
-
-    /* GET USERS */
-    const fetchUsers = async () => {
-        try {
-            setLoading(true);
-
-            const res = await fetch(
-                `${process.env.NEXT_PUBLIC_API_URL}/dashboard/admin/get-users`,
-                {
-                    cache: "no-store",
-                }
-            );
-
-            const data = await res.json();
-
-            setUsers(data);
-
-        } catch (err) {
-            console.log(err);
-        } finally {
-            setLoading(false);
+  const fetchUsers = async () => {
+    try {
+      setLoading(true);
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/dashboard/admin/get-users`,
+        {
+          cache: "no-store",
         }
-    };
-
-
-    useEffect(() => {
-        fetchUsers();
-    }, []);
-
-
-
-    /* UPDATE ROLE */
-    const updateRole = async (id, role) => {
-
-        try {
-
-            const res = await fetch(
-                `${process.env.NEXT_PUBLIC_API_URL}/dashboard/admin/update-role/${id}`,
-                {
-                    method: "PATCH",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({ role }),
-                }
-            );
-
-
-            const data = await res.json();
-
-
-            if (res.ok) {
-
-                setUsers((prev) =>
-                    prev.map((u) =>
-                        u._id === id
-                            ? { ...u, role }
-                            : u
-                    )
-                );
-
-                toast.success("Role Updated Successfully");
-
-            } else {
-
-                toast.error(data.message || "Update failed");
-
-            }
-
-
-        } catch (error) {
-
-            console.log(error);
-            toast.error("Server error");
-
-        }
-    };
-
-
-
-    if (loading) {
-        return (
-            <div className="flex flex-col items-center justify-center py-20">
-                <div className="loader"></div>
-            </div>
-        );
+      );
+      const data = await res.json();
+      setUsers(Array.isArray(data) ? data : []);
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to load users");
+    } finally {
+      setLoading(false);
     }
+  };
 
+  useEffect(() => {
+    fetchUsers();
+  }, []);
 
+  const updateRole = async (id, role) => {
+    try {
+      setUpdatingId(id);
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/dashboard/admin/update-role/${id}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ role }),
+        }
+      );
 
+      const data = await res.json();
+
+      if (res.ok) {
+        toast.success(`Role changed to ${role}`);
+        setUsers((prev) =>
+          prev.map((user) =>
+            user._id === id ? { ...user, role: role.toLowerCase() } : user
+          )
+        );
+      } else {
+        toast.error(data?.message || "Failed to update role");
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("Error updating role");
+    } finally {
+      setUpdatingId(null);
+    }
+  };
+
+  const totalUsers = users.length;
+  const adminCount = users.filter((u) => u.role?.toLowerCase() === "admin").length;
+  const ownerCount = users.filter((u) => u.role?.toLowerCase() === "owner").length;
+  const tenantCount = users.filter((u) => u.role?.toLowerCase() === "tenant").length;
+
+  if (loading) {
     return (
-
-        <div className="p-4 sm:p-6 max-w-6xl mx-auto">
-
-
-            {/* HEADER */}
-            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 mb-6">
-
-                <h2 className="text-xl sm:text-2xl font-bold text-gray-800">
-                    All Users
-                </h2>
-
-
-                <button
-                    onClick={fetchUsers}
-                    className="flex items-center justify-center gap-2 px-4 py-2 rounded-lg border bg-white hover:bg-gray-50 shadow-sm transition w-full sm:w-auto"
-                >
-
-                    <MdRefresh />
-                    Refresh
-                </button>
-            </div>
-
-            {/* SUMMARY CARDS */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
-
-
-                {/* ALL USERS */}
-
-                <div className="bg-white border rounded-xl shadow-sm p-4 flex items-center justify-between">
-
-                    <div>
-                        <p className="text-sm text-gray-500">
-                            All Users
-                        </p>
-
-                        <h3 className="text-2xl font-bold text-gray-800">
-                            {users.length}
-                        </h3>
-                    </div>
-
-                    <FaUsers className="text-3xl text-blue-500" />
-
-                </div>
-
-
-
-                {/* ADMIN */}
-
-                <div className="bg-white border rounded-xl shadow-sm p-4 flex items-center justify-between">
-
-                    <div>
-
-                        <p className="text-sm text-yellow-600">
-                            Admins
-                        </p>
-
-                        <h3 className="text-2xl font-bold text-yellow-700">
-                            {
-                                users.filter(
-                                    (user) => user.role === "ADMIN"
-                                ).length
-                            }
-                        </h3>
-
-                    </div>
-
-                    <FaUserShield className="text-3xl text-yellow-500" />
-
-                </div>
-
-
-
-
-                {/* OWNER */}
-
-                <div className="bg-white border rounded-xl shadow-sm p-4 flex items-center justify-between">
-
-                    <div>
-
-                        <p className="text-sm text-purple-600">
-                            Owners
-                        </p>
-
-                        <h3 className="text-2xl font-bold text-purple-700">
-
-                            {
-                                users.filter(
-                                    (user) => user.role === "OWNER"
-                                ).length
-                            }
-
-                        </h3>
-
-                    </div>
-
-
-                    <FaCrown className="text-3xl text-purple-500" />
-
-
-                </div>
-
-
-
-
-
-                {/* TENANT */}
-
-                <div className="bg-white border rounded-xl shadow-sm p-4 flex items-center justify-between">
-
-                    <div>
-
-                        <p className="text-sm text-gray-500">
-                            Tenants
-                        </p>
-
-
-                        <h3 className="text-2xl font-bold text-gray-700">
-
-                            {
-                                users.filter(
-                                    (user) => user.role === "TENANT"
-                                ).length
-                            }
-
-                        </h3>
-
-                    </div>
-
-
-                    <FaUser className="text-3xl text-gray-500" />
-
-
-                </div>
-
-
-
-            </div>
-
-            {/* DESKTOP TABLE */}
-            <div className="hidden md:block bg-white shadow-md rounded-xl border overflow-x-auto">
-
-                <table className="w-full text-left">
-
-                    <thead className="bg-gray-100 text-gray-600 text-sm uppercase">
-                        <tr>
-                            <th className="p-4">User</th>
-                            <th className="p-4">Email</th>
-                            <th className="p-4">Role</th>
-                            <th className="p-4">Status</th>
-                            <th className="p-4">Action</th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        {
-                            users.map((user, index) => (
-
-                                <motion.tr
-                                    key={user._id}
-                                    initial={{ opacity: 0, y: 10 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    transition={{ delay: index * 0.03 }}
-                                    className="border-t hover:bg-gray-50"
-                                >
-                                    <td className="p-4 flex items-center gap-2 font-medium">
-                                        {roleIcon(user.role)}
-                                        {user.name}
-                                    </td>
-
-                                    <td className="p-4 text-gray-600">
-                                        {user.email}
-                                    </td>
-
-                                    <td className="p-4">
-                                        <span
-                                            className={`px-3 py-1 rounded-full text-xs font-semibold border ${roleBadgeColor(user.role)}`}
-                                        >
-                                            {user.role}
-                                        </span>
-
-                                    </td>
-                                    <td className="p-4">
-                                        {
-                                            user.isBlocked ?
-                                                <span className="flex items-center gap-1 text-red-600">
-                                                    <FaBan />
-                                                    Blocked
-                                                </span>
-                                                :
-                                                <span className="text-green-600">
-                                                    Active
-                                                </span>
-                                        }
-                                    </td>
-
-                                    <td className="p-4">
-                                        <select
-                                            value={user.role}
-                                            disabled={user.email === session?.user?.email}
-                                            onChange={(e) =>
-                                                updateRole(
-                                                    user._id,
-                                                    e.target.value
-                                                )
-                                            }
-                                            className={`px-3 py-2 border rounded-lg ${user.email === session?.user?.email
-                                                ? "bg-gray-100 cursor-not-allowed"
-                                                : ""
-                                                }`}
-                                        >
-                                            {
-                                                roles.map(role => (
-                                                    <option key={role} value={role}>
-                                                        {role}
-                                                    </option>
-
-                                                ))
-                                            }
-                                        </select>
-                                    </td>
-                                </motion.tr>
-                            ))
-                        }
-                    </tbody>
-                </table>
-            </div>
-
-            {/* MOBILE CARDS */}
-            <div className="grid grid-cols-1 gap-4 md:hidden">
-                {
-                    users.map((user, index) => (
-                        <motion.div
-                            key={user._id}
-                            initial={{ opacity: 0, y: 10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            className="bg-white border rounded-xl shadow-sm p-4 space-y-3"
-                        >
-                            <div className="flex items-center gap-2 font-semibold">
-                                {roleIcon(user.role)}
-                                {user.name}
-                            </div>
-
-                            <p className="text-sm text-gray-600">
-                                {user.email}
-                            </p>
-
-                            {
-                                user.isBlocked ?
-                                    <span className="text-red-600 flex gap-1">
-                                        <FaBan />
-                                        Blocked
-                                    </span>
-                                    :
-                                    <span className="text-green-600">
-                                        Active
-                                    </span>
-                            }
-                            <select
-                                value={user.role}
-                                disabled={user.email === session?.user?.email}
-                                onChange={(e) =>
-                                    updateRole(
-                                        user._id,
-                                        e.target.value
-                                    )
-                                }
-                                className={`w-full px-3 py-2 border rounded-lg ${user.email === session?.user?.email
-                                        ? "bg-gray-100 cursor-not-allowed"
-                                        : ""
-                                    }`}
-                            >
-                                {
-                                    roles.map(role => (
-                                        <option
-                                            key={role}
-                                            value={role}
-                                        >
-                                            {role}
-                                        </option>
-
-                                    ))
-                                }
-                            </select>
-                        </motion.div>
-                    ))
-                }
-            </div>
-        </div>
+      <div className="min-h-[50vh] flex flex-col items-center justify-center gap-3">
+        <div className="loader"></div>
+        <p className="text-xs font-semibold tracking-wider text-slate-400 uppercase">
+          Loading Users Directory...
+        </p>
+      </div>
     );
+  }
+
+  return (
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <span className="text-xs font-bold uppercase tracking-widest text-blue-600">
+            Account Governance
+          </span>
+          <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight mt-0.5">
+            User Management
+          </h1>
+          <p className="text-xs sm:text-sm text-slate-500 mt-1">
+            Manage account roles, permissions, and platform participation across QuickRent.
+          </p>
+        </div>
+
+        <button
+          onClick={fetchUsers}
+          className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-xs font-bold text-slate-700 shadow-xs hover:bg-slate-50 transition w-fit cursor-pointer"
+        >
+          <MdRefresh size={16} />
+          <span>Refresh Directory</span>
+        </button>
+      </div>
+
+      {/* Metric Counters */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="rounded-2xl border border-slate-200/90 bg-white p-5 shadow-xs">
+          <p className="text-xs font-bold uppercase tracking-wider text-slate-400">Total Accounts</p>
+          <h2 className="text-2xl sm:text-3xl font-black text-slate-900 mt-1.5">{totalUsers}</h2>
+        </div>
+
+        <div className="rounded-2xl border border-blue-200/80 bg-blue-50/50 p-5 shadow-xs">
+          <p className="text-xs font-bold uppercase tracking-wider text-blue-700">Tenants</p>
+          <h2 className="text-2xl sm:text-3xl font-black text-blue-700 mt-1.5">{tenantCount}</h2>
+        </div>
+
+        <div className="rounded-2xl border border-purple-200/80 bg-purple-50/50 p-5 shadow-xs">
+          <p className="text-xs font-bold uppercase tracking-wider text-purple-700">Owners</p>
+          <h2 className="text-2xl sm:text-3xl font-black text-purple-700 mt-1.5">{ownerCount}</h2>
+        </div>
+
+        <div className="rounded-2xl border border-amber-200/80 bg-amber-50/50 p-5 shadow-xs">
+          <p className="text-xs font-bold uppercase tracking-wider text-amber-700">Admins</p>
+          <h2 className="text-2xl sm:text-3xl font-black text-amber-700 mt-1.5">{adminCount}</h2>
+        </div>
+      </div>
+
+      {/* Users Table */}
+      <div className="rounded-2xl border border-slate-200/90 bg-white shadow-xs overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="min-w-full divide-y divide-slate-100">
+            <thead className="bg-slate-50/80">
+              <tr>
+                <th className="text-left text-xs font-bold uppercase tracking-wider text-slate-400 p-4">User</th>
+                <th className="text-left text-xs font-bold uppercase tracking-wider text-slate-400 p-4">Email</th>
+                <th className="text-left text-xs font-bold uppercase tracking-wider text-slate-400 p-4">Current Role</th>
+                <th className="text-center text-xs font-bold uppercase tracking-wider text-slate-400 p-4">Change Role</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-100">
+              {users.map((user) => (
+                <tr key={user._id} className="hover:bg-slate-50/60 transition-colors">
+                  <td className="p-4">
+                    <div className="flex items-center gap-3">
+                      <div className="relative h-10 w-10 rounded-full overflow-hidden ring-2 ring-slate-100 shrink-0 bg-slate-100">
+                        <img
+                          src={
+                            user.image ||
+                            `https://ui-avatars.com/api/?name=${encodeURIComponent(
+                              user.name || "User"
+                            )}&background=2563eb&color=fff&bold=true`
+                          }
+                          alt={user.name}
+                          className="h-full w-full object-cover"
+                        />
+                      </div>
+                      <div className="min-w-0">
+                        <p className="text-xs font-bold text-slate-900 truncate">{user.name}</p>
+                        <p className="text-[11px] text-slate-400">ID: {user._id?.slice(-6)}</p>
+                      </div>
+                    </div>
+                  </td>
+
+                  <td className="p-4 text-xs font-medium text-slate-600 truncate max-w-xs">
+                    {user.email}
+                  </td>
+
+                  <td className="p-4">
+                    <span
+                      className={`inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full ${
+                        user.role?.toLowerCase() === "admin"
+                          ? "bg-amber-50 text-amber-700 border border-amber-200"
+                          : user.role?.toLowerCase() === "owner"
+                          ? "bg-purple-50 text-purple-700 border border-purple-200"
+                          : "bg-blue-50 text-blue-700 border border-blue-200"
+                      }`}
+                    >
+                      {roleIcon(user.role)}
+                      <span>{user.role}</span>
+                    </span>
+                  </td>
+
+                  <td className="p-4 text-center">
+                    <select
+                      disabled={updatingId === user._id}
+                      value={user.role?.toUpperCase() || "TENANT"}
+                      onChange={(e) => updateRole(user._id, e.target.value)}
+                      className="rounded-xl border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs font-bold text-slate-700 transition focus:border-blue-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 cursor-pointer disabled:opacity-50"
+                    >
+                      {roles.map((r) => (
+                        <option key={r} value={r}>
+                          Set as {r}
+                        </option>
+                      ))}
+                    </select>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  );
 }

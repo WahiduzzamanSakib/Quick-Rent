@@ -5,19 +5,22 @@ import { motion } from "framer-motion";
 
 const steps = [
   {
+    number: "01",
     icon: FiSearch,
-    title: "Search",
-    text: "Filter by location, property type and price to find places that fit.",
+    title: "Search & Discover",
+    text: "Filter through verified apartments, homes, and offices by location, property type, and budget to find your ideal match.",
   },
   {
+    number: "02",
     icon: FiCalendar,
-    title: "Login & Book",
-    text: "Log in to your account, check the property details, and send your booking request to the owner.",
+    title: "Request & Reserve",
+    text: "Log in to inspect detailed photos, review terms, and submit your reservation request with secure Stripe processing.",
   },
   {
+    number: "03",
     icon: FiKey,
-    title: "Move In",
-    text: "Once the owner confirms your booking, coordinate with the owner and prepare to move in.",
+    title: "Move In & Enjoy",
+    text: "Once the owner approves your booking, coordinate your move-in date smoothly with direct confirmation in your dashboard.",
   },
 ];
 
@@ -25,7 +28,7 @@ const containerVariants = {
   hidden: {},
   visible: {
     transition: {
-      staggerChildren: 0.18,
+      staggerChildren: 0.15,
     },
   },
 };
@@ -33,13 +36,13 @@ const containerVariants = {
 const itemVariants = {
   hidden: {
     opacity: 0,
-    y: 35,
+    y: 25,
   },
   visible: {
     opacity: 1,
     y: 0,
     transition: {
-      duration: 0.6,
+      duration: 0.5,
       ease: "easeOut",
     },
   },
@@ -47,30 +50,30 @@ const itemVariants = {
 
 export default function HowItWorks() {
   return (
-    <section id="how-to-works" className="scroll-mt-20 bg-slate-50 py-16 sm:py-20">
-      <div className="mx-auto max-w-6xl px-4">
-        {/* Heading */}
+    <section id="how-to-works" className="scroll-mt-20 bg-slate-50/80 border-y border-slate-200/80 py-16 sm:py-20">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        {/* Section Heading */}
         <motion.div
-          initial={{ opacity: 0, y: 25 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
           className="mx-auto max-w-2xl text-center"
         >
-          <span className="inline-block rounded-full bg-blue-100 px-4 py-1.5 text-sm font-semibold text-blue-700">
-            Simple Process
+          <span className="inline-block rounded-full bg-blue-100 px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-blue-700">
+            Streamlined Journey
           </span>
 
-          <h2 className="mt-4 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
-            How it works
+          <h2 className="mt-3 text-2xl font-black tracking-tight text-slate-900 sm:text-4xl">
+            How QuickRent Works
           </h2>
 
-          <p className="mx-auto mt-3 max-w-xl text-base leading-7 text-slate-600">
-            Three simple steps from searching to moving in.
+          <p className="mx-auto mt-2.5 max-w-xl text-sm sm:text-base leading-relaxed text-slate-500">
+            Three simple, transparent steps from exploring your dream location to picking up the keys.
           </p>
         </motion.div>
 
-        {/* Steps */}
+        {/* Steps Grid */}
         <motion.ol
           initial="hidden"
           whileInView="visible"
@@ -78,63 +81,51 @@ export default function HowItWorks() {
           variants={containerVariants}
           className="mt-12 grid gap-6 md:grid-cols-3"
         >
-          {steps.map(({ icon: Icon, title, text }, i) => (
+          {steps.map(({ number, icon: Icon, title, text }) => (
             <motion.li
               key={title}
               variants={itemVariants}
-              whileHover={{ y: -8, scale: 1.02 }}
+              whileHover={{ y: -6 }}
               transition={{
                 type: "spring",
                 stiffness: 280,
-                damping: 22,
+                damping: 20,
               }}
-              className="group relative rounded-2xl border border-slate-200/80 bg-white p-7 text-center shadow-sm transition-all duration-300 ease-out hover:border-blue-200 hover:shadow-xl hover:shadow-blue-100/60 sm:p-8"
+              className="group relative rounded-2xl border border-slate-200/80 bg-white p-7 shadow-xs transition-all duration-300 hover:border-blue-300 hover:shadow-xl sm:p-8 flex flex-col justify-between"
             >
-              {/* Step Number */}
-              <motion.span
-                animate={{ scale: [1, 1.05, 1] }}
-                transition={{
-                  duration: 2,
-                  repeat: Infinity,
-                  repeatDelay: 1,
-                  delay: i * 0.3,
-                }}
-                className="absolute right-5 top-5 flex h-8 w-8 items-center justify-center rounded-full bg-slate-100 text-sm font-bold text-slate-500 transition-colors duration-300 group-hover:bg-blue-600 group-hover:text-white"
-              >
-                {i + 1}
-              </motion.span>
+              <div>
+                {/* Header: Icon & Step Number */}
+                <div className="flex items-center justify-between mb-6">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-50 text-blue-600 border border-blue-100/60 shadow-xs group-hover:scale-105 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
+                    <Icon className="text-xl" />
+                  </div>
+                  <span className="text-2xl font-black text-slate-200 group-hover:text-blue-200 transition-colors">
+                    {number}
+                  </span>
+                </div>
 
-              {/* Icon */}
-              <motion.div
-                whileHover={{ rotate: 8, scale: 1.12 }}
-                transition={{
-                  type: "spring",
-                  stiffness: 300,
-                  damping: 15,
-                }}
-                className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-blue-50 text-blue-600 transition-colors duration-300 group-hover:bg-blue-600 group-hover:text-white"
-              >
-                <Icon size={28} strokeWidth={1.8} />
-              </motion.div>
+                {/* Title */}
+                <h3 className="text-lg font-bold tracking-tight text-slate-900 group-hover:text-blue-600 transition-colors">
+                  {title}
+                </h3>
 
-              <span className="mt-6 block text-xs font-bold uppercase tracking-[0.16em] text-blue-600">
-                Step {i + 1}
-              </span>
+                {/* Text */}
+                <p className="mt-2 text-sm leading-relaxed text-slate-500">
+                  {text}
+                </p>
+              </div>
 
-              <h3 className="mt-2 text-xl font-bold text-slate-900 transition-colors duration-300 group-hover:text-blue-700">
-                {title}
-              </h3>
-
-              <p className="mx-auto mt-3 max-w-xs text-sm leading-7 text-slate-600 sm:text-base">
-                {text}
-              </p>
-
-              {/* Decorative Line */}
-              <motion.div
-                initial={{ width: 40 }}
-                whileHover={{ width: 64 }}
-                className="mx-auto mt-6 h-1 rounded-full bg-slate-200 transition-colors duration-300 group-hover:bg-blue-600"
-              />
+              {/* Progress Line */}
+              <div className="mt-6 pt-4 border-t border-slate-100 flex items-center gap-2 text-xs font-semibold text-blue-600">
+                <span>Step {number}</span>
+                <span className="h-1 flex-1 rounded-full bg-slate-100 overflow-hidden">
+                  <span
+                    className={`block h-full bg-blue-600 rounded-full ${
+                      number === "01" ? "w-1/3" : number === "02" ? "w-2/3" : "w-full"
+                    }`}
+                  />
+                </span>
+              </div>
             </motion.li>
           ))}
         </motion.ol>

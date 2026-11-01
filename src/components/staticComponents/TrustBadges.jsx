@@ -1,32 +1,32 @@
 "use client";
+
 import React from "react";
 import { motion } from "framer-motion";
-
-import { HiOutlineShieldCheck, HiOutlineCircleStack } from "react-icons/hi2";
+import { HiOutlineShieldCheck, HiOutlineCreditCard } from "react-icons/hi2";
 import { RiCustomerService2Fill } from "react-icons/ri";
 
 export default function TrustBadges() {
   const badges = [
     {
       id: 1,
-      icon: <HiOutlineShieldCheck className="w-6 h-6 text-[#006A4E]" />,
+      icon: <HiOutlineShieldCheck className="w-6 h-6 text-blue-600" />,
       title: "Verified Listings",
       description:
-        "Every property undergoes a 50-point inspection for quality and security.",
+        "Every property undergoes a 50-point inspection for verified accuracy, amenities, and security.",
     },
     {
       id: 2,
-      icon: <HiOutlineCircleStack className="w-6 h-6 text-[#006A4E]" />,
+      icon: <HiOutlineCreditCard className="w-6 h-6 text-emerald-600" />,
       title: "Secure Payments",
       description:
-        "Industry-leading encryption ensuring your transactions are always protected.",
+        "Bank-grade Stripe encryption ensuring your reservation deposit and rental payments are 100% protected.",
     },
     {
       id: 3,
-      icon: <RiCustomerService2Fill className="w-6 h-6 text-[#006A4E]" />,
-      title: "24/7 Support",
+      icon: <RiCustomerService2Fill className="w-6 h-6 text-indigo-600" />,
+      title: "24/7 Dedicated Support",
       description:
-        "Our dedicated concierge team is available around the clock for your needs.",
+        "Our customer concierge team is available around the clock to assist tenants and owners at every step.",
     },
   ];
 
@@ -34,7 +34,7 @@ export default function TrustBadges() {
     hidden: { opacity: 0 },
     show: {
       opacity: 1,
-      transition: { staggerChildren: 0.2 },
+      transition: { staggerChildren: 0.15 },
     },
   };
 
@@ -48,47 +48,36 @@ export default function TrustBadges() {
   };
 
   return (
-    <section className="bg-[#F0F5FA] py-16 px-4 sm:px-6 lg:px-8 font-serif">
+    <section className="bg-slate-50/70 border-b border-slate-200/70 py-12 px-4 sm:px-6 lg:px-8">
       <motion.div
         variants={containerVariants}
         initial="hidden"
         whileInView="show"
         viewport={{ once: true }}
-        className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10 text-center"
+        className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 text-center"
       >
         {badges.map((badge) => (
           <motion.div
             key={badge.id}
             variants={itemVariants}
-            whileHover={{
-              y: -8,
-              scale: 1.02,
-            }}
-            transition={{ type: "spring", stiffness: 260, damping: 18 }}
-            className="group relative flex flex-col items-center max-w-xs mx-auto p-6 rounded-2xl
-                       bg-white/60 backdrop-blur-md border border-white/40 shadow-sm
-                       hover:shadow-xl hover:bg-white/80 cursor-pointer"
+            whileHover={{ y: -5 }}
+            transition={{ type: "spring", stiffness: 300, damping: 20 }}
+            className="group relative flex flex-col items-center p-7 rounded-2xl bg-white border border-slate-200/80 shadow-xs hover:shadow-xl hover:border-blue-200 transition-all duration-300"
           >
             {/* Icon */}
-            <div
-              className="w-14 h-14 bg-[#DCE6F1] rounded-full flex items-center justify-center mb-5
-                         shadow-sm transition-all duration-300 group-hover:scale-110 group-hover:bg-[#cfe0f5]"
-            >
+            <div className="w-13 h-13 rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-center mb-4 transition-transform duration-300 group-hover:scale-110 group-hover:bg-blue-50/60 shadow-xs">
               {badge.icon}
             </div>
 
             {/* Title */}
-            <h3 className="text-[#0A1E36] text-xl font-bold tracking-wide mb-3 transition-colors duration-300 group-hover:text-[#006A4E]">
+            <h3 className="text-slate-900 text-lg font-bold tracking-tight mb-2 transition-colors duration-200 group-hover:text-blue-600">
               {badge.title}
             </h3>
 
             {/* Description */}
-            <p className="text-[#4A5E73] text-[15px] leading-relaxed font-sans font-normal transition-colors duration-300 group-hover:text-[#2f4157]">
+            <p className="text-slate-500 text-sm leading-relaxed font-normal">
               {badge.description}
             </p>
-
-            {/* subtle glow accent */}
-            <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition duration-300 bg-linear-to-b from-white/30 to-transparent pointer-events-none" />
           </motion.div>
         ))}
       </motion.div>

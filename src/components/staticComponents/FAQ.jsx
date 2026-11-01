@@ -2,146 +2,110 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { FiChevronDown } from "react-icons/fi";
+import { FiChevronDown, FiHelpCircle } from "react-icons/fi";
 import { motion, AnimatePresence } from "framer-motion";
 
 const faqs = [
   {
-    q: "How do I book a property?",
-    a: "Open any listing, check the details and click the booking button. You need to be logged in. The owner will review your request and confirm.",
+    q: "How do I book a rental property?",
+    a: "Browse the property listing, select your move-in and move-out dates, and click 'Book Now'. Once logged in, confirm your booking details and complete the secure payment through Stripe. The owner will promptly receive and confirm your request.",
   },
   {
     q: "Do I need an account to browse properties?",
-    a: "No. You can search and view all listings without an account. You only need to register or log in when you want to book.",
+    a: "No! Anyone can freely search, filter by location or price, and explore all published listings. You only need to create a free account when you're ready to submit a booking or save favorites.",
   },
   {
-    q: "Are the listings verified?",
-    a: "Yes. Every property is reviewed and approved before it appears on the site.",
+    q: "How are properties verified on QuickRent?",
+    a: "Every listing submitted by a property owner is reviewed and moderated by our administration team to ensure accurate photos, clear amenities, and legitimate ownership before going public.",
   },
   {
-    q: "What types of properties can I find?",
-    a: "Apartments, houses, offices, shops and other commercial or residential spaces.",
+    q: "What types of properties are available?",
+    a: "QuickRent supports an extensive variety of properties including apartments, detached family houses, modern corporate offices, retail shops, and commercial studios.",
   },
   {
-    q: "How is payment handled?",
-    a: "Payments are encrypted and processed securely through Stripe. The monthly price is shown on each listing.",
+    q: "How are payments handled securely?",
+    a: "All financial transactions and reservation deposits are encrypted and processed through Stripe, the global leader in payment security. You will receive an immediate receipt and booking confirmation.",
   },
   {
-    q: "Can I cancel a booking?",
-    a: "Yes. See the cancellation policy page for the rules and deadlines.",
+    q: "Can I manage or cancel my bookings?",
+    a: "Yes. From your tenant dashboard, you can track current booking statuses, view past reservations, and coordinate directly with property owners.",
   },
 ];
-
-const listVariants = {
-  hidden: {},
-  visible: {
-    transition: {
-      staggerChildren: 0.1,
-    },
-  },
-};
-
-const itemVariants = {
-  hidden: {
-    opacity: 0,
-    y: 20,
-  },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.45,
-      ease: "easeOut",
-    },
-  },
-};
 
 export default function FAQ() {
   const [openIndex, setOpenIndex] = useState(null);
 
   const toggleFAQ = (index) => {
-    setOpenIndex((prevIndex) =>
-      prevIndex === index ? null : index
-    );
+    setOpenIndex((prevIndex) => (prevIndex === index ? null : index));
   };
 
   return (
-    <section id="help" className="scroll-mt-20 border-t border-blue-300 bg-gray-50 py-10 sm:py-10">
-      <div className="mx-auto max-w-3xl px-4">
-        <motion.h2
-          initial={{ opacity: 0, y: 25 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
-          className="text-center text-3xl font-bold text-slate-900 sm:text-4xl"
-        >
-          Frequently asked questions
-        </motion.h2>
+    <section id="help" className="scroll-mt-20 border-t border-slate-200/80 bg-white py-16 sm:py-20">
+      <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+        {/* Header */}
+        <div className="text-center mb-12">
+          <div className="inline-flex items-center gap-1.5 rounded-full bg-blue-50 px-3.5 py-1 text-xs font-bold text-blue-600 mb-2">
+            <FiHelpCircle />
+            Got Questions?
+          </div>
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight">
+            Frequently Asked Questions
+          </h2>
+          <p className="mt-2 text-sm sm:text-base text-slate-500 max-w-xl mx-auto">
+            Everything you need to know about the QuickRent rental platform, bookings, and owner verification.
+          </p>
+        </div>
 
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.15 }}
-          variants={listVariants}
-          className="mt-10 divide-y divide-slate-200 overflow-hidden rounded-xl border border-slate-200"
-        >
+        {/* Accordion */}
+        <div className="space-y-3">
           {faqs.map(({ q, a }, index) => {
             const isOpen = openIndex === index;
 
             return (
-              <motion.div
+              <div
                 key={q}
-                variants={itemVariants}
-                className="bg-white"
+                className={`rounded-2xl border transition-all duration-200 overflow-hidden ${
+                  isOpen
+                    ? "border-blue-200 bg-blue-50/20 shadow-xs"
+                    : "border-slate-200 bg-white hover:border-slate-300"
+                }`}
               >
                 <button
                   type="button"
                   onClick={() => toggleFAQ(index)}
                   aria-expanded={isOpen}
-                  className="flex w-full cursor-pointer items-center justify-between gap-4 p-5 text-left font-semibold text-slate-900 transition-colors duration-300 ease-in-out hover:bg-slate-50 hover:text-blue-600"
+                  className="flex w-full items-center justify-between gap-4 p-5 text-left transition-colors cursor-pointer"
                 >
-                  <span>{q}</span>
-
-                  <motion.span
-                    animate={{ rotate: isOpen ? 180 : 0 }}
-                    transition={{ duration: 0.3, ease: "easeInOut" }}
-                    className="shrink-0 text-slate-500"
+                  <span className="text-sm sm:text-base font-bold text-slate-900">
+                    {q}
+                  </span>
+                  <div
+                    className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-slate-100 text-slate-500 transition-all duration-200 ${
+                      isOpen ? "rotate-180 bg-blue-600 text-white" : ""
+                    }`}
                   >
-                    <FiChevronDown
-                      size={20}
-                      className={isOpen ? "text-blue-600" : ""}
-                    />
-                  </motion.span>
+                    <FiChevronDown size={18} />
+                  </div>
                 </button>
 
                 <AnimatePresence initial={false}>
                   {isOpen && (
                     <motion.div
-                      key="answer"
                       initial={{ height: 0, opacity: 0 }}
                       animate={{ height: "auto", opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}
-                      transition={{
-                        height: {
-                          duration: 0.35,
-                          ease: "easeInOut",
-                        },
-                        opacity: {
-                          duration: 0.25,
-                        },
-                      }}
-                      className="overflow-hidden"
+                      transition={{ duration: 0.25, ease: "easeInOut" }}
                     >
-                      <p className="px-5 pb-5 text-sm leading-7 text-slate-600 sm:text-base">
+                      <div className="border-t border-slate-100/80 px-5 pb-5 pt-3 text-sm leading-relaxed text-slate-600">
                         {a}
-                      </p>
+                      </div>
                     </motion.div>
                   )}
                 </AnimatePresence>
-              </motion.div>
+              </div>
             );
           })}
-        </motion.div>
+        </div>
       </div>
     </section>
   );

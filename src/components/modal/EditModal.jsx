@@ -1,308 +1,342 @@
 "use client";
 
 import {
-    Button,
-    Description,
-    Fieldset,
-    Form,
-    Input,
-    Label,
-    Modal,
-    Surface,
-    TextArea,
-    TextField,
-    FieldError,
+  Button,
+  Modal,
+  Surface,
 } from "@heroui/react";
-
 import { useState } from "react";
 import { FaRegEdit } from "react-icons/fa";
 import { LuSave } from "react-icons/lu";
-import { motion } from "framer-motion";
 import { HiChevronDown } from "react-icons/hi";
 import { toast } from "react-toastify";
+import { FiLink, FiUploadCloud } from "react-icons/fi";
 
 export default function EditModal({ property }) {
-    const { _id } = property;
+  const { _id } = property;
 
-    const [open, setOpen] = useState(false);
-    const [loading, setLoading] = useState(false);
-    const [uploadType, setUploadType] = useState("link");
-    const [selectedFile, setSelectedFile] = useState(null);
+  const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [uploadType, setUploadType] = useState("link");
+  const [selectedFile, setSelectedFile] = useState(null);
 
-    const itemVariants = {
-        hidden: { opacity: 0, y: 10 },
-        show: { opacity: 1, y: 0 },
-    };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        setLoading(true);
+    const formData = new FormData(e.currentTarget);
+    const rawData = Object.fromEntries(formData.entries());
 
-        const formData = new FormData(e.currentTarget);
-        const rawData = Object.fromEntries(formData.entries());
+    if (rawData.rent) rawData.rent = Number(rawData.rent);
+    if (rawData.bedrooms) rawData.bedrooms = Number(rawData.bedrooms);
+    if (rawData.bathrooms) rawData.bathrooms = Number(rawData.bathrooms);
+    if (rawData.size) rawData.size = Number(rawData.size);
 
+    if (selectedFile) {
+      rawData.imageFile = selectedFile;
+    }
 
-        if (rawData.rent) rawData.rent = Number(rawData.rent);
-        if (rawData.bedrooms) rawData.bedrooms = Number(rawData.bedrooms);
-        if (rawData.bathrooms) rawData.bathrooms = Number(rawData.bathrooms);
-        if (rawData.size) rawData.size = Number(rawData.size);
+    const changedData = {};
 
+    Object.keys(rawData).forEach((key) => {
+      const newValue = rawData[key];
+      const oldValue = property[key];
 
+      if (key === "imageFile") {
+        if (selectedFile) changedData.imageFile = selectedFile;
+        return;
+      }
 
-        if (selectedFile) {
-            rawData.imageFile = selectedFile;
+      if (newValue !== undefined && newValue !== oldValue) {
+        changedData[key] = newValue;
+      }
+    });
+
+    if (Object.keys(changedData).length === 0) {
+      toast.info("No changes detected");
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/dashboard/owner/edit-property/${_id}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(changedData),
         }
+      );
 
+      const result = await res.json();
 
-        const changedData = {};
+      setLoading(false);
+      if (res.ok) {
+        toast.success("Property updated successfully!");
+        setOpen(false);
 
-        Object.keys(rawData).forEach((key) => {
-            const newValue = rawData[key];
-            const oldValue = property[key];
+        setTimeout(() => {
+          window.location.reload();
+        }, 800);
+      } else {
+        toast.error(result?.message || "Update failed!");
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("Error updating property");
+      setLoading(false);
+    }
+  };
 
-            if (key === "imageFile") {
-                if (selectedFile) changedData.imageFile = selectedFile;
-                return;
-            }
+  return (
+    <Modal isOpen={open} onOpenChange={setOpen}>
+      <button
+        type="button"
+        onClick={() => setOpen(true)}
+        className="inline-flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-xs font-bold text-slate-700 hover:bg-slate-50 hover:border-slate-300 transition shadow-xs cursor-pointer"
+      >
+        <FaRegEdit className="text-blue-600" />
+        <span>Edit</span>
+      </button>
 
-            if (newValue !== undefined && newValue !== oldValue) {
-                changedData[key] = newValue;
-            }
-        });
+      <Modal.Backdrop>
+        <Modal.Container>
+          <Modal.Dialog className="sm:max-w-xl w-full max-h-[90vh] flex flex-col bg-white text-slate-900 rounded-3xl border border-slate-200 shadow-2xl overflow-hidden">
+            <Modal.CloseTrigger />
 
-        if (Object.keys(changedData).length === 0) {
-            toast.info("No changes detected");
-            setLoading(false);
-            return;
-        }
+            <div className="p-6 border-b border-slate-100">
+              <h2 className="text-xl font-black text-slate-900 tracking-tight">
+                Edit Property Details
+              </h2>
+              <p className="text-xs text-slate-400 mt-0.5">
+                Update listing pricing, amenities, or descriptions
+              </p>
+            </div>
 
-        const res = await fetch(
-            `${process.env.NEXT_PUBLIC_API_URL}/dashboard/owner/edit-property/${_id}`,
-            {
-                method: "PATCH",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(changedData),
-            }
-        );
+            <div className="p-6 max-h-[70vh] overflow-y-auto">
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {/* Title */}
+                  <div className="md:col-span-2">
+                    <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">
+                      Property Title
+                    </label>
+                    <input
+                      name="title"
+                      defaultValue={property.title}
+                      placeholder="Title"
+                      className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-xs font-medium text-slate-900 transition focus:border-blue-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                    />
+                  </div>
 
-        const result = await res.json();
+                  {/* Description */}
+                  <div className="md:col-span-2">
+                    <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">
+                      Description
+                    </label>
+                    <textarea
+                      name="description"
+                      rows={3}
+                      defaultValue={property.description}
+                      placeholder="Property description..."
+                      className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-xs font-medium text-slate-900 transition focus:border-blue-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                    />
+                  </div>
 
-        setLoading(false);
-        if (res.ok) {
-            toast.success("Property updated successfully!");
-            setOpen(false);
+                  {/* Location */}
+                  <div>
+                    <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">
+                      Location
+                    </label>
+                    <input
+                      name="location"
+                      defaultValue={property.location}
+                      placeholder="Dhanmondi, Dhaka"
+                      className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-xs font-medium text-slate-900 transition focus:border-blue-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                    />
+                  </div>
 
-            setTimeout(() => {
-                window.location.reload();
-            }, 1000);
-        } else {
-            toast.error(result?.message || "Update failed!");
-        }
-    };
+                  {/* Property Type */}
+                  <div>
+                    <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">
+                      Property Type
+                    </label>
+                    <div className="relative">
+                      <select
+                        name="propertyType"
+                        defaultValue={property.propertyType}
+                        className="w-full appearance-none rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 pr-8 text-xs font-medium text-slate-900 transition focus:border-blue-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 cursor-pointer"
+                      >
+                        <option value="apartment">Apartment</option>
+                        <option value="house">House</option>
+                        <option value="villa">Villa</option>
+                        <option value="office">Office</option>
+                        <option value="shop">Shop</option>
+                        <option value="others">Others</option>
+                      </select>
+                      <HiChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-slate-400" />
+                    </div>
+                  </div>
 
-    return (
-        <Modal isOpen={open} onOpenChange={setOpen}>
-            <Button variant="secondary" onPress={() => setOpen(true)}>
-                <FaRegEdit />
-                Edit
-            </Button>
+                  {/* Rent */}
+                  <div>
+                    <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">
+                      Rent Amount ($)
+                    </label>
+                    <input
+                      type="number"
+                      name="rent"
+                      defaultValue={property.rent}
+                      className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-xs font-medium text-slate-900 transition focus:border-blue-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                    />
+                  </div>
 
-            <Modal.Backdrop>
-                <Modal.Container>
-                    <Modal.Dialog className="sm:max-w-lg w-full max-h-[90vh] flex flex-col bg-white text-gray-900">
-                        <Modal.CloseTrigger />
+                  {/* Rent Type */}
+                  <div>
+                    <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">
+                      Rent Frequency
+                    </label>
+                    <div className="relative">
+                      <select
+                        name="rentType"
+                        defaultValue={property.rentType}
+                        className="w-full appearance-none rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 pr-8 text-xs font-medium text-slate-900 transition focus:border-blue-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 cursor-pointer"
+                      >
+                        <option value="monthly">Monthly</option>
+                        <option value="weekly">Weekly</option>
+                        <option value="daily">Daily</option>
+                      </select>
+                      <HiChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-slate-400" />
+                    </div>
+                  </div>
 
-                        <Modal.Body className="p-0 flex-1 overflow-hidden">
-                            <div className="p-6 max-h-[80vh] overflow-y-auto">
-                                <Surface className="bg-white dark:bg-gray-900 p-2">
+                  {/* Bedrooms */}
+                  <div>
+                    <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">
+                      Bedrooms
+                    </label>
+                    <input
+                      type="number"
+                      name="bedrooms"
+                      defaultValue={property.bedrooms}
+                      className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-xs font-medium text-slate-900 transition focus:border-blue-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                    />
+                  </div>
 
-                                    <Form onSubmit={handleSubmit}>
-                                        <Fieldset className="w-full space-y-4">
+                  {/* Bathrooms */}
+                  <div>
+                    <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">
+                      Bathrooms
+                    </label>
+                    <input
+                      type="number"
+                      name="bathrooms"
+                      defaultValue={property.bathrooms}
+                      className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-xs font-medium text-slate-900 transition focus:border-blue-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                    />
+                  </div>
 
-                                            <Fieldset.Legend className="text-2xl font-bold">
-                                                Edit Property
-                                            </Fieldset.Legend>
+                  {/* Size */}
+                  <div>
+                    <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">
+                      Size (sq ft)
+                    </label>
+                    <input
+                      type="number"
+                      name="size"
+                      defaultValue={property.size}
+                      className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-xs font-medium text-slate-900 transition focus:border-blue-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                    />
+                  </div>
 
-                                            <Fieldset.Group className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {/* Amenities */}
+                  <div>
+                    <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">
+                      Amenities
+                    </label>
+                    <input
+                      name="amenities"
+                      defaultValue={property.amenities}
+                      className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-xs font-medium text-slate-900 transition focus:border-blue-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                    />
+                  </div>
 
-                                                {/* TITLE */}
-                                                <TextField name="title" className="md:col-span-2">
-                                                    <Label>Property Title</Label>
-                                                    <Input
+                  {/* Image */}
+                  <div className="md:col-span-2 space-y-2">
+                    <label className="block text-xs font-bold uppercase tracking-wider text-slate-600">
+                      Property Image
+                    </label>
+                    <div className="flex gap-1.5 p-1 bg-slate-100 rounded-xl w-fit">
+                      <button
+                        type="button"
+                        onClick={() => setUploadType("link")}
+                        className={`flex items-center gap-1 px-3 py-1 text-xs font-bold rounded-lg transition-all ${
+                          uploadType === "link"
+                            ? "bg-white text-slate-900 shadow-xs"
+                            : "text-slate-500 hover:text-slate-800"
+                        }`}
+                      >
+                        <FiLink size={12} />
+                        <span>URL</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setUploadType("file")}
+                        className={`flex items-center gap-1 px-3 py-1 text-xs font-bold rounded-lg transition-all ${
+                          uploadType === "file"
+                            ? "bg-white text-slate-900 shadow-xs"
+                            : "text-slate-500 hover:text-slate-800"
+                        }`}
+                      >
+                        <FiUploadCloud size={12} />
+                        <span>Upload File</span>
+                      </button>
+                    </div>
 
-                                                        placeholder="Luxury Apartment in Dhanmondi"
-                                                        variant="secondary"
-                                                    />
-                                                </TextField>
+                    {uploadType === "link" ? (
+                      <input
+                        name="imageUrl"
+                        defaultValue={property.imageUrl}
+                        placeholder="https://image-url.com"
+                        className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-xs font-medium text-slate-900 transition focus:border-blue-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                      />
+                    ) : (
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) =>
+                          setSelectedFile(e.target.files?.[0] || null)
+                        }
+                        className="block w-full text-xs text-slate-500 file:mr-4 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-blue-600 file:text-white hover:file:bg-blue-700 cursor-pointer"
+                      />
+                    )}
+                  </div>
+                </div>
 
-                                                {/* DESCRIPTION */}
-                                                <TextField name="description" className="md:col-span-2">
-                                                    <Label>Description</Label>
-                                                    <TextArea
-                                                        defaultValue={property.description}
-                                                        placeholder="Write property description..."
-                                                    />
-                                                </TextField>
-
-                                                <TextField name="location">
-                                                    <Label>Location</Label>
-                                                    <Input
-                                                        defaultValue={property.location}
-                                                        placeholder="Dhanmondi, Dhaka"
-                                                    />
-                                                </TextField>
-
-                                                {/* PROPERTY TYPE */}
-                                                <div className="space-y-1">
-                                                    <label className="text-sm font-semibold">Property Type</label>
-                                                    <div className="relative">
-                                                        <select
-                                                            name="propertyType"
-                                                            defaultValue={property.propertyType}
-                                                            className="w-full border rounded-lg p-2"
-                                                        >
-                                                            <option value="">Select Type</option>
-                                                            <option value="apartment">Apartment</option>
-                                                            <option value="house">House</option>
-                                                            <option value="villa">Villa</option>
-                                                            <option value="office">Office</option>
-                                                            <option value="shop">Shop</option>
-                                                            <option value="land">Land</option>
-                                                        </select>
-                                                        <HiChevronDown className="absolute right-3 top-3" />
-                                                    </div>
-                                                </div>
-
-                                                {/* RENT */}
-                                                <TextField name="rent">
-                                                    <Label>Rent</Label>
-                                                    <Input
-                                                        type="number"
-                                                        defaultValue={property.rent}
-                                                        placeholder="25000"
-                                                        variant="secondary"
-                                                    />
-                                                </TextField>
-
-                                                {/* RENT TYPE */}
-                                                <div className="space-y-1">
-                                                    <label className="text-sm font-semibold">Rent Type</label>
-                                                    <select
-                                                        name="rentType"
-                                                        defaultValue={property.rentType}
-                                                        className="w-full border rounded-lg p-2"
-                                                    >
-                                                        <option value="monthly">Monthly</option>
-                                                        <option value="weekly">Weekly</option>
-                                                        <option value="daily">Daily</option>
-                                                    </select>
-                                                </div>
-
-                                                {/* BEDROOMS */}
-                                                <TextField name="bedrooms">
-                                                    <Label>Bedrooms</Label>
-                                                    <Input
-                                                        type="number"
-                                                        defaultValue={property.bedrooms}
-                                                        placeholder="3"
-                                                        variant="secondary"
-                                                    />
-                                                </TextField>
-
-                                                {/* BATHROOMS */}
-                                                <TextField name="bathrooms">
-                                                    <Label>Bathrooms</Label>
-                                                    <Input
-                                                        type="number"
-                                                        defaultValue={property.bathrooms}
-                                                        placeholder="2"
-                                                        variant="secondary"
-                                                    />
-                                                </TextField>
-
-                                                {/* SIZE */}
-                                                <TextField name="size">
-                                                    <Label>Size (sq ft)</Label>
-                                                    <Input
-                                                        type="number"
-                                                        defaultValue={property.size}
-                                                        placeholder="1500"
-                                                        variant="secondary"
-                                                    />
-                                                </TextField>
-
-                                                {/* AMENITIES */}
-                                                <TextField name="amenities" className="md:col-span-2">
-                                                    <Label>Amenities</Label>
-                                                    <Input
-                                                        defaultValue={property.amenities}
-                                                        placeholder="Parking, Lift, WiFi..."
-                                                        variant="secondary"
-                                                    />
-                                                </TextField>
-
-                                                {/* IMAGE */}
-                                                <div className="md:col-span-2 space-y-2">
-                                                    <Label>Property Image</Label>
-
-                                                    <div className="flex gap-2">
-                                                        <button type="button" onClick={() => setUploadType("link")}>
-                                                            URL
-                                                        </button>
-                                                        <button type="button" onClick={() => setUploadType("file")}>
-                                                            Upload
-                                                        </button>
-                                                    </div>
-
-                                                    {uploadType === "link" ? (
-                                                        <TextField name="imageUrl">
-                                                            <Input
-                                                                defaultValue={property.imageUrl}
-                                                                placeholder="https://image.com"
-                                                                variant="secondary"
-                                                            />
-                                                        </TextField>
-                                                    ) : (
-                                                        <input
-                                                            type="file"
-                                                            accept="image/*"
-                                                            onChange={(e) =>
-                                                                setSelectedFile(e.target.files?.[0] || null)
-                                                            }
-                                                            className="border p-2 w-full"
-                                                        />
-                                                    )}
-                                                </div>
-
-                                                {/* EXTRA */}
-                                                <TextField name="extraFeatures" className="md:col-span-2">
-                                                    <Label>Extra Features</Label>
-                                                    <TextArea
-                                                        defaultValue={property.extraFeatures}
-                                                        placeholder="Balcony, Garden..."
-                                                        variant="secondary"
-                                                    />
-                                                </TextField>
-
-                                            </Fieldset.Group>
-
-                                            {/* SUBMIT */}
-                                            <Button type="submit" disabled={loading}>
-                                                <LuSave />
-                                                {loading ? "Saving..." : "Save Changes"}
-                                            </Button>
-
-                                        </Fieldset>
-                                    </Form>
-
-                                </Surface>
-                            </div>
-                        </Modal.Body>
-                    </Modal.Dialog>
-                </Modal.Container>
-            </Modal.Backdrop>
-        </Modal>
-    );
+                <div className="pt-4 border-t border-slate-100 flex items-center justify-end gap-2.5">
+                  <button
+                    type="button"
+                    onClick={() => setOpen(false)}
+                    className="rounded-xl border border-slate-200 px-4 py-2.5 text-xs font-bold text-slate-600 hover:bg-slate-50 transition"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={loading}
+                    className="inline-flex items-center gap-2 rounded-xl bg-blue-600 px-5 py-2.5 text-xs font-bold text-white shadow-xs hover:bg-blue-700 transition disabled:opacity-50 cursor-pointer"
+                  >
+                    <LuSave />
+                    <span>{loading ? "Saving Changes..." : "Save Changes"}</span>
+                  </button>
+                </div>
+              </form>
+            </div>
+          </Modal.Dialog>
+        </Modal.Container>
+      </Modal.Backdrop>
+    </Modal>
+  );
 }

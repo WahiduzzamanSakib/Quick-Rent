@@ -2,70 +2,50 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { FiArrowRight, FiUserCheck } from "react-icons/fi";
 
 export default function FinalCTA() {
   return (
-    <section className="bg-[#050a30] py-16 sm:py-20">
+    <section className="relative overflow-hidden bg-gradient-to-b from-slate-900 to-slate-950 py-16 sm:py-20 border-t border-slate-800">
+      {/* Decorative background glow */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-blue-600/10 rounded-full blur-[120px] pointer-events-none" />
+
       <motion.div
-        initial={{ opacity: 0, y: 35 }}
+        initial={{ opacity: 0, y: 25 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.3 }}
-        transition={{ duration: 0.7, ease: "easeOut" }}
-        className="mx-auto max-w-4xl px-4 text-center"
+        transition={{ duration: 0.6, ease: "easeOut" }}
+        className="relative z-10 mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 text-center"
       >
-        <motion.h2
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.15 }}
-          className="text-3xl font-bold text-white sm:text-4xl"
-        >
-          Ready to find your next place?
-        </motion.h2>
+        <div className="inline-flex items-center gap-1.5 rounded-full border border-blue-400/20 bg-blue-500/10 px-3.5 py-1 text-xs font-semibold text-blue-300 mb-4 backdrop-blur-md">
+          <FiUserCheck className="text-emerald-400" />
+          Join Thousands of Verified Users
+        </div>
 
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          className="mx-auto mt-4 max-w-xl text-blue-100"
-        >
-          Browse verified properties or create a free account to start booking.
-        </motion.p>
+        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight">
+          Ready to Find Your Next Space?
+        </h2>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.45 }}
-          className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row"
-        >
-          <motion.div
-            whileHover={{ y: -4, scale: 1.03 }}
-            whileTap={{ scale: 0.97 }}
-            transition={{ type: "spring", stiffness: 300, damping: 20 }}
+        <p className="mx-auto mt-4 max-w-xl text-sm sm:text-base leading-relaxed text-slate-300">
+          Explore curated listings, reserve with complete confidence, or list your own properties with guaranteed verified tenants.
+        </p>
+
+        <div className="mt-8 flex flex-col items-center justify-center gap-3.5 sm:flex-row">
+          <Link
+            href="/properties"
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-6 py-3.5 text-sm font-bold text-white shadow-lg shadow-blue-600/30 transition-all duration-200 hover:bg-blue-700 hover:shadow-xl active:scale-98"
           >
-            <Link
-              href="/properties"
-              className="block rounded-lg bg-white px-6 py-3 font-semibold text-blue-600 transition-colors duration-300 hover:bg-blue-50 hover:shadow-lg"
-            >
-              Browse properties
-            </Link>
-          </motion.div>
+            <span>Explore Properties</span>
+            <FiArrowRight />
+          </Link>
 
-          <motion.div
-            whileHover={{ y: -4, scale: 1.03 }}
-            whileTap={{ scale: 0.97 }}
-            transition={{ type: "spring", stiffness: 300, damping: 20 }}
+          <Link
+            href="/register"
+            className="w-full sm:w-auto inline-flex items-center justify-center rounded-xl border border-slate-700 bg-slate-900/60 px-6 py-3.5 text-sm font-bold text-slate-200 backdrop-blur-md transition-all duration-200 hover:border-slate-500 hover:bg-slate-800 hover:text-white active:scale-98"
           >
-            <Link
-              href="/register"
-              className="block rounded-lg border border-white px-6 py-3 font-semibold text-white transition-colors duration-300 hover:bg-white/10 hover:shadow-lg"
-            >
-              Create free account
-            </Link>
-          </motion.div>
-        </motion.div>
+            Create Free Account
+          </Link>
+        </div>
       </motion.div>
     </section>
   );

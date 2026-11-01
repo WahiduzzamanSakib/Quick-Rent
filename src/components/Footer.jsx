@@ -1,145 +1,197 @@
 import Link from "next/link";
+import Image from "next/image";
 import {
   FaFacebookF,
   FaInstagram,
   FaTwitter,
-  FaLinkedin,
+  FaLinkedinIn,
 } from "react-icons/fa";
+import { FiCheckCircle, FiShield, FiHeart } from "react-icons/fi";
 
 export default function Footer() {
+  const currentYear = new Date().getFullYear();
+
   return (
-    <footer className="bg-slate-900 text-white mt-4">
+    <footer className="border-t border-slate-800 bg-slate-950 text-slate-300">
+      <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4">
+          {/* Brand & About */}
+          <div className="space-y-4">
+            <Link href="/" className="inline-flex items-center gap-2.5">
+              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-600/20 text-blue-500">
+                <Image
+                  src="/quickrent.png"
+                  alt="QuickRent Logo"
+                  width={30}
+                  height={30}
+                  className="object-contain"
+                />
+              </div>
+              <span className="text-2xl font-extrabold tracking-tight text-white">
+                Quick<span className="text-blue-500">Rent</span>
+              </span>
+            </Link>
 
-      <div className="max-w-7xl mx-auto px-6 py-12 grid grid-cols-2 md:grid-cols-4 gap-10">
+            <p className="text-sm leading-relaxed text-slate-400">
+              The premier property rental platform connecting quality-seeking tenants with verified property owners. Fast, secure, and transparent booking everywhere.
+            </p>
 
-        {/* Brand Section */}
-        <div>
-          {/* <h2 className="text-2xl font-bold text-sky-400">QuickRent</h2> */}
-          <span className="text-2xl font-extrabold  text-white">
-            Quick <span className="text-blue-600">Rent</span>
-          </span>
-          <p className="text-slate-400 mt-3 text-sm leading-relaxed">
-            Find your perfect stay anywhere, anytime. Fast, secure, and seamless booking experience.
-          </p>
-
-
-        </div>
-
-        {/* Company Links */}
-        <div>
-          <h3 className="font-semibold mb-4">Company</h3>
-          <ul className="space-y-2 text-slate-400 text-sm">
-
-            <li>
-              <Link href="/about" className="hover:text-white">
-                About
-              </Link>
-            </li>
-
-            <li>
-              <Link href="/properties" className="hover:text-white">
-                Properties
-              </Link>
-            </li>
-
-            <li>
-              <Link href="/#how-to-works" className="hover:text-white">
-            How it works
-              </Link>
-            </li>
-
-            <li>
-              <Link href="/#reviews" className="hover:text-white">
-               Give Review
-              </Link>
-            </li>
-
-          </ul>
-        </div>
-
-        {/* Support Links */}
-        <div>
-          <h3 className="font-semibold mb-4">Support</h3>
-          <ul className="space-y-2 text-slate-400 text-sm">
-
-            <li>
-              <Link href="/#help" className="hover:text-white">
-                Help Center
-              </Link>
-            </li>
-
-            <li>
-              <Link href="#" className="hover:text-white">
-                Contact Us
-              </Link>
-            </li>
-
-            <li>
-              <Link href="#" className="hover:text-white">
-                Cancellation
-              </Link>
-            </li>
-
-            <li>
-              <Link href="#" className="hover:text-white">
-                Safety
-              </Link>
-            </li>
-
-          </ul>
-        </div>
-
-        {/* Newsletter */}
-        <div>
-          <h3 className="font-semibold mb-4">Stay Updated</h3>
-          {/* Social Icons */}
-          <div className="flex gap-4 mt-5 text-lg">
-            <a
-              href="https://facebook.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-sky-400"
-            >
-              <FaFacebookF size={24} />
-            </a>
-
-            <a
-              href="https://instagram.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-pink-400"
-            >
-              <FaInstagram size={24} />
-            </a>
-
-            <a
-              href="https://twitter.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-sky-300"
-            >
-              <FaTwitter size={24} />
-            </a>
-
-            <a
-              href="https://linkedin.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-sky-500 rounded-full"
-            >
-              <FaLinkedin size={24} />
-            </a>
+            <div className="flex items-center gap-4 pt-2">
+              <div className="flex items-center gap-1.5 text-xs font-semibold text-slate-400">
+                <FiCheckCircle className="text-emerald-400" />
+                <span>Verified Hosts</span>
+              </div>
+              <div className="flex items-center gap-1.5 text-xs font-semibold text-slate-400">
+                <FiShield className="text-blue-400" />
+                <span>Stripe Secure</span>
+              </div>
+            </div>
           </div>
 
+          {/* Company Links */}
+          <div>
+            <h3 className="text-xs font-bold uppercase tracking-wider text-white">
+              Company
+            </h3>
+            <ul className="mt-4 space-y-2.5 text-sm">
+              <li>
+                <Link
+                  href="/about"
+                  className="transition-colors hover:text-white hover:underline underline-offset-4"
+                >
+                  About QuickRent
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/properties"
+                  className="transition-colors hover:text-white hover:underline underline-offset-4"
+                >
+                  Explore Properties
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/#how-to-works"
+                  className="transition-colors hover:text-white hover:underline underline-offset-4"
+                >
+                  How It Works
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/#reviews"
+                  className="transition-colors hover:text-white hover:underline underline-offset-4"
+                >
+                  Guest Reviews
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Support & Legal */}
+          <div>
+            <h3 className="text-xs font-bold uppercase tracking-wider text-white">
+              Support & Trust
+            </h3>
+            <ul className="mt-4 space-y-2.5 text-sm">
+              <li>
+                <Link
+                  href="/#help"
+                  className="transition-colors hover:text-white hover:underline underline-offset-4"
+                >
+                  Help & FAQ
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/about#standards"
+                  className="transition-colors hover:text-white hover:underline underline-offset-4"
+                >
+                  Platform Standards
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/#help"
+                  className="transition-colors hover:text-white hover:underline underline-offset-4"
+                >
+                  Cancellation Policy
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/login"
+                  className="transition-colors hover:text-white hover:underline underline-offset-4"
+                >
+                  Owner Portal
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Socials & Stay Connected */}
+          <div>
+            <h3 className="text-xs font-bold uppercase tracking-wider text-white">
+              Connect With Us
+            </h3>
+            <p className="mt-4 text-sm text-slate-400">
+              Join our growing community of happy renters and verified property owners worldwide.
+            </p>
+
+            <div className="mt-5 flex items-center gap-3">
+              <a
+                href="https://facebook.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Facebook"
+                className="flex h-9 w-9 items-center justify-center rounded-xl bg-slate-900 border border-slate-800 text-slate-400 transition-all hover:border-blue-500/50 hover:bg-blue-600/10 hover:text-blue-400 hover:scale-105"
+              >
+                <FaFacebookF size={15} />
+              </a>
+
+              <a
+                href="https://instagram.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Instagram"
+                className="flex h-9 w-9 items-center justify-center rounded-xl bg-slate-900 border border-slate-800 text-slate-400 transition-all hover:border-pink-500/50 hover:bg-pink-600/10 hover:text-pink-400 hover:scale-105"
+              >
+                <FaInstagram size={15} />
+              </a>
+
+              <a
+                href="https://twitter.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Twitter"
+                className="flex h-9 w-9 items-center justify-center rounded-xl bg-slate-900 border border-slate-800 text-slate-400 transition-all hover:border-sky-500/50 hover:bg-sky-600/10 hover:text-sky-400 hover:scale-105"
+              >
+                <FaTwitter size={15} />
+              </a>
+
+              <a
+                href="https://linkedin.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="LinkedIn"
+                className="flex h-9 w-9 items-center justify-center rounded-xl bg-slate-900 border border-slate-800 text-slate-400 transition-all hover:border-blue-500/50 hover:bg-blue-600/10 hover:text-blue-400 hover:scale-105"
+              >
+                <FaLinkedinIn size={15} />
+              </a>
+            </div>
+          </div>
         </div>
 
+        {/* Bottom Sub-bar */}
+        <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-slate-900 pt-6 text-xs text-slate-500 sm:flex-row">
+          <p>© {currentYear} QuickRent Platform. All rights reserved.</p>
+          <div className="flex items-center gap-1 text-slate-500">
+            <span>Built with precision for exceptional stays</span>
+            <FiHeart className="text-red-500 text-xs ml-1" />
+          </div>
+        </div>
       </div>
-
-      {/* Bottom Bar */}
-      <div className="border-t border-slate-800 py-4 text-center text-sm text-slate-500">
-        © {new Date().getFullYear()} QuickRent. All rights reserved.
-      </div>
-
     </footer>
   );
 }

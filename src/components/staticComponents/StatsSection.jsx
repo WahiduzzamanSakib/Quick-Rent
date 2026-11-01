@@ -66,7 +66,7 @@ function AnimatedCounter({ value, suffix }) {
     return (
         <span className="text-4xl sm:text-5xl font-extrabold tracking-tight text-white tabular-nums z-10">
             <span ref={elementRef}>0</span>
-            <span className="text-cyan-400 ml-0.5">{suffix}</span>
+            <span className="text-blue-400 ml-0.5">{suffix}</span>
         </span>
     );
 }
@@ -117,10 +117,10 @@ function StatCard({ stat, itemVariants }) {
             className="flex flex-col items-center justify-center p-8 sm:p-10 group relative transition-colors duration-300 hover:bg-slate-900/40 cursor-default"
         >
           
-            <div className="absolute inset-0 bg-gradient-to-b from-cyan-500/0 to-cyan-500/[0.02] opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none rounded-xl" />
+            <div className="absolute inset-0 bg-gradient-to-b from-blue-500/0 to-blue-500/[0.04] opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none rounded-xl" />
 
             <div 
-                className="mb-4 p-3 rounded-xl bg-slate-900 border border-slate-800 text-slate-400 group-hover:text-cyan-400 group-hover:border-cyan-500/30 group-hover:shadow-[0_0_15px_rgba(34,211,238,0.1)] transition-all duration-300 z-10"
+                className="mb-4 p-3 rounded-xl bg-slate-900 border border-slate-800 text-slate-400 group-hover:text-blue-400 group-hover:border-blue-500/30 group-hover:shadow-[0_0_20px_rgba(59,130,246,0.18)] transition-all duration-300 z-10"
                 style={{ transform: "translateZ(30px)" }}
                 aria-hidden="true"
             >
@@ -162,7 +162,7 @@ export default function StatsSection() {
     return (
         <section className="relative bg-slate-950 py-12 px-4 sm:px-6 lg:px-8 overflow-hidden border-y border-slate-900">
             <div 
-                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[250px] bg-cyan-500/5 rounded-full blur-[140px] pointer-events-none select-none" 
+                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[250px] bg-blue-600/10 rounded-full blur-[140px] pointer-events-none select-none" 
                 aria-hidden="true" 
             />
 

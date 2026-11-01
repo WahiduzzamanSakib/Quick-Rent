@@ -1,9 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { Button, Input, Label, Modal, TextField } from "@heroui/react";
-import { FiEdit3 } from "react-icons/fi";
+import { Button, Modal } from "@heroui/react";
+import { FiEdit3, FiUser, FiImage } from "react-icons/fi";
 import { authClient } from "@/lib/auth-client";
+import { toast } from "react-toastify";
 
 export function EditProfileModal({ user }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -19,7 +20,8 @@ export function EditProfileModal({ user }) {
     setIsOpen(true);
   };
 
-  const handleSave = async () => {
+  const handleSave = async (e) => {
+    e.preventDefault();
     if (!name.trim()) {
       setError("Name cannot be empty.");
       return;
@@ -39,6 +41,7 @@ export function EditProfileModal({ user }) {
         return;
       }
 
+      toast.success("Profile updated successfully!");
       setIsOpen(false);
     } catch (err) {
       setError("Something went wrong. Please try again.");
@@ -49,66 +52,89 @@ export function EditProfileModal({ user }) {
 
   return (
     <>
-      <Button
-        variant="secondary"
-        onPress={handleOpen}
-        className="w-full sm:w-auto"
+      <button
+        type="button"
+        onClick={handleOpen}
+        className="inline-flex items-center gap-1.5 rounded-xl border border-white/20 bg-white/10 px-4 py-2 text-xs font-bold text-white shadow-xs backdrop-blur-md hover:bg-white/20 transition cursor-pointer"
       >
         <FiEdit3 />
-        Edit Profile
-      </Button>
+        <span>Edit Profile</span>
+      </button>
 
       <Modal.Backdrop isOpen={isOpen} onOpenChange={setIsOpen}>
         <Modal.Container placement="auto">
-          <Modal.Dialog className="sm:max-w-md">
+          <Modal.Dialog className="sm:max-w-md rounded-3xl border border-slate-200 bg-white p-6 shadow-2xl">
             <Modal.CloseTrigger />
-            <Modal.Header>
-              <Modal.Heading>Edit Profile</Modal.Heading>
-              <p className="mt-1.5 text-sm leading-5 text-muted">
-                Update your name and profile picture.
+            <Modal.Header className="pb-3 border-b border-slate-100">
+              <Modal.Heading className="text-lg font-black text-slate-900 tracking-tight">
+                Edit Profile
+              </Modal.Heading>
+              <p className="mt-0.5 text-xs text-slate-400">
+                Update your display name and avatar photo URL
               </p>
             </Modal.Header>
 
-            <Modal.Body className="p-6">
-              <div className="flex flex-col gap-4">
-                <TextField
-                  className="w-full"
-                  name="name"
-                  variant="secondary"
-                  value={name}
-                  onChange={setName}
-                >
-                  <Label>Name</Label>
-                  <Input placeholder="Enter your name" />
-                </TextField>
+            <Modal.Body className="p-0 pt-4">
+              <form onSubmit={handleSave} className="flex flex-col gap-4">
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">
+                    Full Name <span className="text-red-500">*</span>
+                  </label>
+                  <div className="relative flex items-center">
+                    <FiUser className="absolute left-3 text-slate-400" />
+                    <input
+                      name="name"
+                      required
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      placeholder="Enter your name"
+                      className="w-full rounded-xl border border-slate-200 bg-slate-50 py-2.5 pl-9 pr-3 text-xs font-medium text-slate-900 transition focus:border-blue-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                    />
+                  </div>
+                </div>
 
-                <TextField
-                  className="w-full"
-                  name="image"
-                  variant="secondary"
-                  value={image}
-                  onChange={setImage}
-                >
-                  <Label>Profile Image URL</Label>
-                  <Input placeholder="https://example.com/photo.jpg" />
-                </TextField>
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">
+                    Profile Image URL
+                  </label>
+                  <div className="relative flex items-center">
+                    <FiImage className="absolute left-3 text-slate-400" />
+                    <input
+                      name="image"
+                      type="url"
+                      value={image}
+                      onChange={(e) => setImage(e.target.value)}
+                      placeholder="https://example.com/photo.jpg"
+                      className="w-full rounded-xl border border-slate-200 bg-slate-50 py-2.5 pl-9 pr-3 text-xs font-medium text-slate-900 transition focus:border-blue-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                    />
+                  </div>
+                </div>
 
-                {error && <p className="text-sm text-red-500">{error}</p>}
-              </div>
+                {error && (
+                  <p className="text-xs font-semibold text-rose-600 bg-rose-50 p-2.5 rounded-xl border border-rose-100">
+                    {error}
+                  </p>
+                )}
+
+                <div className="pt-2 flex justify-end gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setIsOpen(false)}
+                    className="rounded-xl border border-slate-200 px-4 py-2 text-xs font-bold text-slate-600 hover:bg-slate-50 transition"
+                  >
+                    Cancel
+                  </button>
+
+                  <button
+                    type="submit"
+                    disabled={loading}
+                    className="inline-flex items-center gap-1.5 rounded-xl bg-blue-600 px-4 py-2 text-xs font-bold text-white shadow-xs hover:bg-blue-700 transition disabled:opacity-50 cursor-pointer"
+                  >
+                    <span>{loading ? "Saving..." : "Save Changes"}</span>
+                  </button>
+                </div>
+              </form>
             </Modal.Body>
-
-            <Modal.Footer>
-              <Button
-                variant="secondary"
-                onPress={() => setIsOpen(false)}
-                isDisabled={loading}
-              >
-                Cancel
-              </Button>
-              <Button onPress={handleSave} isDisabled={loading}>
-                {loading ? "Saving..." : "Save Changes"}
-              </Button>
-            </Modal.Footer>
           </Modal.Dialog>
         </Modal.Container>
       </Modal.Backdrop>
