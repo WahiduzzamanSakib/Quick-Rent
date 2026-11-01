@@ -40,14 +40,14 @@ const DashBoardSidebar = ({ isOpen, setIsOpen }) => {
 
   // Tenant Dashboard Menu
   const tenantMenu = [
-    { key: "overview", label: "Profile", icon: FaUser, href: "/dashboard/tenant" },
+    { key: "overview", label: "Profile", icon: FaUser, href: "/dashboard/profile" },
     { key: "bookings", label: "My Bookings", icon: FaCalendarCheck, href: "/dashboard/tenant/my-bookings" },
     { key: "favorites", label: "Favorites", icon: FaHeart, href: "/dashboard/tenant/favorites" },
   ];
 
   // Admin Dashboard Menu
   const adminMenu = [
-    { key: "overview", label: "Profile", icon: FaUserShield, href: "/dashboard/admin" },
+    { key: "overview", label: "Profile", icon: FaUserShield, href: "/dashboard/profile" },
     { key: "users", label: "All Users", icon: FaUsersCog, href: "/dashboard/admin/users" },
     { key: "properties", label: "All Properties", icon: FaBuilding, href: "/dashboard/admin/properties" },
     { key: "bookings", label: "All Bookings", icon: FaClipboardCheck, href: "/dashboard/admin/bookings" },

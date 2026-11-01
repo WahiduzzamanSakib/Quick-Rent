@@ -53,9 +53,9 @@ const ApprovedLimirCard = () => {
       {/* Section Header */}
       <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-10 gap-4">
         <div>
-          <span className="text-xs font-bold uppercase tracking-widest text-blue-600">
+          {/* <span className="text-xs font-bold uppercase tracking-widest text-blue-600">
             Handpicked Stays
-          </span>
+          </span> */}
           <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight mt-1">
             Featured Properties
           </h2>

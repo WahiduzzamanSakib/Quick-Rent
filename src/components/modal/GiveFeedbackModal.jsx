@@ -104,7 +104,7 @@ export function GiveFeedbackModal() {
       <Modal>
         <Button className="rounded-xl bg-blue-600 text-white font-bold text-xs shadow-md shadow-blue-600/20 hover:bg-blue-700 transition px-5 py-2.5 flex items-center gap-2">
           <FiMessageSquare size={14} />
-          <span>Write a Platform Review</span>
+          <span>Write a Review</span>
         </Button>
 
         <Modal.Backdrop>

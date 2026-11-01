@@ -89,7 +89,7 @@ const Navbar = () => {
               <Link
                 key={link.path}
                 href={link.path}
-                className={`relative px-4 py-2 text-sm font-semibold rounded-lg transition-all duration-200 ${
+                className={`relative px-4 py-2 text-md font-semibold rounded-lg transition-all duration-200 ${
                   active
                     ? "text-blue-600 bg-blue-50/80 font-bold shadow-xs"
                     : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"

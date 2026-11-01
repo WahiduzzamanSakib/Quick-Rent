@@ -66,9 +66,9 @@ export default function TopLocations() {
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="text-center mb-12">
-          <span className="text-xs font-bold uppercase tracking-widest text-blue-600">
+          {/* <span className="text-xs font-bold uppercase tracking-widest text-blue-600">
             Global Destinations
-          </span>
+          </span> */}
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight mt-1">
             Explore Top Locations
           </h2>
