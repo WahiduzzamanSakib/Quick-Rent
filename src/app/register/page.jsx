@@ -115,7 +115,7 @@ const SignUpPage = () => {
         variants={container}
         initial="hidden"
         animate="show"
-        className="w-full max-w-md relative z-10"
+        className="w-full max-w-xl relative z-10"
       >
         <div className="p-8 sm:p-10 shadow-xl rounded-3xl bg-white border border-slate-200/90">
           {/* Header */}
