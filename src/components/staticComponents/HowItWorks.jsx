@@ -60,9 +60,9 @@ export default function HowItWorks() {
           transition={{ duration: 0.5, ease: "easeOut" }}
           className="mx-auto max-w-2xl text-center"
         >
-          <span className="inline-block rounded-full bg-blue-100 px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-blue-700">
+          {/* <span className="inline-block rounded-full bg-blue-100 px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-blue-700">
             Streamlined Journey
-          </span>
+          </span> */}
 
           <h2 className="mt-3 text-2xl font-black tracking-tight text-slate-900 sm:text-4xl">
             How QuickRent Works

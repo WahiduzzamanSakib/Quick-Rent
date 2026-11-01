@@ -71,9 +71,9 @@ export default function TestimonialsSection() {
   return (
     <section id="reviews" className="scroll-mt-24 bg-slate-50/70 border-t border-slate-200/80 py-16 overflow-hidden w-full select-none">
       <div className="max-w-7xl mx-auto px-4 mb-10 text-center">
-        <span className="text-xs font-bold uppercase tracking-widest text-blue-600">
+        {/* <span className="text-xs font-bold uppercase tracking-widest text-blue-600">
           Real Tenant Experiences
-        </span>
+        </span> */}
         <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight mt-1">
           What Our Community Says
         </h2>

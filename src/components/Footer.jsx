@@ -12,7 +12,7 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="border-t border-slate-800 bg-slate-950 text-slate-300">
+    <footer className="border-t border-slate-800 bg-slate-950 text-slate-300 mt-5">
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4">
           {/* Brand & About */}
@@ -187,7 +187,18 @@ export default function Footer() {
         <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-slate-900 pt-6 text-xs text-slate-500 sm:flex-row">
           <p>© {currentYear} QuickRent Platform. All rights reserved.</p>
           <div className="flex items-center gap-1 text-slate-500">
-            <span>Built with precision for exceptional stays</span>
+            <span>
+              Developed By{" "}
+              <a
+                href="https://waheduzzaman.vercel.app/"
+                target="_blank"
+                rel="noopener noreferrer"
+                title="https://waheduzzaman.vercel.app/"
+                className="hover:underline hover:text-primary transition-colors duration-200 cursor-pointer text-white"
+              >
+                Md Waheduzzaman
+              </a>
+            </span>
             <FiHeart className="text-red-500 text-xs ml-1" />
           </div>
         </div>
