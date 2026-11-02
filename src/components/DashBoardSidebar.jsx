@@ -31,11 +31,11 @@ const DashBoardSidebar = ({ isOpen, setIsOpen }) => {
 
   // Owner Dashboard Menu
   const ownerMenu = [
+    { key: "profile", label: "Profile", icon: FaUserCircle, href: "/dashboard/profile" },
     { key: "overview", label: "Dashboard", icon: FaChartLine, href: "/dashboard/owner" },
     { key: "add-property", label: "Add Property", icon: FaPlus, href: "/dashboard/owner/add-property" },
     { key: "my-properties", label: "My Properties", icon: FaHome, href: "/dashboard/owner/my-properties" },
     { key: "booking-requests", label: "Booking Requests", icon: FaClipboardList, href: "/dashboard/owner/booking-requests" },
-    { key: "profile", label: "Profile", icon: FaUserCircle, href: "/dashboard/profile" },
   ];
 
   // Tenant Dashboard Menu
